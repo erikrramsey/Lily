@@ -1,0 +1,23 @@
+Graphics:
+	Find model with multiple textures that load ?
+	Importer:
+		Fix the importer to allow for different texture filepaths
+		Probably just wrap assimp entirely at some point
+		Convert mesh and model to just a mesh component type (just data!)
+	Allow materials to be set manually
+	Add a transform argument to the draw function
+
+Editor:
+	Create an editor lol
+	Clean up LilyApplication so that it inerits from an application class
+	Handle input in application figure out some way to send signals to the engine ( remove or redo event manager ?)
+	Maybe add some gui?
+
+EC_Registry:
+	Test more
+	Allow deltion of compoenents/enities/pools
+
+
+
+IDEAS:
+	Lua scripting	
