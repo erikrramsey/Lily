@@ -14,7 +14,7 @@ namespace Lily {
 
 	}
 
-	void Renderer::Initialize(const char* vertexFilename, const char* fragmentFilename) {
+	void Renderer::Initialize() {
 		glewInit();
 
 		// Set up the shaders
@@ -22,8 +22,8 @@ namespace Lily {
 		m_shader->Initialize();
 
 		// add 2 shader objects, cant add more after compilation
-		m_shader->AddShaderObject(GL_VERTEX_SHADER, vertexFilename);
-		m_shader->AddShaderObject(GL_FRAGMENT_SHADER, fragmentFilename);
+		m_shader->AddShaderObject(GL_VERTEX_SHADER, "../../LilyEngine/shaders/default.vs");
+		m_shader->AddShaderObject(GL_FRAGMENT_SHADER, "../../LilyEngine/shaders/default.fs");
 
 		m_shader->Finalize();
 

@@ -16,15 +16,14 @@ void LilyEditorLayer::Init() {
 	m_framebuffer = new Framebuffer(1280, 720);
 	m_framebuffer->Init();
 
-	// make importer return one big mesh object when importing model from filepath
-	auto model_path = "../../LilyApplication/models/objects/UgwasadStore/UgwasadStore.obj";
+	auto model_path = "../../LilyApplication/models/objects/gnome/gnome.obj";
 	Importer model(model_path);
 	auto obj = m_active_scene->create_UObject();
 
-	//for (int i = 0; i < model.meshes.size(); i++) {
+	for (int i = 0; i < model.meshes.size(); i++) {
 		Mesh_component mesh(model.meshes[0], obj->get_component<Transform_component>());
 		m = &obj->add_component(mesh);
-	//}
+	}
 }
 
 

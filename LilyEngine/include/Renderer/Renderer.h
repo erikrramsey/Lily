@@ -20,7 +20,7 @@ namespace Lily {
 		Renderer();
 		~Renderer();
 
-		static void Initialize(const char* vertexFilename, const char* fragmentFilename);
+		static void Initialize();
 
 		static void Begin(Camera& cam);
 

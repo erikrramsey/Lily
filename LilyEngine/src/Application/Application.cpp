@@ -16,8 +16,7 @@ namespace Lily {
         m_event_sender->AddCallBack(this);
         m_event_sender->AddCallBack(m_window);
 
-        Renderer::Initialize("../../LilyEngine/shaders/default.vs",
-            "../../LilyEngine/shaders/default.fs");
+        Renderer::Initialize();
 
         for (auto i : m_layers) {
             i->Init();
