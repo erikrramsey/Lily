@@ -1,29 +1,25 @@
 #include "LilyEditor.h"
 #include <cstdlib>
 
-LilyEditorLayer::~LilyEditorLayer() {}
+LilyEditorLayer::~LilyEditorLayer() {
+	delete m_active_scene;
+	delete m_framebuffer;
+	delete m_file_explorer;
+}
 
 void LilyEditorLayer::Init() {
 	GuiLayer::Init();
 	m_app = Application::Get();
 	m_active_scene = new Scene();
 	m_active_scene->Init();
-	m_active_camera = &m_active_scene->getCamera();
-	m_active_camera->Initialize(1280, 720);
-
+	m_active_camera = &m_active_scene->getCamera().get<Camera>();
+	m_active_camera->Initialize(1920, 1080);
 
 	selected = nullptr;
-	m_framebuffer = new Framebuffer(1280, 720);
+	m_framebuffer = new Framebuffer(1920, 1080);
 	m_framebuffer->Init();
 
-	auto model_path = "../../LilyApplication/models/objects/gnome/gnome.obj";
-	Importer model(model_path);
-	auto obj = m_active_scene->create_UObject();
-
-	for (int i = 0; i < model.meshes.size(); i++) {
-		Mesh_component mesh(model.meshes[0], obj->get_component<Transform_component>());
-		m = &obj->add_component(mesh);
-	}
+	m_file_explorer = new LilyFileExplorer;
 }
 
 
@@ -31,11 +27,12 @@ void LilyEditorLayer::Update(long long dt) {
 	Renderer::SetClearColor(glm::vec4(0.5, 0.5, 0.5, 1));
 	Renderer::Clear();
 	m_framebuffer->Bind();
-	m_active_scene->Update(dt);
+	m_active_scene->update(dt);
 	m_framebuffer->Unbind();
 
 	if (forward_keydown && m_mouse_locked) {
-		m_active_camera->Translate(FORWARD, dt);
+		m_active_camera->Position += (m_active_camera->Forward * (float)dt * m_active_camera->MoveSpeed);
+		m_active_camera->Update();
 	}
 
 	GuiRender();
@@ -66,8 +63,11 @@ void LilyEditorLayer::OnEvent(SDL_Event& ev) {
 		}
 		break;
 	case SDL_WINDOWEVENT:
-		std::cout << ev.window.data1 << std::endl;
-		std::cout << ev.window.data2 << std::endl;
+		if (ev.window.event == SDL_WINDOWEVENT_RESIZED) {
+			std::cout << "LilyEditorayer: Resize event: "
+			<< ev.window.data1 << ' '
+			<< ev.window.data2 << std::endl;
+		}
 		break;
 	}
 
@@ -94,15 +94,16 @@ void LilyEditorLayer::GuiRender() {
 	window_flags1 |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 
 	ImGui::Begin("Main Window", nullptr, window_flags1);
-	ImGui::ShowDemoWindow();
+
 	ImGuiIO& io = ImGui::GetIO();
-    ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
-    ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-    ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+	ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+	ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+	ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 
 	bool opt_fullscreen = false;
 	if (ImGui::BeginMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
+			if (ImGui::MenuItem("Load Mesh")) m_show_file_explorer = true;
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Edit")) {
@@ -111,12 +112,20 @@ void LilyEditorLayer::GuiRender() {
 		ImGui::EndMenuBar();
 	}
 
-	ImGui::Begin("Entity Editor");
-	RenderEntityEditorWindow();
-	ImGui::End();
-	RenderEntityListWindow();
-	ImGui::End();
-	ImGui::PopStyleVar(2);
+	ImGui::Begin("UObject Editor");
+	entity_editor_window();
+	ImGui::End(); // Entity Editor
+	entity_list_window();
+	settings_window();
+
+	if (m_show_file_explorer) {
+		m_file_explorer->render();
+		auto p = m_file_explorer->get_selection();
+		if (!p.empty()) {
+			m_active_scene->load(p.string());
+			m_show_file_explorer = false;
+		}
+	}
 
 
 	ImGuiWindowFlags window_flags = 0;
@@ -127,61 +136,52 @@ void LilyEditorLayer::GuiRender() {
 	ImGui::Begin("Scene View", 0, window_flags);
 		
 	ImGui::Image(reinterpret_cast<void*>(m_framebuffer->GetTextureAttachment()), ImVec2{ a.x, a.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-	ImGui::End();
+	ImGui::End(); // Scene View
 	ImGui::PopStyleVar();
 
+	ImGui::End(); // Main window
+	ImGui::PopStyleVar(2);
+	ImGui::EndFrame();
 	// Rendering
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void LilyEditorLayer::RenderEntityEditorWindow() {
+void LilyEditorLayer::entity_editor_window() {
 
 	if (selected == nullptr) return;
 
-	Transform_component& trans = selected->get_component<Transform_component>();
-	Mesh_component* mesh = selected->try_get_component<Mesh_component>();
+	ImGui::Text("%d", selected->m_entity);
 
-	ImGui::Text("%d", selected->m_id);
-	if (!mesh) return;
+	Transform* trans = &selected->get<Transform>();
+	glm::vec3 pos, rot, sca;
 
-	auto vec = trans.GetPosition();
-	ImGui::DragFloat("Position X", &vec.x, 0.05f);
-	ImGui::DragFloat("Position Y", &vec.y, 0.05f);
-	ImGui::DragFloat("Position Z", &vec.z, 0.05f);
-	trans.SetPosition(vec);
+	trans->decompose(pos, rot, sca);
+	ImGui::DragFloat("Position X", &pos.x, 0.05f);
+	ImGui::DragFloat("Position Y", &pos.y, 0.05f);
+	ImGui::DragFloat("Position Z", &pos.z, 0.05f);
 
 	ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
-	vec = trans.GetRotation();
-	ImGui::SliderFloat("Rotation X", &vec.x, 0.0f, 2.0 * AI_MATH_PI);
-	ImGui::SliderFloat("Rotation Y", &vec.y, 0.0f, 2.0 * AI_MATH_PI);
-	ImGui::SliderFloat("Rotation Z", &vec.z, 0.0f, 2.0 * AI_MATH_PI);
-	trans.SetRotation(vec);
+	ImGui::SliderFloat("Rotation X", &rot.x, 0.0f, 2.0 * AI_MATH_PI);
+	ImGui::SliderFloat("Rotation Y", &rot.y, 0.0f, 2.0 * AI_MATH_PI);
+	ImGui::SliderFloat("Rotation Z", &rot.z, 0.0f, 2.0 * AI_MATH_PI);
 
-	mesh->basis = trans.GetBasis();
+	trans->UpdateBasis(pos, rot, sca);
 
-	if (ImGui::Button("Delete Entity")) {
-		selected->remove_component<Mesh_component>();
+	if (ImGui::Button("Delete Lobject")) {
+		m_active_scene->delete_Lobject(selected);
 		selected = nullptr;
 	}
 
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 }
 
-void LilyEditorLayer::RenderEntityListWindow() {
-	ImGui::Begin("Entity List");
-	if (ImGui::Button("New Entity")) {
-		auto obj = m_active_scene->create_UObject();
-		auto& t = obj->get_component<Transform_component>();
-		obj->add_component<Mesh_component>(selected->get_component<Mesh_component>());
-		obj->get_component<Mesh_component>().basis = t.GetBasis();
-	}
-
+void LilyEditorLayer::entity_list_window() {
+	ImGui::Begin("Lobject List");
 	auto it = m_active_scene->m_objects.begin();
 
 	while (it != m_active_scene->m_objects.end()) {
-		auto a = (*it)->GetName();
+		auto a = (*it)->get_name();
 		bool is_selected = (*it == selected);
 		if (ImGui::Selectable(a, is_selected)) {
 			selected = *it;
@@ -189,5 +189,15 @@ void LilyEditorLayer::RenderEntityListWindow() {
 		it++;
 	}
 
-	ImGui::End();
+	ImGui::End(); // Entity List
+}
+
+void LilyEditorLayer::settings_window() {
+	ImGui::Begin("Settings");
+	if (ImGui::SliderInt("V-Sync", &vsync, -1, 1))
+		m_app->GetWindow().set_vsync(vsync);
+	
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+	ImGui::End(); //Settings
 }

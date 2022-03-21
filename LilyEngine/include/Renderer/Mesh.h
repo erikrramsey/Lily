@@ -4,22 +4,24 @@
 
 #include "Renderer/Graphics_headers.h"
 #include "Renderer/Shader.h"
+#include "Entity/Component.h"
+#include "Entity/Entity.h"
 
 namespace Lily {
-    class Mesh {
-    public:
-        std::vector<Vertex> vertices;
-        std::vector<unsigned int> indices;
-        std::vector<Texture> textures;
+struct Mesh : public Component {
+public:
+	std::vector<Vertex> vertices;
+	std::vector<unsigned int> indices;
+	std::vector<Texture> textures;
 
-        Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
-        Mesh(const Mesh& other);
+	Mesh(Entity self, std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
+	Mesh(Entity self, const Mesh& other);
 
-        unsigned int VAO, VBO, EBO;
+	unsigned int VAO, VBO, EBO;
 
-    private:
-        Mesh();
-        void initMesh();
+private:
+	Mesh();
+	void initMesh();
+};
 
-    };
 }

@@ -6,6 +6,7 @@ namespace Lily {
 	GLint Renderer::projectionMLocation;
 	GLint Renderer::viewMLocation;
 	Shader* Renderer::m_shader;
+	unsigned int Renderer::m_default;
 
     Renderer::Renderer() {
         
@@ -35,6 +36,9 @@ namespace Lily {
 		//enable depth testing
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_STENCIL_TEST);
+		glEnable(GL_BLEND);
+		glEnable(GL_DEBUG_OUTPUT);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glDepthFunc(GL_LESS);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
@@ -44,6 +48,35 @@ namespace Lily {
 		  std::string val = ErrorString( error );
 		  std::cout<< "Error initializing OpenGL! " << error << ", " << val << std::endl;
 		}
+
+        unsigned int textureID;
+        glGenTextures(1, &textureID);
+
+        int width, height, nrComponents;
+		width = 100;
+		height = 100;
+		nrComponents = 4;
+		auto data = stbi_load("C:\\Dev\\Lily\\bin\\Debug\\assets\\default.png", &width, &height, &nrComponents, 0);
+
+		GLenum format;
+		if (nrComponents == 1)
+			format = GL_RED;
+		else if (nrComponents == 3)
+			format = GL_RGB;
+		else if (nrComponents == 4)
+			format = GL_RGBA;
+
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		stbi_image_free(data);
+		m_default = textureID;
 	}
 
 
@@ -72,18 +105,20 @@ namespace Lily {
     }
 
 
-  void Renderer::DrawMesh(Mesh_component& mesh) {
-	  if (mesh.mesh.textures.size() > 0) {
-		  glBindTexture(GL_TEXTURE_2D, mesh.mesh.textures[0].id);
-	  }
-	  m_shader->Bind();
-      glUniformMatrix4fv(Renderer::modelMLocation, 1, GL_FALSE, glm::value_ptr(mesh.basis));
+void Renderer::DrawMesh(const Mesh& mesh, const glm::mat4& tran) {
+	for (int i = 0; i < mesh.textures.size(); i++) {
+		if (mesh.textures[i].type == "texture_diffuse")
+			glBindTexture(GL_TEXTURE_2D, mesh.textures[i].id);
+	}
+	m_shader->Bind();
+	glUniformMatrix4fv(Renderer::modelMLocation, 1, GL_FALSE, glm::value_ptr(tran));
 
-      glBindVertexArray(mesh.mesh.VAO);
-      glDrawElements(GL_TRIANGLES, mesh.mesh.indices.size(), GL_UNSIGNED_INT, 0);
+	glBindVertexArray(mesh.VAO);
+	glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
 
-      glBindVertexArray(0);
-  }
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, m_default);
+}
 
   std::string Renderer::ErrorString(GLenum error) {
     if(error == GL_INVALID_ENUM)

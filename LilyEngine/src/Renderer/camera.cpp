@@ -5,10 +5,7 @@
 
 namespace Lily {
 
-    Camera::Camera()
-    {
-
-    }
+    Camera::Camera(Entity self) : Component(self) {}
 
     Camera::~Camera()
     {
@@ -25,7 +22,7 @@ namespace Lily {
         Forward = glm::vec3(0.0f, 0.0f, -1.0f);
         Strafe = glm::cross(Up, Forward);
 
-        MoveSpeed = 0.02f;
+        MoveSpeed = 0.5f;
         MouseSensitivity = 0.075;
 
         Position = glm::vec3(0, 0, 5);
@@ -36,21 +33,11 @@ namespace Lily {
         return true;
     }
 
-    glm::mat4 Camera::GetProjection()
-    {
-        return Projection;
-    }
-
-    glm::mat4 Camera::GetView()
-    {
-        return view;
-    }
-
     void Camera::Update() {
         glm::vec3 front;
-        front.x = cos((glm::radians(Yaw))) * cos(glm::radians((Pitch)));
-        front.y = sin(glm::radians((Pitch)));
-        front.z = sin(glm::radians((Yaw))) * cos(glm::radians((Pitch)));
+        front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
+        front.y = sin(glm::radians(Pitch));
+        front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
         Forward = glm::normalize(front);
 
         Strafe = glm::normalize(glm::cross(Forward, WorldUp));
@@ -68,18 +55,6 @@ namespace Lily {
 
     void Camera::YawIn(float input) {
         Yaw += input * MouseSensitivity;
-        Update();
-    }
-
-    void Camera::Translate(Direction direction, long long dt) {
-        switch (direction) {
-        case FORWARD:   Position += Forward * MoveSpeed; break;
-        case BACKWARD:  Position -= Forward * MoveSpeed; break;
-        case RIGHT:     Position += Strafe * MoveSpeed; break;
-        case LEFT:      Position -= Strafe * MoveSpeed; break;
-        case UP:        Position += Up * MoveSpeed; break;
-        case DOWN:      Position -= Up * MoveSpeed; break;
-        }
         Update();
     }
 }

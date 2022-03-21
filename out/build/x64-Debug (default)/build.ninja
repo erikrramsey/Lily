@@ -79,7 +79,16 @@ build CMakeFiles\LilyEngine.dir\LilyEngine\src\Application\Window.cpp.obj: CXX_C
   TARGET_COMPILE_PDB = CMakeFiles\LilyEngine.dir\LilyEngine.pdb
   TARGET_PDB = LilyEngine.pdb
 
-build CMakeFiles\LilyEngine.dir\LilyEngine\src\Entity\EC_registry.cpp.obj: CXX_COMPILER__LilyEngine_Debug ..\..\..\LilyEngine\src\Entity\EC_registry.cpp || cmake_object_order_depends_target_LilyEngine
+build CMakeFiles\LilyEngine.dir\LilyEngine\src\Entity\ECRegistry.cpp.obj: CXX_COMPILER__LilyEngine_Debug ..\..\..\LilyEngine\src\Entity\ECRegistry.cpp || cmake_object_order_depends_target_LilyEngine
+  DEFINES = -DLILY_DLL -DLILY_WINDOWS
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  INCLUDES = -I..\..\..\LilyEngine\include -I..\..\..\LilyEngine -I..\..\..\vendor\glew-2.1.0\include -I..\..\..\vendor\SDL2-2.0.14\include -I..\..\..\vendor\glm -I..\..\..\vendor\assimp-5.0.1\include -I..\..\..\vendor\imgui-docking -I..\..\..\vendor\imgui-docking\backends
+  OBJECT_DIR = CMakeFiles\LilyEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\LilyEngine.dir\LilyEngine\src\Entity
+  TARGET_COMPILE_PDB = CMakeFiles\LilyEngine.dir\LilyEngine.pdb
+  TARGET_PDB = LilyEngine.pdb
+
+build CMakeFiles\LilyEngine.dir\LilyEngine\src\Entity\Lobject.cpp.obj: CXX_COMPILER__LilyEngine_Debug ..\..\..\LilyEngine\src\Entity\Lobject.cpp || cmake_object_order_depends_target_LilyEngine
   DEFINES = -DLILY_DLL -DLILY_WINDOWS
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
   INCLUDES = -I..\..\..\LilyEngine\include -I..\..\..\LilyEngine -I..\..\..\vendor\glew-2.1.0\include -I..\..\..\vendor\SDL2-2.0.14\include -I..\..\..\vendor\glm -I..\..\..\vendor\assimp-5.0.1\include -I..\..\..\vendor\imgui-docking -I..\..\..\vendor\imgui-docking\backends
@@ -97,21 +106,21 @@ build CMakeFiles\LilyEngine.dir\LilyEngine\src\Entity\Scene.cpp.obj: CXX_COMPILE
   TARGET_COMPILE_PDB = CMakeFiles\LilyEngine.dir\LilyEngine.pdb
   TARGET_PDB = LilyEngine.pdb
 
-build CMakeFiles\LilyEngine.dir\LilyEngine\src\Entity\UObject.cpp.obj: CXX_COMPILER__LilyEngine_Debug ..\..\..\LilyEngine\src\Entity\UObject.cpp || cmake_object_order_depends_target_LilyEngine
-  DEFINES = -DLILY_DLL -DLILY_WINDOWS
-  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
-  INCLUDES = -I..\..\..\LilyEngine\include -I..\..\..\LilyEngine -I..\..\..\vendor\glew-2.1.0\include -I..\..\..\vendor\SDL2-2.0.14\include -I..\..\..\vendor\glm -I..\..\..\vendor\assimp-5.0.1\include -I..\..\..\vendor\imgui-docking -I..\..\..\vendor\imgui-docking\backends
-  OBJECT_DIR = CMakeFiles\LilyEngine.dir
-  OBJECT_FILE_DIR = CMakeFiles\LilyEngine.dir\LilyEngine\src\Entity
-  TARGET_COMPILE_PDB = CMakeFiles\LilyEngine.dir\LilyEngine.pdb
-  TARGET_PDB = LilyEngine.pdb
-
 build CMakeFiles\LilyEngine.dir\LilyEngine\src\Gui\GuiLayer.cpp.obj: CXX_COMPILER__LilyEngine_Debug ..\..\..\LilyEngine\src\Gui\GuiLayer.cpp || cmake_object_order_depends_target_LilyEngine
   DEFINES = -DLILY_DLL -DLILY_WINDOWS
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
   INCLUDES = -I..\..\..\LilyEngine\include -I..\..\..\LilyEngine -I..\..\..\vendor\glew-2.1.0\include -I..\..\..\vendor\SDL2-2.0.14\include -I..\..\..\vendor\glm -I..\..\..\vendor\assimp-5.0.1\include -I..\..\..\vendor\imgui-docking -I..\..\..\vendor\imgui-docking\backends
   OBJECT_DIR = CMakeFiles\LilyEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\LilyEngine.dir\LilyEngine\src\Gui
+  TARGET_COMPILE_PDB = CMakeFiles\LilyEngine.dir\LilyEngine.pdb
+  TARGET_PDB = LilyEngine.pdb
+
+build CMakeFiles\LilyEngine.dir\LilyEngine\src\Renderer\Camera.cpp.obj: CXX_COMPILER__LilyEngine_Debug ..\..\..\LilyEngine\src\Renderer\Camera.cpp || cmake_object_order_depends_target_LilyEngine
+  DEFINES = -DLILY_DLL -DLILY_WINDOWS
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  INCLUDES = -I..\..\..\LilyEngine\include -I..\..\..\LilyEngine -I..\..\..\vendor\glew-2.1.0\include -I..\..\..\vendor\SDL2-2.0.14\include -I..\..\..\vendor\glm -I..\..\..\vendor\assimp-5.0.1\include -I..\..\..\vendor\imgui-docking -I..\..\..\vendor\imgui-docking\backends
+  OBJECT_DIR = CMakeFiles\LilyEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\LilyEngine.dir\LilyEngine\src\Renderer
   TARGET_COMPILE_PDB = CMakeFiles\LilyEngine.dir\LilyEngine.pdb
   TARGET_PDB = LilyEngine.pdb
 
@@ -152,15 +161,6 @@ build CMakeFiles\LilyEngine.dir\LilyEngine\src\Renderer\Renderer.cpp.obj: CXX_CO
   TARGET_PDB = LilyEngine.pdb
 
 build CMakeFiles\LilyEngine.dir\LilyEngine\src\Renderer\Shader.cpp.obj: CXX_COMPILER__LilyEngine_Debug ..\..\..\LilyEngine\src\Renderer\Shader.cpp || cmake_object_order_depends_target_LilyEngine
-  DEFINES = -DLILY_DLL -DLILY_WINDOWS
-  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
-  INCLUDES = -I..\..\..\LilyEngine\include -I..\..\..\LilyEngine -I..\..\..\vendor\glew-2.1.0\include -I..\..\..\vendor\SDL2-2.0.14\include -I..\..\..\vendor\glm -I..\..\..\vendor\assimp-5.0.1\include -I..\..\..\vendor\imgui-docking -I..\..\..\vendor\imgui-docking\backends
-  OBJECT_DIR = CMakeFiles\LilyEngine.dir
-  OBJECT_FILE_DIR = CMakeFiles\LilyEngine.dir\LilyEngine\src\Renderer
-  TARGET_COMPILE_PDB = CMakeFiles\LilyEngine.dir\LilyEngine.pdb
-  TARGET_PDB = LilyEngine.pdb
-
-build CMakeFiles\LilyEngine.dir\LilyEngine\src\Renderer\camera.cpp.obj: CXX_COMPILER__LilyEngine_Debug ..\..\..\LilyEngine\src\Renderer\camera.cpp || cmake_object_order_depends_target_LilyEngine
   DEFINES = -DLILY_DLL -DLILY_WINDOWS
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
   INCLUDES = -I..\..\..\LilyEngine\include -I..\..\..\LilyEngine -I..\..\..\vendor\glew-2.1.0\include -I..\..\..\vendor\SDL2-2.0.14\include -I..\..\..\vendor\glm -I..\..\..\vendor\assimp-5.0.1\include -I..\..\..\vendor\imgui-docking -I..\..\..\vendor\imgui-docking\backends
@@ -240,7 +240,7 @@ build CMakeFiles\LilyEngine.dir\vendor\imgui-docking\backends\imgui_impl_opengl3
 #############################################
 # Link the static library LilyEngine.lib
 
-build LilyEngine.lib: CXX_STATIC_LIBRARY_LINKER__LilyEngine_Debug CMakeFiles\LilyEngine.dir\LilyEngine\src\Application\Application.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Application\Clock.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Application\EventSender.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Application\Window.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Entity\EC_registry.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Entity\Scene.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Entity\UObject.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Gui\GuiLayer.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Renderer\Framebuffer.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Renderer\Importer.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Renderer\Mesh.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Renderer\Renderer.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Renderer\Shader.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Renderer\camera.cpp.obj CMakeFiles\LilyEngine.dir\vendor\imgui-docking\imgui.cpp.obj CMakeFiles\LilyEngine.dir\vendor\imgui-docking\imgui_draw.cpp.obj CMakeFiles\LilyEngine.dir\vendor\imgui-docking\imgui_widgets.cpp.obj CMakeFiles\LilyEngine.dir\vendor\imgui-docking\imgui_demo.cpp.obj CMakeFiles\LilyEngine.dir\vendor\imgui-docking\imgui_tables.cpp.obj CMakeFiles\LilyEngine.dir\vendor\imgui-docking\backends\imgui_impl_sdl.cpp.obj CMakeFiles\LilyEngine.dir\vendor\imgui-docking\backends\imgui_impl_opengl3.cpp.obj
+build LilyEngine.lib: CXX_STATIC_LIBRARY_LINKER__LilyEngine_Debug CMakeFiles\LilyEngine.dir\LilyEngine\src\Application\Application.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Application\Clock.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Application\EventSender.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Application\Window.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Entity\ECRegistry.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Entity\Lobject.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Entity\Scene.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Gui\GuiLayer.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Renderer\Camera.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Renderer\Framebuffer.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Renderer\Importer.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Renderer\Mesh.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Renderer\Renderer.cpp.obj CMakeFiles\LilyEngine.dir\LilyEngine\src\Renderer\Shader.cpp.obj CMakeFiles\LilyEngine.dir\vendor\imgui-docking\imgui.cpp.obj CMakeFiles\LilyEngine.dir\vendor\imgui-docking\imgui_draw.cpp.obj CMakeFiles\LilyEngine.dir\vendor\imgui-docking\imgui_widgets.cpp.obj CMakeFiles\LilyEngine.dir\vendor\imgui-docking\imgui_demo.cpp.obj CMakeFiles\LilyEngine.dir\vendor\imgui-docking\imgui_tables.cpp.obj CMakeFiles\LilyEngine.dir\vendor\imgui-docking\backends\imgui_impl_sdl.cpp.obj CMakeFiles\LilyEngine.dir\vendor\imgui-docking\backends\imgui_impl_opengl3.cpp.obj
   LANGUAGE_COMPILE_FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
   LINK_FLAGS = /machine:x64
   OBJECT_DIR = CMakeFiles\LilyEngine.dir
@@ -272,6 +272,15 @@ build rebuild_cache: phony CMakeFiles\rebuild_cache.util
 build cmake_object_order_depends_target_LilyApplication: phony || cmake_object_order_depends_target_LilyEngine
 
 build CMakeFiles\LilyApplication.dir\LilyApplication\src\LilyEditorLayer.cpp.obj: CXX_COMPILER__LilyApplication_Debug ..\..\..\LilyApplication\src\LilyEditorLayer.cpp || cmake_object_order_depends_target_LilyApplication
+  DEFINES = -DLILY_DLL -DLILY_WINDOWS
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  INCLUDES = -I..\..\..\LilyEngine -I..\..\..\LilyApplication\include -I..\..\..\vendor\imgui-docking -I..\..\..\vendor\imgui-docking\backends -I..\..\..\LilyEngine\include -I..\..\..\vendor\glew-2.1.0\include -I..\..\..\vendor\SDL2-2.0.14\include -I..\..\..\vendor\glm -I..\..\..\vendor\assimp-5.0.1\include
+  OBJECT_DIR = CMakeFiles\LilyApplication.dir
+  OBJECT_FILE_DIR = CMakeFiles\LilyApplication.dir\LilyApplication\src
+  TARGET_COMPILE_PDB = CMakeFiles\LilyApplication.dir\
+  TARGET_PDB = ..\..\..\bin\Debug\LilyApplication.pdb
+
+build CMakeFiles\LilyApplication.dir\LilyApplication\src\LilyFileExplorer.cpp.obj: CXX_COMPILER__LilyApplication_Debug ..\..\..\LilyApplication\src\LilyFileExplorer.cpp || cmake_object_order_depends_target_LilyApplication
   DEFINES = -DLILY_DLL -DLILY_WINDOWS
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
   INCLUDES = -I..\..\..\LilyEngine -I..\..\..\LilyApplication\include -I..\..\..\vendor\imgui-docking -I..\..\..\vendor\imgui-docking\backends -I..\..\..\LilyEngine\include -I..\..\..\vendor\glew-2.1.0\include -I..\..\..\vendor\SDL2-2.0.14\include -I..\..\..\vendor\glm -I..\..\..\vendor\assimp-5.0.1\include
@@ -360,7 +369,7 @@ build CMakeFiles\LilyApplication.dir\vendor\imgui-docking\backends\imgui_impl_op
 #############################################
 # Link the executable ..\..\..\bin\Debug\LilyApplication.exe
 
-build ..\..\..\bin\Debug\LilyApplication.exe: CXX_EXECUTABLE_LINKER__LilyApplication_Debug CMakeFiles\LilyApplication.dir\LilyApplication\src\LilyEditorLayer.cpp.obj CMakeFiles\LilyApplication.dir\LilyApplication\src\main.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui-docking\imgui.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui-docking\imgui_draw.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui-docking\imgui_widgets.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui-docking\imgui_demo.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui-docking\imgui_tables.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui-docking\backends\imgui_impl_sdl.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui-docking\backends\imgui_impl_opengl3.cpp.obj | LilyEngine.lib ..\..\..\vendor\glew-2.1.0\lib\Release\x64\glew32.lib ..\..\..\vendor\SDL2-2.0.14\lib\x64\SDL2.lib ..\..\..\vendor\SDL2-2.0.14\lib\x64\SDL2main.lib ..\..\..\vendor\assimp-5.0.1\lib\Release\assimp-vc142-mt.lib || LilyEngine.lib
+build ..\..\..\bin\Debug\LilyApplication.exe: CXX_EXECUTABLE_LINKER__LilyApplication_Debug CMakeFiles\LilyApplication.dir\LilyApplication\src\LilyEditorLayer.cpp.obj CMakeFiles\LilyApplication.dir\LilyApplication\src\LilyFileExplorer.cpp.obj CMakeFiles\LilyApplication.dir\LilyApplication\src\main.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui-docking\imgui.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui-docking\imgui_draw.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui-docking\imgui_widgets.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui-docking\imgui_demo.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui-docking\imgui_tables.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui-docking\backends\imgui_impl_sdl.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui-docking\backends\imgui_impl_opengl3.cpp.obj | LilyEngine.lib ..\..\..\vendor\glew-2.1.0\lib\Release\x64\glew32.lib ..\..\..\vendor\SDL2-2.0.14\lib\x64\SDL2.lib ..\..\..\vendor\SDL2-2.0.14\lib\x64\SDL2main.lib ..\..\..\vendor\assimp-5.0.1\lib\Release\assimp-vc142-mt.lib || LilyEngine.lib
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console  /INCREMENTAL:NO
   LINK_LIBRARIES = LilyEngine.lib  opengl32.lib  glu32.lib  ..\..\..\vendor\glew-2.1.0\lib\Release\x64\glew32.lib  ..\..\..\vendor\SDL2-2.0.14\lib\x64\SDL2.lib  ..\..\..\vendor\SDL2-2.0.14\lib\x64\SDL2main.lib  ..\..\..\vendor\assimp-5.0.1\lib\Release\assimp-vc142-mt.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib

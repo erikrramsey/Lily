@@ -13,16 +13,17 @@ uniform vec3 lightPos;
 void main()
 {    
     vec3 lightColor;
-    float ambientStrength = 0.0f;
+    float ambientStrength = 0.2f;
     lightColor = vec3(1.0f);
     vec3 ambient = ambientStrength * lightColor;
 
-    vec3 newlightPos = vec3(sin(u_time) * 5, 0.0f,cos(u_time) * 5);
+    vec3 newlightPos = vec3(250, 250, 50);
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(newlightPos - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lightColor;
     vec4 result = vec4((ambient + diffuse),1);
+    vec4 tcolor = texture(texture_diffuse1, TexCoords);
 
-    FragColor = result;
+    FragColor = result * texture(texture_diffuse1, TexCoords);
 }

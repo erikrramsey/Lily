@@ -21,7 +21,8 @@ namespace Lily {
       bool Initialize(const std::string name, int width, int height);
 
       void Swap();
-      void ToggleMouseLock();
+      void toggle_mouselock();
+      void set_vsync(int value);
 
       SDL_Window* gWindow;
       SDL_GLContext gContext;

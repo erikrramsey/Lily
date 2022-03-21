@@ -21,6 +21,7 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/detail/type_float.hpp>
 
+
 #define INVALID_UNIFORM_LOCATION 0x7fffffff
 
 namespace Lily {

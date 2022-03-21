@@ -8,38 +8,41 @@
 #include "Renderer/Graphics_headers.h"
 #include "Renderer/Camera.h"
 #include "Renderer/Shader.h"
-#include "Renderer/Importer.h"
-#include "Entity/Components.h"
+#include "Renderer/Mesh.h"
+
+#include "Entity/Component.h"
+
+#include "Renderer/stb_image.h"
 
 namespace Lily {
 
+class Renderer {
+public:
+	Renderer();
+	~Renderer();
 
+	static void Initialize();
 
-	class Renderer {
-	public:
-		Renderer();
-		~Renderer();
+	static void Begin(Camera& cam);
 
-		static void Initialize();
+	static void SetClearColor(glm::vec4 clearColor);
+	static void Clear();
+	static void DrawMesh(const Mesh& mesh, const glm::mat4& tran);
 
-		static void Begin(Camera& cam);
+	static void End();
+			
+	void toggle_mouselock();
 
-		static void SetClearColor(glm::vec4 clearColor);
-		static void Clear();
-		static void DrawMesh(Mesh_component& mesh);
+private:
+	static GLint modelMLocation;
+	static GLint projectionMLocation;
+	static GLint viewMLocation;
 
-		static void End();
-				
-		void ToggleMouseLock();
+	static Shader* m_shader;
 
-	private:
-		static GLint modelMLocation;
-		static GLint projectionMLocation;
-		static GLint viewMLocation;
+	static unsigned int m_default;
 
-		static Shader* m_shader;
-
-		static std::string ErrorString(GLenum error);
-	};
+	static std::string ErrorString(GLenum error);
+};
 
 }
