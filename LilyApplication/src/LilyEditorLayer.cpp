@@ -189,10 +189,9 @@ void LilyEditorLayer::display_Lobject(Lobject* obj) {
 	static bool renaming = false;
 	std::string nodename = std::string(obj->get_name());
 	
-	ImGui::SameLine();
-	if (renaming) {
+	if (renaming && obj == selected) {
 		char input[80] = "";
-		strcpy(input, obj->get_name());
+		strcpy(input, selected->get_name());
 		ImGui::SetKeyboardFocusHere();
 		if (ImGui::InputText("##", input, 80, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll)) {
 			obj->set_name(input);
@@ -201,22 +200,21 @@ void LilyEditorLayer::display_Lobject(Lobject* obj) {
 		else if (ImGui::IsItemDeactivated()) {
 			renaming = false;
 		}
+		return;
 	}
-	else {
-		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
-		bool open = ImGui::TreeNodeEx(nodename.c_str(), flags);
-		if (ImGui::IsItemClicked()) {
-			selected = obj;
-		}
+	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
+	bool open = ImGui::TreeNodeEx(nodename.c_str(), flags);
+	if (ImGui::IsItemClicked()) {
+		selected = obj;
 		if (ImGui::IsMouseDoubleClicked(0)) {
 			renaming = true;
 		}
-		if (open) {
-			for (auto it : obj->get_children()) {
-				display_Lobject(it);
-			}
-			ImGui::TreePop();
+	}
+	if (open) {
+		for (auto it : obj->get_children()) {
+			display_Lobject(it);
 		}
+		ImGui::TreePop();
 	}
 }
 
