@@ -22,7 +22,7 @@ namespace Lily {
         Forward = glm::vec3(0.0f, 0.0f, -1.0f);
         Strafe = glm::cross(Up, Forward);
 
-        MoveSpeed = 0.5f;
+        MoveSpeed = 30;
         MouseSensitivity = 0.075;
 
         Position = glm::vec3(0, 0, 5);

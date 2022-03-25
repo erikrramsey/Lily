@@ -34,7 +34,7 @@ SET(ASSIMP_LIBRARIES "${PROJECT_SOURCE_DIR}/vendor/assimp-5.0.1/lib/Release/assi
 SET(GLEW_LIBRARY     "${PROJECT_SOURCE_DIR}/vendor/glew-2.1.0/lib/Release/x64/glew32.lib")
 
 
-SET(IMGUI_DIR "${PROJECT_SOURCE_DIR}/vendor/imgui-docking")
+SET(IMGUI_DIR "${PROJECT_SOURCE_DIR}/vendor/imgui")
 
 SET(IMGUI_SOURCES
     # Main Imgui files

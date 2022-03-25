@@ -1,12 +1,16 @@
 #pragma once
 
 #include "Entity/ECRegistry.h"
+#include "Entity/Lobject.h"
 #include "Entity/Component.h"
+#include "Entity/Transform.h"
+#include "Entity/Family.h"
 #include "Entity/Importer.h"
 
 #include "Renderer/Renderer.h"
 
 #include <vector>
+#include <unordered_map>
 #include <algorithm>
 #include <iterator>
 
@@ -23,15 +27,17 @@ public:
 	void update(long long dt);
 	void load(std::string& path);
 
+	Lobject* get(Entity ent);
+
 	Lobject& getCamera() { return *m_camera; }
 
 	Lobject* create_Lobject();
 	void delete_Lobject(Lobject* obj);
 	
-	std::vector<Lobject*> m_objects;
+	ECRegistry m_registry;
+	std::unordered_map<Entity, Lobject*> m_objects;
 private:
 	Lobject* m_camera;
-	ECRegistry m_registry;
 	Importer* m_importer;
 
 	friend class Lobject;

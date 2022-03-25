@@ -21,9 +21,11 @@ public:
 private:
 	void GuiRender();
 
-	void LilyEditorLayer::entity_editor_window();
-	void LilyEditorLayer::entity_list_window();
-	void LilyEditorLayer::settings_window();
+	void entity_editor_window();
+	void entity_list_window();
+	void settings_window();
+
+	void display_Lobject(Lobject* obj);
 
 	Camera* m_active_camera;
 

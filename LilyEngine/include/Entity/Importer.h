@@ -20,6 +20,7 @@
 
 namespace Lily {
 class Scene;
+class Lobject;
 class Importer {
 public:
 	Importer(Scene* scene);
@@ -29,7 +30,7 @@ private:
 	Scene* m_scene;
 	std::string directory;
 	std::vector<Texture> textures_loaded;
-	Entity parent;
+	Lobject* parent;
 
 	void processNode(aiNode* node, const aiScene* scene);
 	void processMesh(aiMesh* mesh, const aiScene* scene);

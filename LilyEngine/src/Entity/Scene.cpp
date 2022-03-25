@@ -1,5 +1,4 @@
 #include "Entity/Scene.h"
-#include "Entity/Lobject.h"
 
 
 namespace Lily {
@@ -24,10 +23,17 @@ void Scene::update(long long dt) {
 	auto& children = m_registry.get_pool<Transform>();
 	for (auto& i : children) {
 		auto tr = glm::mat4(1.0);
-		tr = glm::translate(tr, i.get_pos());
-		for (Entity j = i.get_parent(); j != 0; j = m_registry.get<Transform>(j).get_parent()) {
-			tr *= m_registry.get<Transform>(j).get_worldspace();
+		for (Entity j = m_registry.get<Family>(i.get_ent()).parent; j != 0; j = m_registry.get<Family>(j).parent) {
+			tr = m_registry.get<Transform>(j).get_worldspace() * tr;
 		}
+
+		tr = glm::translate(tr, i.get_pos());
+
+		tr = glm::rotate(tr, i.get_rot().x, glm::vec3(1, 0, 0));
+		tr = glm::rotate(tr, i.get_rot().y, glm::vec3(0, 1, 0));
+		tr = glm::rotate(tr, i.get_rot().z, glm::vec3(0, 0, 1));
+
+		tr = glm::scale(tr, i.get_sca());
 
 		i.set_worldspace(tr);
 	}
@@ -46,13 +52,19 @@ void Scene::load(std::string& path) {
 Lobject* Scene::create_Lobject() {
 	Lobject* obj = new Lobject(m_registry.create(), this);
 	obj->add_component<Transform>();
-	m_objects.push_back(obj);
+	obj->add_component<Family>();
+	m_objects.emplace(obj->m_entity, obj);
 	return obj;
 }
 
 void Scene::delete_Lobject(Lobject* obj) {
 	m_registry.delete_entity(obj->m_entity);
-	m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), obj));
+	m_objects.erase(obj->m_entity);
 	delete obj;
 }
+
+Lobject* Scene::get(Entity ent) {
+	return m_objects.at(ent);
+}
+
 }

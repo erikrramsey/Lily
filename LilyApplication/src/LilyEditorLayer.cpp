@@ -31,7 +31,7 @@ void LilyEditorLayer::Update(long long dt) {
 	m_framebuffer->Unbind();
 
 	if (forward_keydown && m_mouse_locked) {
-		m_active_camera->Position += (m_active_camera->Forward * (float)dt * m_active_camera->MoveSpeed);
+		m_active_camera->Position += (m_active_camera->Forward * ((float)dt / 1000) * m_active_camera->MoveSpeed);
 		m_active_camera->Update();
 	}
 
@@ -100,6 +100,8 @@ void LilyEditorLayer::GuiRender() {
 	ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
 	ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 
+	ImGui::ShowDemoWindow();
+
 	bool opt_fullscreen = false;
 	if (ImGui::BeginMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
@@ -157,6 +159,7 @@ void LilyEditorLayer::entity_editor_window() {
 	glm::vec3 pos, rot, sca;
 
 	trans->decompose(pos, rot, sca);
+
 	ImGui::DragFloat("Position X", &pos.x, 0.05f);
 	ImGui::DragFloat("Position Y", &pos.y, 0.05f);
 	ImGui::DragFloat("Position Z", &pos.z, 0.05f);
@@ -167,7 +170,13 @@ void LilyEditorLayer::entity_editor_window() {
 	ImGui::SliderFloat("Rotation Y", &rot.y, 0.0f, 2.0 * AI_MATH_PI);
 	ImGui::SliderFloat("Rotation Z", &rot.z, 0.0f, 2.0 * AI_MATH_PI);
 
-	trans->UpdateBasis(pos, rot, sca);
+	ImGui::Dummy(ImVec2(0.0f, 10.0f));
+
+	ImGui::DragFloat("Scale X", &sca.x, 0.01f);
+	ImGui::DragFloat("Scale Y", &sca.y, 0.01f);
+	ImGui::DragFloat("Scale Z", &sca.z, 0.01f);
+
+	trans->recompose(pos, rot, sca);
 
 	if (ImGui::Button("Delete Lobject")) {
 		m_active_scene->delete_Lobject(selected);
@@ -176,17 +185,48 @@ void LilyEditorLayer::entity_editor_window() {
 
 }
 
+void LilyEditorLayer::display_Lobject(Lobject* obj) {
+	static bool renaming = false;
+	std::string nodename = std::string(obj->get_name());
+	
+	ImGui::SameLine();
+	if (renaming) {
+		char input[80] = "";
+		strcpy(input, obj->get_name());
+		ImGui::SetKeyboardFocusHere();
+		if (ImGui::InputText("##", input, 80, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll)) {
+			obj->set_name(input);
+			renaming = false;
+		}
+		else if (ImGui::IsItemDeactivated()) {
+			renaming = false;
+		}
+	}
+	else {
+		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
+		bool open = ImGui::TreeNodeEx(nodename.c_str(), flags);
+		if (ImGui::IsItemClicked()) {
+			selected = obj;
+		}
+		if (ImGui::IsMouseDoubleClicked(0)) {
+			renaming = true;
+		}
+		if (open) {
+			for (auto it : obj->get_children()) {
+				display_Lobject(it);
+			}
+			ImGui::TreePop();
+		}
+	}
+}
+
 void LilyEditorLayer::entity_list_window() {
 	ImGui::Begin("Lobject List");
-	auto it = m_active_scene->m_objects.begin();
-
-	while (it != m_active_scene->m_objects.end()) {
-		auto a = (*it)->get_name();
-		bool is_selected = (*it == selected);
-		if (ImGui::Selectable(a, is_selected)) {
-			selected = *it;
+	for (auto& [ent, obj] : m_active_scene->m_objects) {
+		auto a = obj->get<Family>();
+		if (a.parent == 0) {
+			display_Lobject(obj);
 		}
-		it++;
 	}
 
 	ImGui::End(); // Entity List

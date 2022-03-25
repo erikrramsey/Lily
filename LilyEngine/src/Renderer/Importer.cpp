@@ -13,9 +13,8 @@ Importer::Importer(Scene* scene) {
 
 void Importer::load_model(std::string& path) {
 	Assimp::Importer import;
-	Lobject* par = m_scene->create_Lobject();
-	par->set_name("Parent");
-	parent = par->m_entity;
+	parent = m_scene->create_Lobject();
+	parent->set_name("Parent");
 	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices | aiProcess_FixInfacingNormals);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
@@ -112,7 +111,7 @@ void Importer::processMesh(aiMesh* mesh, const aiScene* scene) {
 
 	// return a mesh object created from the extracted mesh data
 	auto obj = m_scene->create_Lobject();
-	obj->get<Transform>().set_parent(parent);
+	obj->get<Family>().set_parent(parent->get<Family>());
 	obj->add_component(Mesh(obj->m_entity, vertices, indices, textures));
 }
 

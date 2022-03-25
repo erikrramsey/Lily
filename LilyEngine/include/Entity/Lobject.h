@@ -20,6 +20,8 @@ public:
 	const char* get_name() { return m_name.c_str(); }
 	void set_name(const char* name) { m_name = name; }
 
+	std::vector<Lobject*> get_children();
+
 	template<class T>
 	T& add_component(T& comp);
 
