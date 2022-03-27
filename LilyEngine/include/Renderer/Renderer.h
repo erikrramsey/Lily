@@ -15,6 +15,7 @@
 #include "Renderer/stb_image.h"
 
 namespace Lily {
+namespace fs = std::filesystem;
 
 class Renderer {
 public:
