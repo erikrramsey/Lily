@@ -151,7 +151,7 @@ void LilyEditorLayer::GuiRender() {
 
 void LilyEditorLayer::entity_editor_window() {
 
-	if (selected == nullptr) return;
+	if (selected == nullptr || selected->try_get<Camera>()) return;
 
 	ImGui::Text("%d", selected->m_entity);
 
@@ -182,6 +182,8 @@ void LilyEditorLayer::entity_editor_window() {
 		m_active_scene->delete_Lobject(selected);
 		selected = nullptr;
 	}
+
+	ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
 }
 

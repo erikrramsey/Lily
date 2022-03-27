@@ -22,6 +22,7 @@ public:
 
 	std::vector<Lobject*> get_children();
 
+
 	template<class T>
 	T& add_component(T& comp);
 
@@ -32,7 +33,7 @@ public:
 	T& get();
 
 	template<class T>
-	T* try_get_component();
+	T* try_get();
 
 	template<class T>
 	void remove_component();
@@ -45,7 +46,7 @@ public:
 
 template<class T>
 T& Lobject::add_component(T& comp) {
-	if (try_get_component<T>() != nullptr) {
+	if (try_get<T>() != nullptr) {
 		std::cout << "Object already has component" << std::endl;
 		return get<T>();
 	}
@@ -55,7 +56,7 @@ T& Lobject::add_component(T& comp) {
 
 template<class T>
 T& Lobject::add_component() {
-	if (try_get_component<T>() != nullptr) {
+	if (try_get<T>() != nullptr) {
 		std::cout << "Object already has component" << std::endl;
 		return get<T>();
 	}
@@ -70,7 +71,7 @@ T& Lobject::get() {
 }
 
 template<class T>
-T* Lobject::try_get_component() {
+T* Lobject::try_get() {
 	return m_scene->m_registry.try_get<T>(m_entity);
 }
 

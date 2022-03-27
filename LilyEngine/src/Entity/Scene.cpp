@@ -5,6 +5,7 @@ namespace Lily {
 Scene::Scene() {
 	m_camera = create_Lobject();
 	m_camera->add_component<Camera>();
+	m_camera->set_name("Scene Camera");
 	m_importer = new Importer(this);
 }
 
@@ -58,6 +59,11 @@ Lobject* Scene::create_Lobject() {
 }
 
 void Scene::delete_Lobject(Lobject* obj) {
+	auto& fam = obj->get<Family>();
+	if (fam.parent) fam.remove_parent(m_registry.get<Family>(fam.parent));
+	for (auto i : obj->get_children()) {
+		delete_Lobject(i);
+	}
 	m_registry.delete_entity(obj->m_entity);
 	m_objects.erase(obj->m_entity);
 	delete obj;
