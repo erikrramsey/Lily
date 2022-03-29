@@ -17,7 +17,7 @@ Models used under CC license: https://skfb.ly/orPGW https://skfb.ly/otpMF
 - Scene editor and runtime being separated
 - More advanced graphics rendering technique suppoprt
 
-# Build Instrucntions
+# Build Instructions
 
 ## Visual Studio 2019
 
