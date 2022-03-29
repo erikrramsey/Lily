@@ -2,7 +2,7 @@
 
 A 3D rendering engine for Windows built on top of OpenGL and SDL.
 
-![](https://github.com/erikrramsey/Lily/blob/master/screenshot1.jpg)
+![Models used under CC license: https://skfb.ly/orPGW https://skfb.ly/otpMF ](https://github.com/erikrramsey/Lily/blob/master/screenshot1.jpg)
 
 ## Features
 
