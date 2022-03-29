@@ -2,8 +2,9 @@
 
 A 3D rendering engine for Windows built on top of OpenGL and SDL.
 
-![Models used under CC license: https://skfb.ly/orPGW https://skfb.ly/otpMF ](https://github.com/erikrramsey/Lily/blob/master/screenshot1.jpg)
+![](https://github.com/erikrramsey/Lily/blob/master/screenshot1.jpg)
 
+Models used under CC license: https://skfb.ly/orPGW https://skfb.ly/otpMF 
 ## Features
 
 - Scene editor gui designed to load and display 3D models, and arrange them in a hierarchy.
