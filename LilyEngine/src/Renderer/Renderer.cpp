@@ -59,12 +59,17 @@ namespace Lily {
 		auto data = stbi_load("C:\\Dev\\Lily\\bin\\Debug\\assets\\default.png", &width, &height, &nrComponents, 0);
 
 		GLenum format;
-		if (nrComponents == 1)
-			format = GL_RED;
-		else if (nrComponents == 3)
-			format = GL_RGB;
-		else if (nrComponents == 4)
-			format = GL_RGBA;
+		switch (nrComponents) {
+		case 1:
+			format = GL_RED; break;
+		case 2:
+			format = GL_GREEN; break;
+		case 3:
+			format = GL_RGB; break;
+		default:
+		case 4:
+			format = GL_RGBA; break;
+		}
 
 		glBindTexture(GL_TEXTURE_2D, textureID);
 		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);

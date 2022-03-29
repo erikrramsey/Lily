@@ -46,8 +46,8 @@ void Scene::update(long long dt) {
 	}
 }
 
-void Scene::load(std::string& path) {
-	m_importer->load_model(path);
+void Scene::import_component(Lobject* obj, std::string& path) {
+	m_importer->load_model(obj, path);
 }
 
 Lobject* Scene::create_Lobject() {

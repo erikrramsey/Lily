@@ -25,7 +25,7 @@ public:
 
 	void Init();
 	void update(long long dt);
-	void load(std::string& path);
+	void import_component(Lobject* obj, std::string& path);
 
 	Lobject* get(Entity ent);
 

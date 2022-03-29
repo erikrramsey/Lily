@@ -30,6 +30,7 @@ private:
 	Camera* m_active_camera;
 
 	Lobject* selected;
+	Lobject* selected_for_component;
 
 	Scene* m_active_scene;
 	Shader* m_current_shader;
@@ -39,5 +40,6 @@ private:
 	bool m_mouse_locked = false;
 	bool forward_keydown = false;
 	bool m_show_file_explorer = false;
+	bool renaming = false;
 	int vsync = 1;
 };

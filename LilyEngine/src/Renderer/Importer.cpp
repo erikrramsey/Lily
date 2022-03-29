@@ -11,10 +11,9 @@ Importer::Importer(Scene* scene) {
 	m_scene = scene;
 }
 
-void Importer::load_model(std::string& path) {
+void Importer::load_model(Lobject* obj, std::string& path) {
 	Assimp::Importer import;
-	parent = m_scene->create_Lobject();
-	parent->set_name("Parent");
+	parent = obj;
 	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices | aiProcess_FixInfacingNormals | aiProcess_GenSmoothNormals);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
@@ -169,14 +168,19 @@ unsigned int TextureFromFile(const char* path, const std::string& directory) {
 		nrComponents = 4;
 		data = stbi_load("C:\\Dev\\Lily\\bin\\Debug\\assets\\default.png", &width, &height, &nrComponents, 0);
 	}
-
+	
 	GLenum format;
-	if (nrComponents == 1)
-		format = GL_RED;
-	else if (nrComponents == 3)
-		format = GL_RGB;
-	else if (nrComponents == 4)
-		format = GL_RGBA;
+	switch (nrComponents) {
+	case 1:
+		format = GL_RED; break;
+	case 2:
+		format = GL_GREEN; break;
+	case 3:
+		format = GL_RGB; break;
+	default:
+	case 4:
+		format = GL_RGBA; break;
+	}
 
 	glBindTexture(GL_TEXTURE_2D, textureID);
 	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);

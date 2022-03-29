@@ -24,7 +24,7 @@ class Lobject;
 class Importer {
 public:
 	Importer(Scene* scene);
-	void load_model(std::string& path);
+	void load_model(Lobject* obj, std::string& path);
 
 private:
 	Scene* m_scene;
