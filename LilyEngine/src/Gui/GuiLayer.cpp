@@ -18,6 +18,7 @@ namespace Lily {
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
         io.WantCaptureKeyboard = true;
+        io.IniFilename = "assets/imgui.ini";
 
         // Setup Dear ImGui style
         ImGui::StyleColorsDark();
