@@ -112,6 +112,7 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME} LilyEngine)
 # Post build
 add_custom_command(TARGET LilyEngine
                    POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/assets/" "${PROJECT_SOURCE_DIR}/bin/Debug/assets/"
                    COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_SOURCE_DIR}/vendor/glew-2.1.0/bin/Release/x64/glew32.dll" "${PROJECT_SOURCE_DIR}/bin/$<CONFIG>"
                    COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_SOURCE_DIR}/vendor/SDL2-2.0.14/lib/x64/SDL2.dll" "${PROJECT_SOURCE_DIR}/bin/$<CONFIG>"
                    COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_SOURCE_DIR}/vendor/assimp-5.0.1/lib/Release/assimp-vc142-mt.dll" "${PROJECT_SOURCE_DIR}/bin/$<CONFIG>"
