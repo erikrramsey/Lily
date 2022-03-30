@@ -21,9 +21,10 @@ Models used under CC license: https://skfb.ly/orPGW https://skfb.ly/otpMF
 
 ## Visual Studio 2019
 - Open powershell or cmd from the Lily directory and run the following commands:
--	git submodule update
--	cd vendor/imgui
--	git checkout docking
+```git submodule update
+cd vendor/imgui
+git checkout docking
+```
 
 - Download [C++ CMake Tools for Visual Studio](https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=msvc-170)
 - Open project folder in Visual Studio
