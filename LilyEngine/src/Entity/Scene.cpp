@@ -25,7 +25,7 @@ void Scene::update(long long dt) {
 	for (auto& i : children) {
 		auto tr = glm::mat4(1.0);
 		for (Entity j = m_registry.get<Family>(i.get_ent()).parent; j != 0; j = m_registry.get<Family>(j).parent) {
-			tr = m_registry.get<Transform>(j).get_worldspace() * tr;
+			tr = tr * m_registry.get<Transform>(j).get_worldspace();
 		}
 
 		tr = glm::translate(tr, i.get_pos());

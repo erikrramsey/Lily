@@ -1,10 +1,9 @@
-#include "LilyEditor.h"
+#include "LilyEditorLayer.h"
 #include <cstdlib>
 
 LilyEditorLayer::~LilyEditorLayer() {
 	delete m_active_scene;
 	delete m_framebuffer;
-	delete m_file_explorer;
 }
 
 void LilyEditorLayer::Init() {
@@ -14,13 +13,12 @@ void LilyEditorLayer::Init() {
 	m_active_scene->Init();
 	m_active_camera = &m_active_scene->getCamera().get<Camera>();
 	m_active_camera->Initialize(1920, 1080);
-
-	selected = nullptr;
-	selected_for_component = nullptr;
 	m_framebuffer = new Framebuffer(1920, 1080);
 	m_framebuffer->Init();
 
-	m_file_explorer = new LilyFileExplorer;
+    m_component_editor = new ComponentEditorWindow(this);
+
+    selected = nullptr;
 }
 
 
@@ -65,7 +63,7 @@ void LilyEditorLayer::OnEvent(SDL_Event& ev) {
 		break;
 	case SDL_WINDOWEVENT:
 		if (ev.window.event == SDL_WINDOWEVENT_RESIZED) {
-			std::cout << "LilyEditorayer: Resize event: "
+			std::cout << "LilyEditorLayer: Resize event: "
 			<< ev.window.data1 << ' '
 			<< ev.window.data2 << std::endl;
 		}
@@ -114,20 +112,10 @@ void LilyEditorLayer::GuiRender() {
 		ImGui::EndMenuBar();
 	}
 
-	ImGui::Begin("UObject Editor");
-	entity_editor_window();
-	ImGui::End(); // Entity Editor
+    m_component_editor->render_Lobject(selected);
 	entity_list_window();
 	settings_window();
 
-	if (m_show_file_explorer) {
-		m_file_explorer->render();
-		auto p = m_file_explorer->get_selection();
-		if (!p.empty()) {
-			m_active_scene->import_component(selected_for_component, p.string());
-			m_show_file_explorer = false;
-		}
-	}
 
 
 	ImGuiWindowFlags window_flags = 0;
@@ -149,56 +137,7 @@ void LilyEditorLayer::GuiRender() {
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-const char* COMPONENTS[] = {
-	"Mesh",
-	"Camera"
-};
 
-void LilyEditorLayer::entity_editor_window() {
-	if (selected == nullptr || selected->try_get<Camera>()) return;
-
-	ImGui::Text("%d", selected->m_entity);
-
-	Transform* trans = &selected->get<Transform>();
-	glm::vec3 pos, rot, sca;
-
-	trans->decompose(pos, rot, sca);
-
-	float position[] = { pos.x, pos.y, pos.z };
-	float rotation[] = { rot.x, rot.y, rot.z };
-	float scale[]    = { sca.x, sca.y, sca.z };
-
-	ImGui::DragFloat3("Position", position, 0.05);
-	ImGui::DragFloat3("Rotation", rotation, 0.05);
-	ImGui::DragFloat3("Scale", scale, 0.05);
-
-	pos = { position[0], position[1], position[2] };
-	rot = { rotation[0], rotation[1], rotation[2] };
-	sca = { scale[0], scale[1], scale[2] };
-
-	trans->recompose(pos, rot, sca);
-
-	const char* current = "Add Component";
-	ImGuiComboFlags flags = ImGuiComboFlags_PopupAlignLeft | ImGuiComboFlags_NoArrowButton;
-	if (ImGui::BeginCombo("##", current, flags)) {
-		if (ImGui::Selectable(COMPONENTS[0])) {
-			selected_for_component = selected;
-			m_show_file_explorer = true;
-		}
-		if (ImGui::Selectable(COMPONENTS[1])) {
-
-		}
-		ImGui::EndCombo();
-	}
-
-	if (ImGui::Button("Delete Lobject")) {
-		m_active_scene->delete_Lobject(selected);
-		selected = nullptr;
-	}
-
-	ImGui::Dummy(ImVec2(0.0f, 10.0f));
-
-}
 
 void LilyEditorLayer::display_Lobject(Lobject* obj) {
 	std::string nodename = std::string(obj->get_name());

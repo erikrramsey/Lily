@@ -1,3 +1,5 @@
+#pragma once
+
 #include <imgui.h>
 #include <filesystem>
 namespace fs = std::filesystem;

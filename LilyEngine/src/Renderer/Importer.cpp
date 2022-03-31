@@ -112,7 +112,7 @@ void Importer::processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4& tran
 
 	// Put data into component and assign it an entity through lobjects
 	auto obj = m_scene->create_Lobject();
-	obj->get<Family>().set_parent(parent->get<Family>());
+    parent->get<Family>().add_child(obj->get<Family>());
 	auto& t = obj->get<Transform>();
 	aiVector3t<float> pos, rot, sca;
 	transform.Decompose(sca, rot, pos);
@@ -120,6 +120,7 @@ void Importer::processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4& tran
 	t.set_rot(glm::vec3(rot.x, rot.y, rot.z));
 	t.set_sca(glm::vec3(sca.x, sca.y, sca.z));
 	obj->add_component(Mesh(obj->m_entity, vertices, indices, textures));
+    obj->get<Mesh>().name = mesh->mName.C_Str();
 }
 
 std::vector<Texture> Importer::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName) {
