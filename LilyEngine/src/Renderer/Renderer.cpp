@@ -112,8 +112,7 @@ namespace Lily {
 
 void Renderer::DrawMesh(const Mesh& mesh, const glm::mat4& tran) {
 	for (int i = 0; i < mesh.textures.size(); i++) {
-		if (mesh.textures[i].type == "texture_diffuse")
-			glBindTexture(GL_TEXTURE_2D, mesh.textures[i].id);
+        glBindTexture(GL_TEXTURE_2D, mesh.textures[i].id);
 	}
 	m_shader->Bind();
 	glUniformMatrix4fv(Renderer::modelMLocation, 1, GL_FALSE, glm::value_ptr(tran));

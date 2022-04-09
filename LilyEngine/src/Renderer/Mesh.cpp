@@ -22,6 +22,14 @@ namespace Lily {
         EBO = other.EBO;
     }
 
+    Mesh::Mesh(Entity self, const std::string& _import_path) : Component(self) {
+        VAO = 0;
+        VBO = 0;
+        EBO = 0;
+        import_path = std::move(_import_path);
+        imported = false;
+    }
+
     void Mesh::initMesh() {
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);

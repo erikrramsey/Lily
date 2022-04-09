@@ -13,10 +13,10 @@ public:
 	glm::mat4 Camera::GetProjection() { return Projection; }
     glm::mat4 Camera::GetView(){ return view; }
 
-	void Update();
+	void update();
 
-	void PitchIn(float input);
-	void YawIn(float input);
+	void pitch_in(float input);
+	void yaw_in(float input);
 	void RollIn(bool input);
 
 	float Pitch;
@@ -24,12 +24,12 @@ public:
 
 	glm::vec3 Up;
 	glm::vec3 WorldUp;
-	glm::vec3 Forward;
+	glm::vec3 forward;
 	glm::vec3 Strafe;
-	glm::vec3 Position;
+	glm::vec3 position;
 
 	float MouseSensitivity;
-	float MoveSpeed;
+	float move_speed;
 
 private:
 	glm::mat4 Projection;

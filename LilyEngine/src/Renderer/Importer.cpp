@@ -5,16 +5,20 @@
 
 namespace Lily {
 
-unsigned int TextureFromFile(const char* path, const std::string& directory);
+unsigned int TextureFromFile(const char* path);
+const std::string export_sub_mesh(aiMesh* mesh, aiMaterial* mat);
+void        import_sub_mesh(Mesh& mesh);
 
 Importer::Importer(Scene* scene) {
 	m_scene = scene;
 }
 
-void Importer::load_model(Lobject* obj, std::string& path) {
+void Importer::import_model(Lobject* obj, std::string& path) {
 	Assimp::Importer import;
 	parent = obj;
-	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices | aiProcess_FixInfacingNormals | aiProcess_GenSmoothNormals);
+    auto flags = aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices;
+    flags |= aiProcess_FixInfacingNormals | aiProcess_GenSmoothNormals | aiProcess_PreTransformVertices;
+	const aiScene* scene = import.ReadFile(path, flags);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
 		std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
@@ -22,154 +26,53 @@ void Importer::load_model(Lobject* obj, std::string& path) {
 	}
 
 	directory = path.substr(0, path.find_last_of('\\'));
+    auto node = scene->mRootNode;
 
-	processNode(scene->mRootNode, scene);
+    if (node->mNumChildren == 0) {
+        auto mesh = scene->mMeshes[node->mMeshes[0]];
+        auto mat = scene->mMaterials[mesh->mMaterialIndex];
+
+        auto m = Mesh(obj->m_entity, export_sub_mesh(mesh, mat));
+
+        aiString mat_path;
+        mat->GetTexture(aiTextureType_DIFFUSE, 0, &mat_path);
+        m.material_path = directory + "\\" + std::string(mat_path.C_Str());
+        import_sub_mesh(m);
+
+        obj->add_component(m);
+    }
+
+    for (unsigned int i = 0; i < node->mNumChildren; i++) {
+        auto mesh = scene->mMeshes[node->mChildren[i]->mMeshes[0]];
+        auto mat = scene->mMaterials[mesh->mMaterialIndex];
+
+        auto mobj = m_scene->create_Lobject();
+        parent->add_child(mobj);
+        auto m = Mesh(mobj->m_entity, export_sub_mesh(mesh, mat));
+
+        aiString mat_path;
+        mat->GetTexture(aiTextureType_DIFFUSE, 0, &mat_path);
+        if (mat_path.length == 0) m.material_path = "";
+        else m.material_path = directory + "\\" + std::string(mat_path.C_Str());
+        import_sub_mesh(m);
+
+        mobj->add_component(m);
+    }
+
 }
 
-void Importer::processNode(aiNode* node, const aiScene* scene) {
-	for (unsigned int i = 0; i < node->mNumMeshes; ++i) {
-		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		processMesh(mesh, scene, node->mTransformation);
-	}
-	for (unsigned int i = 0; i < node->mNumChildren; ++i) {
-		processNode(node->mChildren[i], scene);
-	}
-}
-
-void Importer::processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4& transform) {
-	std::vector<Vertex> vertices;
-	std::vector<unsigned int> indices;
-	std::vector<Texture> textures;
-
-	for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
-		Vertex vertex;
-		glm::vec3 vector;
-		vector.x = mesh->mVertices[i].x;
-		vector.y = mesh->mVertices[i].y;
-		vector.z = mesh->mVertices[i].z;
-		vertex.Position = vector;
-		
-		if (mesh->HasNormals()) {
-			vector.x = mesh->mNormals[i].x;
-			vector.y = mesh->mNormals[i].y;
-			vector.z = mesh->mNormals[i].z;
-			vertex.Normal = vector;
-		}
-
-		if (mesh->HasTextureCoords(0)) {
-			glm::vec2 vec;
-			vec.x = mesh->mTextureCoords[0][i].x;
-			vec.y = mesh->mTextureCoords[0][i].y;
-			vertex.TexCoords = vec;
-		}
-		else vertex.TexCoords = glm::vec2(0.0f, 0.0f);
-
-		if (mesh->HasTangentsAndBitangents()) {
-			vector.x = mesh->mTangents[i].x;
-			vector.y = mesh->mTangents[i].y;
-			vector.z = mesh->mTangents[i].z;
-			vertex.Tangent = vector;
-
-			vector.x = mesh->mBitangents[i].x;
-			vector.y = mesh->mBitangents[i].y;
-			vector.z = mesh->mBitangents[i].z;
-			vertex.Bitangent = vector;
-		}
-
-		vertices.push_back(vertex);
-	}
-
-	for (unsigned int i = 0; i < mesh->mNumFaces; ++i) {
-		aiFace face = mesh->mFaces[i];
-		for (unsigned int j = 0; j < face.mNumIndices; ++j) {
-			indices.push_back(face.mIndices[j]);
-		}
-	}
-
-	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-
-	// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
-	// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
-	// Same applies to other texture as the following list summarizes:
-	// diffuse: texture_diffuseN
-	// specular: texture_specularN
-	// normal: texture_normalN
-
-	// 1. diffuse maps
-	std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-
-	// 2. specular maps
-	std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-	// 3. normal maps
-	std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
-	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-	// 4. height maps
-	std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
-	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
-
-
-	// Put data into component and assign it an entity through lobjects
-	auto obj = m_scene->create_Lobject();
-    parent->get<Family>().add_child(obj->get<Family>());
-	auto& t = obj->get<Transform>();
-	aiVector3t<float> pos, rot, sca;
-	transform.Decompose(sca, rot, pos);
-	t.set_pos(glm::vec3(pos.x, pos.y, pos.z));
-	t.set_rot(glm::vec3(rot.x, rot.y, rot.z));
-	t.set_sca(glm::vec3(sca.x, sca.y, sca.z));
-	obj->add_component(Mesh(obj->m_entity, vertices, indices, textures));
-    obj->get<Mesh>().name = mesh->mName.C_Str();
-}
-
-std::vector<Texture> Importer::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName) {
-	std::vector<Texture> textures;
-	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-	{
-		aiString str;
-		mat->GetTexture(type, i, &str);
-		// check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
-		bool skip = false;
-		for (unsigned int j = 0; j < textures_loaded.size(); j++)
-		{
-			if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
-			{
-				textures.push_back(textures_loaded[j]);
-				skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
-				break;
-			}
-		}
-		if (!skip)
-		{   // if texture hasn't been loaded already, load it
-			Texture texture;
-			texture.id = TextureFromFile(str.C_Str(), this->directory);
-			texture.type = typeName;
-			texture.path = str.C_Str();
-			textures.push_back(texture);
-			textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
-		}
-	}
-	return textures;
-}
-
-unsigned int TextureFromFile(const char* path, const std::string& directory) {
-	std::string filename = std::string(path);
-	filename = directory + '\\' + filename;
-
-	unsigned int textureID;
-	glGenTextures(1, &textureID);
-
+unsigned int TextureFromFile(const char* path) {
 	int width, height, nrComponents;
-	unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
+	unsigned char* data = stbi_load(path, &width, &height, &nrComponents, 0);
 	if (!data) {
 		std::cout << "Texture failed to load at path: " << path << std::endl;
-		width = 100;
-		height = 100;
-		nrComponents = 4;
-		data = stbi_load("C:\\Dev\\Lily\\bin\\Debug\\assets\\default.png", &width, &height, &nrComponents, 0);
+        stbi_image_free(data);
+        return 0;
 	}
-	
+
+    unsigned int textureID;
+    glGenTextures(1, &textureID);
+
 	GLenum format;
 	switch (nrComponents) {
 	case 1:
@@ -197,4 +100,124 @@ unsigned int TextureFromFile(const char* path, const std::string& directory) {
 	return textureID;
 }
 
+const std::string export_sub_mesh(aiMesh* mesh, aiMaterial* mat) {
+    static int i = 0;
+    aiMesh *mesh_copy = new aiMesh();
+    
+    mesh_copy->mNumVertices = mesh->mNumVertices;
+    mesh_copy->mVertices = new aiVector3t<float>[mesh->mNumVertices];
+    mesh_copy->mNormals = new aiVector3t<float>[mesh->mNumVertices];
+    mesh_copy->mTextureCoords[0] = new aiVector3D[mesh->mNumVertices];
+    mesh_copy->mNumUVComponents[0] = mesh->mNumVertices;
+    for (int j = 0; j < mesh->mNumVertices; j++) {
+        mesh_copy->mVertices[j] = mesh->mVertices[j];
+        mesh_copy->mNormals[j] = mesh->mNormals[j];
+        mesh_copy->mTextureCoords[0][j] = mesh->mTextureCoords[0][j];
+    }
+
+    mesh_copy->mFaces = new aiFace[mesh->mNumFaces];
+    mesh_copy->mNumFaces = mesh->mNumFaces;
+    for (int j = 0; j < mesh->mNumFaces; j++) {
+        int inds = mesh->mFaces[j].mNumIndices;
+        mesh_copy->mFaces[j].mNumIndices = inds;
+        mesh_copy->mFaces[j].mIndices = new unsigned int[inds];
+        for (int k = 0; k < inds; k++) {
+           mesh_copy->mFaces[j].mIndices[k] = mesh->mFaces[j].mIndices[k];
+        }
+    }
+
+    aiMaterial *mat_c = new aiMaterial();
+
+
+    aiNode *root = new aiNode();
+    root->mNumMeshes = 1;
+    root->mMeshes = new unsigned [] { 0 };
+
+    aiScene *out = new aiScene();
+    out->mNumMeshes = 1;
+    out->mMeshes = new aiMesh * [] { mesh_copy };
+    out->mNumMaterials = 1;
+    out->mMaterials = new aiMaterial * [] { mat_c };
+    out->mRootNode = root;
+    out->mMetaData = new aiMetadata();
+
+    Assimp::Exporter exporter;
+    const std::string p = fs::current_path().string() + "\\ExportTest\\test" + std::to_string(i) + ".assbin";
+    if (exporter.Export(out, "assbin", p) != AI_SUCCESS) {
+        std::cout << "ASSIMP ERROR EXPORTING FILE: " << p << std::endl;
+    }
+
+    delete out;
+    i++;
+    return p;
+}
+
+void Importer::import_sub_mesh(Mesh& lmesh) {
+    Assimp::Importer imp;
+    auto scene = imp.ReadFile(lmesh.import_path, 0);
+    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) {
+        std::cout << "ERROR: ASSIMP" << imp.GetErrorString() << std::endl;
+        return;
+    }
+    auto mesh = scene->mMeshes[0];
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
+    std::vector<Texture> textures;
+
+    for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
+        Vertex vertex;
+        glm::vec3 vector;
+        vector.x = mesh->mVertices[i].x;
+        vector.y = mesh->mVertices[i].y;
+        vector.z = mesh->mVertices[i].z;
+        vertex.Position = vector;
+
+        if (mesh->HasNormals()) {
+            vector.x = mesh->mNormals[i].x;
+            vector.y = mesh->mNormals[i].y;
+            vector.z = mesh->mNormals[i].z;
+            vertex.Normal = vector;
+        }
+
+        if (mesh->HasTextureCoords(0)) {
+            glm::vec2 vec;
+            vec.x = mesh->mTextureCoords[0][i].x;
+            vec.y = mesh->mTextureCoords[0][i].y;
+            vertex.TexCoords = vec;
+        }
+        else vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+
+        if (mesh->HasTangentsAndBitangents()) {
+            vector.x = mesh->mTangents[i].x;
+            vector.y = mesh->mTangents[i].y;
+            vector.z = mesh->mTangents[i].z;
+            vertex.Tangent = vector;
+
+            vector.x = mesh->mBitangents[i].x;
+            vector.y = mesh->mBitangents[i].y;
+            vector.z = mesh->mBitangents[i].z;
+            vertex.Bitangent = vector;
+        }
+
+        vertices.push_back(vertex);
+    }
+
+    for (unsigned int i = 0; i < mesh->mNumFaces; ++i) {
+        aiFace face = mesh->mFaces[i];
+        for (unsigned int j = 0; j < face.mNumIndices; ++j) {
+            indices.push_back(face.mIndices[j]);
+        }
+    }
+
+    Texture tex;
+    if (!lmesh.material_path.empty()) {
+        tex.id = TextureFromFile(lmesh.material_path.c_str());
+        tex.type = "texture_diffuse";
+        lmesh.textures.push_back(tex);
+    }
+    lmesh.indices = indices;
+    lmesh.vertices = vertices;
+    lmesh.imported = true;
+    lmesh.initMesh();
+}
 }

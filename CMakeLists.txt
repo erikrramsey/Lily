@@ -30,7 +30,7 @@ ENDIF(NOT APPLE)
 # Setting library locations
 SET(SDL2_LIBRARY     "${PROJECT_SOURCE_DIR}/vendor/SDL2-2.0.14/lib/x64/SDL2.lib")
 set(SDL2_MAIN_LIB  "${PROJECT_SOURCE_DIR}/vendor/SDL2-2.0.14/lib/x64/SDL2main.lib")
-SET(ASSIMP_LIBRARIES "${PROJECT_SOURCE_DIR}/vendor/assimp-5.0.1/lib/Release/assimp-vc142-mt.lib")
+SET(ASSIMP_LIBRARIES "${PROJECT_SOURCE_DIR}/vendor/assimp/lib/Debug/assimp-vc142-mtd.lib")
 SET(GLEW_LIBRARY     "${PROJECT_SOURCE_DIR}/vendor/glew-2.1.0/lib/Release/x64/glew32.lib")
 
 
@@ -52,7 +52,7 @@ SET(IMGUI_SOURCES
 # Set sources
 FILE(GLOB_RECURSE ENGINE_SOURCES "LilyEngine/src/*.cpp")
 FILE(GLOB_RECURSE APPLICATION_SOURCES "LilyApplication/src/*.cpp")
-ADD_LIBRARY(LilyEngine STATIC ${ENGINE_SOURCES} ${IMGUI_SOURCES})
+ADD_LIBRARY(LilyEngine STATIC ${ENGINE_SOURCES} ${IMGUI_SOURCES} "${PROJECT_SOURCE_DIR}/vendor/nlohmann/json.hpp" LilyEngine/src/Entity/SceneSerializer.cpp)
 ADD_EXECUTABLE(${PROJECT_NAME} ${APPLICATION_SOURCES} ${IMGUI_SOURCES} LilyApplication/src/ComponentEditorWindow.cpp LilyApplication/src/ComponentEditorWindow.cpp)
 
 
@@ -64,7 +64,8 @@ TARGET_INCLUDE_DIRECTORIES(
   PUBLIC "${PROJECT_SOURCE_DIR}/vendor/glew-2.1.0/include"
   PUBLIC "${PROJECT_SOURCE_DIR}/vendor/SDL2-2.0.14/include"
   PUBLIC "${PROJECT_SOURCE_DIR}/vendor/glm"
-  PUBLIC "${PROJECT_SOURCE_DIR}/vendor/assimp-5.0.1/include"
+  PUBLIC "${PROJECT_SOURCE_DIR}/vendor/assimp/include"
+  PUBLIC "${PROJECT_SOURCE_DIR}/vendor/nlohmann"
   PUBLIC "${IMGUI_DIR}"
   PUBLIC "${IMGUI_DIR}/backends"
 )
@@ -115,5 +116,5 @@ add_custom_command(TARGET LilyEngine
                    COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/assets/" "${PROJECT_SOURCE_DIR}/bin/Debug/assets/"
                    COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_SOURCE_DIR}/vendor/glew-2.1.0/bin/Release/x64/glew32.dll" "${PROJECT_SOURCE_DIR}/bin/$<CONFIG>"
                    COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_SOURCE_DIR}/vendor/SDL2-2.0.14/lib/x64/SDL2.dll" "${PROJECT_SOURCE_DIR}/bin/$<CONFIG>"
-                   COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_SOURCE_DIR}/vendor/assimp-5.0.1/lib/Release/assimp-vc142-mt.dll" "${PROJECT_SOURCE_DIR}/bin/$<CONFIG>"
+                   COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_SOURCE_DIR}/vendor/assimp/lib/Debug/assimp-vc142-mtd.dll" "${PROJECT_SOURCE_DIR}/bin/$<CONFIG>"
                    COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:LilyEngine>" "${PROJECT_SOURCE_DIR}/bin/$<CONFIG>")

@@ -6,6 +6,7 @@
 #include "Entity/Transform.h"
 #include "Entity/Family.h"
 #include "Entity/Importer.h"
+#include "Entity/SceneSerializer.h"
 
 #include "Renderer/Renderer.h"
 
@@ -16,6 +17,7 @@
 
 namespace Lily {
 
+class SceneSerializer;
 class Lobject;
 class Importer;
 class Scene {
@@ -26,19 +28,21 @@ public:
 	void Init();
 	void update(long long dt);
 	void import_component(Lobject* obj, std::string& path);
+    void clear();
 
 	Lobject* get(Entity ent);
-
-	Lobject& getCamera() { return *m_camera; }
-
+    Lobject* get_root();
+	Lobject& get_camera() { return *m_camera; }
 	Lobject* create_Lobject();
 	void delete_Lobject(Lobject* obj);
+    void clear_Lobject(Lobject* obj);
 	
 	ECRegistry m_registry;
+    Importer* m_importer;
 	std::unordered_map<Entity, Lobject*> m_objects;
 private:
 	Lobject* m_camera;
-	Importer* m_importer;
+    Lobject* m_root;
 
 	friend class Lobject;
 };

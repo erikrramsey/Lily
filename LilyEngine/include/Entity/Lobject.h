@@ -19,8 +19,10 @@ public:
 
 	const char* get_name() { return m_name.c_str(); }
 	void set_name(const char* name) { m_name = name; }
+    void add_child(Lobject* child);
 
 	std::vector<Lobject*> get_children();
+    Lobject* get_parent();
 
 
 	template<class T>

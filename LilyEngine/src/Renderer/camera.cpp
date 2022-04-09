@@ -19,42 +19,42 @@ namespace Lily {
 
         Up = glm::vec3(0.0f, 1.0f, 0.0f);
         WorldUp = Up;
-        Forward = glm::vec3(0.0f, 0.0f, -1.0f);
-        Strafe = glm::cross(Up, Forward);
+        forward = glm::vec3(0.0f, 0.0f, -1.0f);
+        Strafe = glm::cross(Up, forward);
 
-        MoveSpeed = 30;
+        move_speed = 30;
         MouseSensitivity = 0.075;
 
-        Position = glm::vec3(0, 0, 5);
+        position = glm::vec3(0, 0, 5);
 
-        Update();
+        update();
 
         Projection = glm::perspective(45.0f, float(w) / float(h), 0.01f, 10000.0f);
         return true;
     }
 
-    void Camera::Update() {
+    void Camera::update() {
         glm::vec3 front;
         front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
         front.y = sin(glm::radians(Pitch));
         front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-        Forward = glm::normalize(front);
+        forward = glm::normalize(front);
 
-        Strafe = glm::normalize(glm::cross(Forward, WorldUp));
-        Up = glm::normalize(glm::cross(Strafe, Forward));
+        Strafe = glm::normalize(glm::cross(forward, WorldUp));
+        Up = glm::normalize(glm::cross(Strafe, forward));
 
-        view = glm::lookAt(Position, Position + Forward, Up);
+        view = glm::lookAt(position, position + forward, Up);
     };
 
-    void Camera::PitchIn(float input) {
+    void Camera::pitch_in(float input) {
         Pitch -= input * MouseSensitivity;
         if (Pitch > (89.0f)) Pitch = (89.0f);
         if (Pitch < (-89.0f)) Pitch = (-89.0f);
-        Update();
+        update();
     }
 
-    void Camera::YawIn(float input) {
+    void Camera::yaw_in(float input) {
         Yaw += input * MouseSensitivity;
-        Update();
+        update();
     }
 }

@@ -71,18 +71,25 @@ void ComponentEditorWindow::render_family() {
     ImGui::SameLine();
     ImGui::Text("%d", static_cast<int>(comp.parent));
 
-    if (ImGui::Button("Remove Parent")) {
-        auto par = m_parent->m_active_scene->get(comp.parent);
-        comp.remove_parent(par->get<Family>());
+    if (ImGui::Button("Set Root as Parent")) {
+        m_parent->m_active_scene->get_root()->add_child(m_rendered);
     }
 
     ImGuiComboFlags flags = ImGuiComboFlags_PopupAlignLeft | ImGuiComboFlags_NoArrowButton;
     const char* current = "Add Child";
     if (ImGui::BeginCombo("##Add Child", current, flags)) {
         for (auto& [ent, obj] : m_parent->m_active_scene->m_objects) {
-            if (obj != m_rendered && ImGui::Selectable(obj->get_name())) {
-                auto& fam = obj->get<Family>();
-                comp.add_child(fam);
+            bool is_valid = true;
+            auto climb = m_rendered;
+            while (climb != m_parent->m_active_scene->get_root()) {
+                if (obj == climb) is_valid = false;
+                climb = climb->get_parent();
+            }
+            for (auto ch : m_rendered->get_children()) {
+                if (obj == ch) is_valid = false;
+            }
+            if (is_valid && ImGui::Selectable(obj->get_name())) {
+                m_rendered->add_child(obj);
             }
         }
        ImGui::EndCombo();
@@ -103,7 +110,7 @@ void ComponentEditorWindow::render_transform() {
     float rotation[] = { rot.x, rot.y, rot.z };
     float scale[]    = { sca.x, sca.y, sca.z };
 
-    ImGui::DragFloat3("Position", position, 0.05);
+    ImGui::DragFloat3("position", position, 0.05);
     ImGui::DragFloat3("Rotation", rotation, 0.05);
     ImGui::DragFloat3("Scale", scale, 0.05);
 
@@ -121,7 +128,8 @@ void ComponentEditorWindow::render_mesh() {
     if (!comp) return;
     ImGui::Text("Mesh Component");
     ImGui::Dummy(ImVec2(0, 10));
-        ImGui::Text(comp->name.c_str());
+    ImGui::Text(comp->import_path.c_str());
+    ImGui::Text(comp->material_path.c_str());
 
     ImGui::Dummy(ImVec2(0, 10));
 }

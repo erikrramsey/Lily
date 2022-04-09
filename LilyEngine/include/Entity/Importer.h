@@ -7,6 +7,7 @@
 #include <vector>
 
 #include <assimp/Importer.hpp>
+#include <assimp/Exporter.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
@@ -24,17 +25,13 @@ class Lobject;
 class Importer {
 public:
 	Importer(Scene* scene);
-	void load_model(Lobject* obj, std::string& path);
+	void import_model(Lobject* obj, std::string& path);
+    void import_sub_mesh(Mesh& lmesh);
 
 private:
 	Scene* m_scene;
 	std::string directory;
 	std::vector<Texture> textures_loaded;
 	Lobject* parent;
-
-	void processNode(aiNode* node, const aiScene* scene);
-	void processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4& transform);
-
-	std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
 };
 }

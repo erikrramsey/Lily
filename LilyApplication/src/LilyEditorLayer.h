@@ -31,8 +31,8 @@ private:
 	Camera* m_active_camera;
 	Lobject* selected;
 	Scene* m_active_scene;
-	Shader* m_current_shader;
 	Framebuffer* m_framebuffer;
+    LilyFileExplorer* m_scene_explorer;
 
 	bool m_mouse_locked = false;
 	bool forward_keydown = false;

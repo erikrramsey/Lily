@@ -4,6 +4,7 @@
 #include "Entity/Component.h"
 #include "Entity/Lobject.h"
 #include "Entity/Entity.h"
+#include "Entity/SceneSerializer.h"
 #include "Gui/GuiLayer.h"
 
 #include "Application/Application.h"

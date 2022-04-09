@@ -15,7 +15,6 @@ public:
     void render_Lobject();
 
 private:
-
     void render();
     void render_transform();
     void render_family();

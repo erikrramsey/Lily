@@ -11,11 +11,11 @@ void LilyEditorLayer::Init() {
 	m_app = Application::Get();
 	m_active_scene = new Scene();
 	m_active_scene->Init();
-	m_active_camera = &m_active_scene->getCamera().get<Camera>();
-	m_active_camera->Initialize(1920, 1080);
+	m_active_camera = &m_active_scene->get_camera().get<Camera>();
 	m_framebuffer = new Framebuffer(1920, 1080);
 	m_framebuffer->Init();
 
+    m_scene_explorer = nullptr;
     m_component_editor = new ComponentEditorWindow(this);
 
     selected = nullptr;
@@ -29,9 +29,11 @@ void LilyEditorLayer::Update(long long dt) {
 	m_active_scene->update(dt);
 	m_framebuffer->Unbind();
 
+
 	if (forward_keydown && m_mouse_locked) {
-		m_active_camera->Position += (m_active_camera->Forward * ((float)dt / 1000) * m_active_camera->MoveSpeed);
-		m_active_camera->Update();
+        auto& cam = m_active_scene->get_camera().get<Camera>();
+		cam.position += (cam.forward * ((float)dt / 1000) * cam.move_speed);
+        cam.update();
 	}
 
 	GuiRender();
@@ -41,8 +43,9 @@ void LilyEditorLayer::OnEvent(SDL_Event& ev) {
 	switch (ev.type) {
 	case SDL_MOUSEMOTION:
 		if (m_mouse_locked) {
-			m_active_camera->YawIn(ev.motion.xrel);
-			m_active_camera->PitchIn(ev.motion.yrel);
+            auto& cam = m_active_scene->get_camera().get<Camera>();
+            cam.yaw_in(ev.motion.xrel);
+            cam.pitch_in(ev.motion.yrel);
 		}
 		break;
 	case SDL_KEYDOWN:
@@ -104,6 +107,18 @@ void LilyEditorLayer::GuiRender() {
 	bool opt_fullscreen = false;
 	if (ImGui::BeginMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
+            if (ImGui::MenuItem("Save Scene")) {
+                SceneSerializer::serialize(m_active_scene, "TestScene.json");
+            }
+            if (ImGui::MenuItem("Load Scene")) {
+                m_scene_explorer = new LilyFileExplorer;
+                selected = nullptr;
+            }
+            if (ImGui::MenuItem("Clear")) {
+                m_active_scene->clear();
+                m_active_scene->Init();
+                selected = nullptr;
+            }
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Edit")) {
@@ -116,7 +131,15 @@ void LilyEditorLayer::GuiRender() {
 	entity_list_window();
 	settings_window();
 
-
+    if (m_scene_explorer) {
+        m_scene_explorer->render();
+        auto p = m_scene_explorer->get_selection();
+        if (!p.empty()) {
+            SceneSerializer::deserialize(m_active_scene, p.string());
+            delete m_scene_explorer;
+            m_scene_explorer = nullptr;
+        }
+    }
 
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground;
@@ -176,14 +199,10 @@ void LilyEditorLayer::entity_list_window() {
 	ImGui::Begin("Lobject List");
 	if (ImGui::Button("Create New Entity")) {
 		selected = m_active_scene->create_Lobject();
-		renaming = true;
 	}
-	for (auto& [ent, obj] : m_active_scene->m_objects) {
-		auto a = obj->get<Family>();
-		if (a.parent == 0) {
-			display_Lobject(obj);
-		}
-	}
+
+    for (auto& obj : m_active_scene->get_root()->get_children())
+        display_Lobject(obj);
 
 	ImGui::End(); // Entity List
 }

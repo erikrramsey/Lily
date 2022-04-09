@@ -18,6 +18,15 @@ std::vector<Lobject*> Lobject::get_children() {
 	return children;
 }
 
+Lobject* Lobject::get_parent() {
+    return (m_scene->get(get<Family>().parent));
+}
+
+void Lobject::add_child(Lobject* child) {
+    auto fam = child->get<Family>();
+    fam.remove_parent(m_scene->get(fam.parent)->get<Family>());
+    get<Family>().add_child(child->get<Family>());
+}
 
 
 }
