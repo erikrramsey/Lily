@@ -1,6 +1,6 @@
 # Lily
 
-A 3D rendering engine for Windows built on top of OpenGL and SDL.
+A 3D game engine for Windows built on top of OpenGL and SDL.
 
 ![](https://github.com/erikrramsey/Lily/blob/master/screenshot1.jpg)
 
