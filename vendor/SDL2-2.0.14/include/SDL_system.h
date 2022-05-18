@@ -192,7 +192,7 @@ extern DECLSPEC const char * SDLCALL SDL_AndroidGetInternalStoragePath(void);
 extern DECLSPEC int SDLCALL SDL_AndroidGetExternalStorageState(void);
 
 /**
-   \brief Get the path used for external storage for this application.
+   \brief get the path used for external storage for this application.
 
    This path is unique to your application, but is public and can be
    written to by other applications.

@@ -1519,14 +1519,14 @@ extern DECLSPEC SDL_bool SDLCALL SDL_SetHint(const char *name,
                                              const char *value);
 
 /**
- *  \brief Get a hint
+ *  \brief get a hint
  *
  *  \return The string value of a hint variable.
  */
 extern DECLSPEC const char * SDLCALL SDL_GetHint(const char *name);
 
 /**
- *  \brief Get a hint
+ *  \brief get a hint
  *
  *  \return The boolean value of a hint variable.
  */

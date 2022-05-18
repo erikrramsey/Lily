@@ -828,7 +828,7 @@ typedef union SDL_HapticEffect
 extern DECLSPEC int SDLCALL SDL_NumHaptics(void);
 
 /**
- *  \brief Get the implementation dependent name of a haptic device.
+ *  \brief get the implementation dependent name of a haptic device.
  *
  *  This can be called before any joysticks are opened.
  *  If no name can be found, this function returns NULL.

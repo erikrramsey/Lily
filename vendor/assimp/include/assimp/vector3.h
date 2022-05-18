@@ -125,11 +125,11 @@ public:
      *  @param pZ Z component  */
     void Set( TReal pX, TReal pY, TReal pZ);
 
-    /** @brief Get the squared length of the vector
+    /** @brief get the squared length of the vector
      *  @return Square length */
     TReal SquareLength() const;
 
-    /** @brief Get the length of the vector
+    /** @brief get the length of the vector
      *  @return length */
     TReal Length() const;
 

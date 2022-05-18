@@ -123,7 +123,7 @@ extern DECLSPEC void SDLCALL SDL_LogSetPriority(int category,
                                                 SDL_LogPriority priority);
 
 /**
- *  \brief Get the priority of a particular log category
+ *  \brief get the priority of a particular log category
  */
 extern DECLSPEC SDL_LogPriority SDLCALL SDL_LogGetPriority(int category);
 
@@ -189,7 +189,7 @@ extern DECLSPEC void SDLCALL SDL_LogMessageV(int category,
 typedef void (SDLCALL *SDL_LogOutputFunction)(void *userdata, int category, SDL_LogPriority priority, const char *message);
 
 /**
- *  \brief Get the current log output function.
+ *  \brief get the current log output function.
  */
 extern DECLSPEC void SDLCALL SDL_LogGetOutputFunction(SDL_LogOutputFunction *callback, void **userdata);
 

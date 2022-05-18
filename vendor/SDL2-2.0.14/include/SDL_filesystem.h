@@ -38,9 +38,9 @@ extern "C" {
 #endif
 
 /**
- * \brief Get the path where the application resides.
+ * \brief get the path where the application resides.
  *
- * Get the "base path". This is the directory where the application was run
+ * get the "base path". This is the directory where the application was run
  *  from, which is probably the installation directory, and may or may not
  *  be the process's current working directory.
  *
@@ -63,9 +63,9 @@ extern "C" {
 extern DECLSPEC char *SDLCALL SDL_GetBasePath(void);
 
 /**
- * \brief Get the user-and-app-specific path where files can be written.
+ * \brief get the user-and-app-specific path where files can be written.
  *
- * Get the "pref dir". This is meant to be where users can write personal
+ * get the "pref dir". This is meant to be where users can write personal
  *  files (preferences and save games, etc) that are specific to your
  *  application. This directory is unique per user, per application.
  *

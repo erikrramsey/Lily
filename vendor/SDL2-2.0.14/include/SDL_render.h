@@ -141,7 +141,7 @@ typedef struct SDL_Texture SDL_Texture;
 /* Function prototypes */
 
 /**
- *  \brief Get the number of 2D rendering drivers available for the current
+ *  \brief get the number of 2D rendering drivers available for the current
  *         display.
  *
  *  A render driver is a set of code that handles rendering and texture
@@ -154,7 +154,7 @@ typedef struct SDL_Texture SDL_Texture;
 extern DECLSPEC int SDLCALL SDL_GetNumRenderDrivers(void);
 
 /**
- *  \brief Get information about a specific 2D rendering driver for the current
+ *  \brief get information about a specific 2D rendering driver for the current
  *         display.
  *
  *  \param index The index of the driver to query information about.
@@ -214,18 +214,18 @@ extern DECLSPEC SDL_Renderer * SDLCALL SDL_CreateRenderer(SDL_Window * window,
 extern DECLSPEC SDL_Renderer * SDLCALL SDL_CreateSoftwareRenderer(SDL_Surface * surface);
 
 /**
- *  \brief Get the renderer associated with a window.
+ *  \brief get the renderer associated with a window.
  */
 extern DECLSPEC SDL_Renderer * SDLCALL SDL_GetRenderer(SDL_Window * window);
 
 /**
- *  \brief Get information about a rendering context.
+ *  \brief get information about a rendering context.
  */
 extern DECLSPEC int SDLCALL SDL_GetRendererInfo(SDL_Renderer * renderer,
                                                 SDL_RendererInfo * info);
 
 /**
- *  \brief Get the output size in pixels of a rendering context.
+ *  \brief get the output size in pixels of a rendering context.
  */
 extern DECLSPEC int SDLCALL SDL_GetRendererOutputSize(SDL_Renderer * renderer,
                                                       int *w, int *h);
@@ -304,7 +304,7 @@ extern DECLSPEC int SDLCALL SDL_SetTextureColorMod(SDL_Texture * texture,
 
 
 /**
- *  \brief Get the additional color value used in render copy operations.
+ *  \brief get the additional color value used in render copy operations.
  *
  *  \param texture The texture to query.
  *  \param r         A pointer filled in with the current red color value.
@@ -334,7 +334,7 @@ extern DECLSPEC int SDLCALL SDL_SetTextureAlphaMod(SDL_Texture * texture,
                                                    Uint8 alpha);
 
 /**
- *  \brief Get the additional alpha value used in render copy operations.
+ *  \brief get the additional alpha value used in render copy operations.
  *
  *  \param texture The texture to query.
  *  \param alpha     A pointer filled in with the current alpha value.
@@ -364,7 +364,7 @@ extern DECLSPEC int SDLCALL SDL_SetTextureBlendMode(SDL_Texture * texture,
                                                     SDL_BlendMode blendMode);
 
 /**
- *  \brief Get the blend mode used for texture copy operations.
+ *  \brief get the blend mode used for texture copy operations.
  *
  *  \param texture   The texture to query.
  *  \param blendMode A pointer filled in with the current blend mode.
@@ -393,7 +393,7 @@ extern DECLSPEC int SDLCALL SDL_SetTextureScaleMode(SDL_Texture * texture,
                                                     SDL_ScaleMode scaleMode);
 
 /**
- *  \brief Get the scale mode used for texture scale operations.
+ *  \brief get the scale mode used for texture scale operations.
  *
  *  \param texture   The texture to query.
  *  \param scaleMode A pointer filled in with the current scale mode.
@@ -520,7 +520,7 @@ extern DECLSPEC int SDLCALL SDL_SetRenderTarget(SDL_Renderer *renderer,
                                                 SDL_Texture *texture);
 
 /**
- * \brief Get the current render target or NULL for the default render target.
+ * \brief get the current render target or NULL for the default render target.
  *
  * \return The current render target
  *
@@ -554,7 +554,7 @@ extern DECLSPEC SDL_Texture * SDLCALL SDL_GetRenderTarget(SDL_Renderer *renderer
 extern DECLSPEC int SDLCALL SDL_RenderSetLogicalSize(SDL_Renderer * renderer, int w, int h);
 
 /**
- *  \brief Get device independent resolution for rendering
+ *  \brief get device independent resolution for rendering
  *
  *  \param renderer The renderer from which resolution should be queried.
  *  \param w      A pointer filled with the width of the logical resolution
@@ -580,7 +580,7 @@ extern DECLSPEC int SDLCALL SDL_RenderSetIntegerScale(SDL_Renderer * renderer,
                                                       SDL_bool enable);
 
 /**
- *  \brief Get whether integer scales are forced for resolution-independent rendering
+ *  \brief get whether integer scales are forced for resolution-independent rendering
  *
  *  \param renderer The renderer from which integer scaling should be queried.
  *
@@ -607,7 +607,7 @@ extern DECLSPEC int SDLCALL SDL_RenderSetViewport(SDL_Renderer * renderer,
                                                   const SDL_Rect * rect);
 
 /**
- *  \brief Get the drawing area for the current target.
+ *  \brief get the drawing area for the current target.
  *
  *  \sa SDL_RenderSetViewport()
  */
@@ -629,7 +629,7 @@ extern DECLSPEC int SDLCALL SDL_RenderSetClipRect(SDL_Renderer * renderer,
                                                   const SDL_Rect * rect);
 
 /**
- *  \brief Get the clip rectangle for the current target.
+ *  \brief get the clip rectangle for the current target.
  *
  *  \param renderer The renderer from which clip rectangle should be queried.
  *  \param rect   A pointer filled in with the current clip rectangle, or
@@ -641,7 +641,7 @@ extern DECLSPEC void SDLCALL SDL_RenderGetClipRect(SDL_Renderer * renderer,
                                                    SDL_Rect * rect);
 
 /**
- *  \brief Get whether clipping is enabled on the given renderer.
+ *  \brief get whether clipping is enabled on the given renderer.
  *
  *  \param renderer The renderer from which clip state should be queried.
  *
@@ -672,7 +672,7 @@ extern DECLSPEC int SDLCALL SDL_RenderSetScale(SDL_Renderer * renderer,
                                                float scaleX, float scaleY);
 
 /**
- *  \brief Get the drawing scale for the current target.
+ *  \brief get the drawing scale for the current target.
  *
  *  \param renderer The renderer from which drawing scale should be queried.
  *  \param scaleX A pointer filled in with the horizontal scaling factor
@@ -700,7 +700,7 @@ extern DECLSPEC int SDLCALL SDL_SetRenderDrawColor(SDL_Renderer * renderer,
                                            Uint8 a);
 
 /**
- *  \brief Get the color used for drawing operations (Rect, Line and Clear).
+ *  \brief get the color used for drawing operations (Rect, Line and Clear).
  *
  *  \param renderer The renderer from which drawing color should be queried.
  *  \param r A pointer to the red value used to draw on the rendering target.
@@ -732,7 +732,7 @@ extern DECLSPEC int SDLCALL SDL_SetRenderDrawBlendMode(SDL_Renderer * renderer,
                                                        SDL_BlendMode blendMode);
 
 /**
- *  \brief Get the blend mode used for drawing operations.
+ *  \brief get the blend mode used for drawing operations.
  *
  *  \param renderer The renderer from which blend mode should be queried.
  *  \param blendMode A pointer filled in with the current blend mode.
@@ -1126,7 +1126,7 @@ extern DECLSPEC int SDLCALL SDL_GL_BindTexture(SDL_Texture *texture, float *texw
 extern DECLSPEC int SDLCALL SDL_GL_UnbindTexture(SDL_Texture *texture);
 
 /**
- *  \brief Get the CAMetalLayer associated with the given Metal renderer
+ *  \brief get the CAMetalLayer associated with the given Metal renderer
  *
  *  \param renderer The renderer to query
  *
@@ -1137,7 +1137,7 @@ extern DECLSPEC int SDLCALL SDL_GL_UnbindTexture(SDL_Texture *texture);
 extern DECLSPEC void *SDLCALL SDL_RenderGetMetalLayer(SDL_Renderer * renderer);
 
 /**
- *  \brief Get the Metal command encoder for the current frame
+ *  \brief get the Metal command encoder for the current frame
  *
  *  \param renderer The renderer to query
  *

@@ -47,7 +47,7 @@ extern "C" {
 extern DECLSPEC int SDLCALL SDL_SetError(SDL_PRINTF_FORMAT_STRING const char *fmt, ...) SDL_PRINTF_VARARG_FUNC(1);
 
 /**
- *  \brief Get the last error message that was set
+ *  \brief get the last error message that was set
  *
  * SDL API functions may set error messages and then succeed, so you should
  * only use the error value if a function fails.
@@ -60,7 +60,7 @@ extern DECLSPEC int SDLCALL SDL_SetError(SDL_PRINTF_FORMAT_STRING const char *fm
 extern DECLSPEC const char *SDLCALL SDL_GetError(void);
 
 /**
- *  \brief Get the last error message that was set for the current thread
+ *  \brief get the last error message that was set for the current thread
  *
  * SDL API functions may set error messages and then succeed, so you should
  * only use the error value if a function fails.

@@ -223,7 +223,7 @@ SDL_CreateThreadWithStackSize(SDL_ThreadFunction fn, const char *name, const siz
 #endif
 
 /**
- * Get the thread name, as it was specified in SDL_CreateThread().
+ * get the thread name, as it was specified in SDL_CreateThread().
  *  This function returns a pointer to a UTF-8 string that names the
  *  specified thread, or NULL if it doesn't have a name. This is internal
  *  memory, not to be free()'d by the caller, and remains valid until the
@@ -232,12 +232,12 @@ SDL_CreateThreadWithStackSize(SDL_ThreadFunction fn, const char *name, const siz
 extern DECLSPEC const char *SDLCALL SDL_GetThreadName(SDL_Thread *thread);
 
 /**
- *  Get the thread identifier for the current thread.
+ *  get the thread identifier for the current thread.
  */
 extern DECLSPEC SDL_threadID SDLCALL SDL_ThreadID(void);
 
 /**
- *  Get the thread identifier for the specified thread.
+ *  get the thread identifier for the specified thread.
  *
  *  Equivalent to SDL_ThreadID() if the specified thread is NULL.
  */
@@ -329,7 +329,7 @@ extern DECLSPEC void SDLCALL SDL_DetachThread(SDL_Thread * thread);
 extern DECLSPEC SDL_TLSID SDLCALL SDL_TLSCreate(void);
 
 /**
- *  \brief Get the value associated with a thread local storage ID for the current thread.
+ *  \brief get the value associated with a thread local storage ID for the current thread.
  *
  *  \param id The thread local storage ID
  *

@@ -394,7 +394,7 @@ public:
     bool SetPropertyCallback(const char *szName, const std::function<void *(void *)> &f);
 
     // -------------------------------------------------------------------
-    /** Get a configuration property.
+    /** get a configuration property.
      * @param szName Name of the property. All supported properties
      *   are defined in the aiConfig.g header (all constants share the
      *   prefix AI_CONFIG_XXX).
@@ -410,7 +410,7 @@ public:
             int iErrorReturn = 0xffffffff) const;
 
     // -------------------------------------------------------------------
-    /** Get a boolean configuration property. Boolean properties
+    /** get a boolean configuration property. Boolean properties
      *  are stored on the integer stack internally so it's possible
      *  to set them via #SetPropertyBool and query them with
      *  #GetPropertyBool and vice versa.
@@ -421,14 +421,14 @@ public:
     }
 
     // -------------------------------------------------------------------
-    /** Get a floating-point configuration property
+    /** get a floating-point configuration property
      * @see GetPropertyInteger()
      */
     ai_real GetPropertyFloat(const char *szName,
             ai_real fErrorReturn = 10e10f) const;
 
     // -------------------------------------------------------------------
-    /** Get a string configuration property
+    /** get a string configuration property
      *
      *  The return value remains valid until the property is modified.
      * @see GetPropertyInteger()
@@ -437,7 +437,7 @@ public:
             const std::string &sErrorReturn = "") const;
 
     // -------------------------------------------------------------------
-    /** Get a matrix configuration property
+    /** get a matrix configuration property
      *
      *  The return value remains valid until the property is modified.
      * @see GetPropertyInteger()

@@ -50,7 +50,7 @@ typedef enum
 
 
 /**
- *  \brief Get the current power supply details.
+ *  \brief get the current power supply details.
  *
  *  \param secs Seconds of battery life left. You can pass a NULL here if
  *              you don't care. Will return -1 if we can't determine a

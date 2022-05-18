@@ -1,15 +1,14 @@
-#include "Gui/GuiLayer.h"
+#include "Gui/Gui.h"
 
 namespace Lily {
 
-    GuiLayer::GuiLayer() {
-        m_app = nullptr;
-    }
+    Gui::Gui() {}
 
-    GuiLayer::~GuiLayer() {
+    Gui::~Gui() {
         Cleanup();
     }
-    void GuiLayer::Init() {
+
+    void Gui::init() {
         const char* glsl_version = "#version 130";
         // Setup Dear ImGui context
         IMGUI_CHECKVERSION();
@@ -23,18 +22,16 @@ namespace Lily {
         // Setup Dear ImGui style
         ImGui::StyleColorsDark();
 
-
-        m_app = Application::Get();
         // Setup Platform/Renderer backends
-        ImGui_ImplSDL2_InitForOpenGL(m_app->GetWindow().gWindow , m_app->GetWindow().gContext);
+        ImGui_ImplSDL2_InitForOpenGL(Application::get()->get_window().gWindow , Application::get()->get_window().gContext);
         ImGui_ImplOpenGL3_Init(glsl_version);
     }
 
-    void GuiLayer::OnEvent(SDL_Event& ev) {
+    void Gui::OnEvent(SDL_Event& ev) {
         ImGui_ImplSDL2_ProcessEvent(&ev);
     }
 
-    void GuiLayer::Cleanup() {
+    void Gui::Cleanup() {
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplSDL2_Shutdown();
 		ImGui::DestroyContext();

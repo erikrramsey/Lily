@@ -48,7 +48,7 @@ will be placed in /opt/rpi-tools
     sudo git clone --depth 1 https://github.com/raspberrypi/tools /opt/rpi-tools
 
 You'll also need a Raspbian binary image.
-Get it from: http://downloads.raspberrypi.org/raspbian_latest 
+get it from: http://downloads.raspberrypi.org/raspbian_latest 
 After unzipping, you'll get file with a name like: "<date>-wheezy-raspbian.img"
 Let's assume the sysroot will be built in /opt/rpi-sysroot.
 

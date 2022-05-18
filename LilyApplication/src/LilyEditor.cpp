@@ -1,28 +1,33 @@
-#include "LilyEditorLayer.h"
+#include "LilyEditor.h"
 #include <cstdlib>
 
-LilyEditorLayer::~LilyEditorLayer() {
+
+LilyEditor::LilyEditor(LauncherData* data) : Gui() {
+    m_data = data;
+}
+
+LilyEditor::~LilyEditor() {
 	delete m_active_scene;
 	delete m_framebuffer;
 }
 
-void LilyEditorLayer::Init() {
-	GuiLayer::Init();
-	m_app = Application::Get();
+void LilyEditor::init() {
+    Gui::init();
 	m_active_scene = new Scene();
 	m_active_scene->Init();
-	m_active_camera = &m_active_scene->get_camera().get<Camera>();
 	m_framebuffer = new Framebuffer(1920, 1080);
 	m_framebuffer->Init();
+    m_project_path = m_data->selected_project;
 
     m_scene_explorer = nullptr;
-    m_component_editor = new ComponentEditorWindow(this);
+    m_children.push_back(new ComponentEditorWindow(this));
+    m_children.push_back(new SceneListWindow(this));
 
-    selected = nullptr;
+    m_selected = nullptr;
 }
 
 
-void LilyEditorLayer::Update(long long dt) {
+void LilyEditor::update(long long dt) {
 	Renderer::SetClearColor(glm::vec4(0.5, 0.5, 0.5, 1));
 	Renderer::Clear();
 	m_framebuffer->Bind();
@@ -30,16 +35,16 @@ void LilyEditorLayer::Update(long long dt) {
 	m_framebuffer->Unbind();
 
 
-	if (forward_keydown && m_mouse_locked) {
+	if (m_forward_keydown && m_mouse_locked) {
         auto& cam = m_active_scene->get_camera().get<Camera>();
 		cam.position += (cam.forward * ((float)dt / 1000) * cam.move_speed);
         cam.update();
 	}
 
-	GuiRender();
+    gui_render();
 }
 
-void LilyEditorLayer::OnEvent(SDL_Event& ev) {
+void LilyEditor::OnEvent(SDL_Event& ev) {
 	switch (ev.type) {
 	case SDL_MOUSEMOTION:
 		if (m_mouse_locked) {
@@ -54,34 +59,34 @@ void LilyEditorLayer::OnEvent(SDL_Event& ev) {
 			m_mouse_locked = !m_mouse_locked;
 			break;
 		case SDLK_w:
-			forward_keydown = true;
+            m_forward_keydown = true;
 		}
 		break;
 	case SDL_KEYUP:
 		switch (ev.key.keysym.sym) {
 		case SDLK_w:
-			forward_keydown = false;
+            m_forward_keydown = false;
 			break;
 		}
 		break;
 	case SDL_WINDOWEVENT:
 		if (ev.window.event == SDL_WINDOWEVENT_RESIZED) {
-			std::cout << "LilyEditorLayer: Resize event: "
+			std::cout << "LilyEditor: Resize event: "
 			<< ev.window.data1 << ' '
 			<< ev.window.data2 << std::endl;
 		}
 		break;
 	}
 
-	GuiLayer::OnEvent(ev);
+	Gui::OnEvent(ev);
 }
 
-void LilyEditorLayer::GuiRender() {
+void LilyEditor::gui_render() {
 	static bool show_demo_window = true;
 
 	// Start the Dear ImGui frame
 	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame(m_app->GetWindow().gWindow);
+	ImGui_ImplSDL2_NewFrame(Application::get()->get_window().gWindow);
 	ImGui::NewFrame();
 
 
@@ -111,13 +116,13 @@ void LilyEditorLayer::GuiRender() {
                 SceneSerializer::serialize(m_active_scene, "TestScene.json");
             }
             if (ImGui::MenuItem("Load Scene")) {
-                m_scene_explorer = new LilyFileExplorer;
-                selected = nullptr;
+                m_scene_explorer = new LilyFileExplorer("Select Scene (.json)", &m_current_scene_path);
+                m_selected = nullptr;
             }
             if (ImGui::MenuItem("Clear")) {
                 m_active_scene->clear();
                 m_active_scene->Init();
-                selected = nullptr;
+                m_selected = nullptr;
             }
 			ImGui::EndMenu();
 		}
@@ -127,15 +132,17 @@ void LilyEditorLayer::GuiRender() {
 		ImGui::EndMenuBar();
 	}
 
-    m_component_editor->render_Lobject(selected);
+    for (auto& win : m_children) {
+        win->render();
+    }
+
 	entity_list_window();
 	settings_window();
 
     if (m_scene_explorer) {
         m_scene_explorer->render();
-        auto p = m_scene_explorer->get_selection();
-        if (!p.empty()) {
-            SceneSerializer::deserialize(m_active_scene, p.string());
+        if (!m_current_scene_path.empty()) {
+            SceneSerializer::deserialize(m_active_scene, m_current_scene_path.string());
             delete m_scene_explorer;
             m_scene_explorer = nullptr;
         }
@@ -160,31 +167,29 @@ void LilyEditorLayer::GuiRender() {
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-
-
-void LilyEditorLayer::display_Lobject(Lobject* obj) {
-	std::string nodename = std::string(obj->get_name());
+void LilyEditor::display_Lobject(Lobject* obj) {
+	std::string name = std::string(obj->get_name());
 	
-	if (renaming && obj == selected) {
+	if (m_renaming && obj == m_selected) {
 		char input[80] = "";
-		strcpy(input, selected->get_name());
+		strcpy_s(input, m_selected->get_name());
 		ImGui::SetKeyboardFocusHere();
 		if (ImGui::InputText("##", input, 80, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll)) {
 			obj->set_name(input);
-			renaming = false;
+            m_renaming = false;
 		}
 		else if (ImGui::IsItemDeactivated()) {
-			renaming = false;
+            m_renaming = false;
 		}
 		return;
 	}
 
 	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
-	bool open = ImGui::TreeNodeEx(nodename.c_str(), flags);
+	bool open = ImGui::TreeNodeEx(name.c_str(), flags);
 	if (ImGui::IsItemClicked()) {
-		selected = obj;
+		m_selected = obj;
 		if (ImGui::IsMouseDoubleClicked(0)) {
-			renaming = true;
+            m_renaming = true;
 		}
 	}
 	if (open) {
@@ -195,11 +200,18 @@ void LilyEditorLayer::display_Lobject(Lobject* obj) {
 	}
 }
 
-void LilyEditorLayer::entity_list_window() {
-	ImGui::Begin("Lobject List");
+void LilyEditor::entity_list_window() {
+    if (m_current_scene_path.empty()) {
+        return;
+    }
+    ImGui::Begin("Lobject List");
 	if (ImGui::Button("Create New Entity")) {
-		selected = m_active_scene->create_Lobject();
+		m_active_scene->create_Lobject();
 	}
+    if (ImGui::Button("Delete Selected")) {
+        m_active_scene->delete_Lobject(m_selected);
+        m_selected = nullptr;
+    }
 
     for (auto& obj : m_active_scene->get_root()->get_children())
         display_Lobject(obj);
@@ -207,10 +219,10 @@ void LilyEditorLayer::entity_list_window() {
 	ImGui::End(); // Entity List
 }
 
-void LilyEditorLayer::settings_window() {
+void LilyEditor::settings_window() {
 	ImGui::Begin("Settings");
-	if (ImGui::SliderInt("V-Sync", &vsync, -1, 1))
-		m_app->GetWindow().set_vsync(vsync);
+	if (ImGui::SliderInt("V-Sync", &m_vsync, -1, 1))
+        Application::get()->get_window().set_vsync(m_vsync);
 	
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 

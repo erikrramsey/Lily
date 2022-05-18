@@ -5,23 +5,21 @@
 #include <imgui_impl_opengl3.h>
 
 #include "Application/Application.h"
-#include "Application/EventSender.h"
+#include "Application/LilyEventSender.h"
 
 
 namespace Lily {
-	class Application;
-	class GuiLayer : public EventListener{
+	class Gui : public EventListener{
 	public:
-		GuiLayer();
-		virtual ~GuiLayer();
+		Gui();
+		virtual ~Gui();
 
-		virtual void Init();
-		virtual void Update(long long dt) = 0;
+		virtual void init();
+		virtual void update(long long dt) = 0;
 
 		void OnEvent(SDL_Event& ev) override;
 
 	protected:
 		void Cleanup();
-		Application* m_app;
 	};
 }

@@ -330,7 +330,7 @@ extern DECLSPEC int SDLCALL SDL_OpenAudio(SDL_AudioSpec * desired,
 typedef Uint32 SDL_AudioDeviceID;
 
 /**
- *  Get the number of available devices exposed by the current driver.
+ *  get the number of available devices exposed by the current driver.
  *  Only valid after a successfully initializing the audio subsystem.
  *  Returns -1 if an explicit list of devices can't be determined; this is
  *  not an error. For example, if SDL is set up to talk to a remote audio
@@ -344,7 +344,7 @@ typedef Uint32 SDL_AudioDeviceID;
 extern DECLSPEC int SDLCALL SDL_GetNumAudioDevices(int iscapture);
 
 /**
- *  Get the human-readable name of a specific audio device.
+ *  get the human-readable name of a specific audio device.
  *  Must be a value between 0 and (number of audio devices-1).
  *  Only valid after a successfully initializing the audio subsystem.
  *  The values returned by this function reflect the latest call to
@@ -389,7 +389,7 @@ extern DECLSPEC SDL_AudioDeviceID SDLCALL SDL_OpenAudioDevice(const char
 /**
  *  \name Audio state
  *
- *  Get the current audio state.
+ *  get the current audio state.
  */
 /* @{ */
 typedef enum
@@ -574,7 +574,7 @@ extern DECLSPEC SDL_AudioStream * SDLCALL SDL_NewAudioStream(const SDL_AudioForm
 extern DECLSPEC int SDLCALL SDL_AudioStreamPut(SDL_AudioStream *stream, const void *buf, int len);
 
 /**
- *  Get converted/resampled data from the stream
+ *  get converted/resampled data from the stream
  *
  *  \param stream The stream the audio is being requested from
  *  \param buf A buffer to fill with audio data
@@ -591,7 +591,7 @@ extern DECLSPEC int SDLCALL SDL_AudioStreamPut(SDL_AudioStream *stream, const vo
 extern DECLSPEC int SDLCALL SDL_AudioStreamGet(SDL_AudioStream *stream, void *buf, int len);
 
 /**
- * Get the number of converted/resampled bytes available. The stream may be
+ * get the number of converted/resampled bytes available. The stream may be
  *  buffering data behind the scenes until it has enough to resample
  *  correctly, so this number might be lower than what you expect, or even
  *  be zero. Add more data or flush the stream if you need the data now.
@@ -755,7 +755,7 @@ extern DECLSPEC int SDLCALL SDL_QueueAudio(SDL_AudioDeviceID dev, const void *da
 extern DECLSPEC Uint32 SDLCALL SDL_DequeueAudio(SDL_AudioDeviceID dev, void *data, Uint32 len);
 
 /**
- *  Get the number of bytes of still-queued audio.
+ *  get the number of bytes of still-queued audio.
  *
  *  For playback device:
  *

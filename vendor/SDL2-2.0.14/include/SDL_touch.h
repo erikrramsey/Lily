@@ -67,27 +67,27 @@ typedef struct SDL_Finger
 /* Function prototypes */
 
 /**
- *  \brief Get the number of registered touch devices.
+ *  \brief get the number of registered touch devices.
  */
 extern DECLSPEC int SDLCALL SDL_GetNumTouchDevices(void);
 
 /**
- *  \brief Get the touch ID with the given index, or 0 if the index is invalid.
+ *  \brief get the touch ID with the given index, or 0 if the index is invalid.
  */
 extern DECLSPEC SDL_TouchID SDLCALL SDL_GetTouchDevice(int index);
 
 /**
- * \brief Get the type of the given touch device.
+ * \brief get the type of the given touch device.
  */
 extern DECLSPEC SDL_TouchDeviceType SDLCALL SDL_GetTouchDeviceType(SDL_TouchID touchID);
 
 /**
- *  \brief Get the number of active fingers for a given touch device.
+ *  \brief get the number of active fingers for a given touch device.
  */
 extern DECLSPEC int SDLCALL SDL_GetNumTouchFingers(SDL_TouchID touchID);
 
 /**
- *  \brief Get the finger object of the given touch, with the given index.
+ *  \brief get the finger object of the given touch, with the given index.
  */
 extern DECLSPEC SDL_Finger * SDLCALL SDL_GetTouchFinger(SDL_TouchID touchID, int index);
 

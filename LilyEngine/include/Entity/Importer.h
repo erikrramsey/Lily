@@ -24,9 +24,9 @@ class Scene;
 class Lobject;
 class Importer {
 public:
-	Importer(Scene* scene);
-	void import_model(Lobject* obj, std::string& path);
-    void import_sub_mesh(Mesh& lmesh);
+	Importer();
+	static void import_model(Lobject* obj, std::string& path);
+    static void import_sub_mesh(Mesh& lmesh);
 
 private:
 	Scene* m_scene;

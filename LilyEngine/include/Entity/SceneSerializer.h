@@ -12,8 +12,9 @@ class SceneSerializer {
 public:
     SceneSerializer();
 
-    static void serialize(Scene* scene, const std::string& path);
-    static void deserialize(Scene* scene, const std::string& path);
+    static void serialize(Scene* scene, const fs::path& path);
+    static void deserialize(Scene* scene, const fs::path& path);
 };
+
 
 }

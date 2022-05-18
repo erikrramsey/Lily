@@ -215,7 +215,7 @@ extern DECLSPEC void SDLCALL SDL_SetAssertionHandler(
                                             void *userdata);
 
 /**
- *  \brief Get the default assertion handler.
+ *  \brief get the default assertion handler.
  *
  *  This returns the function pointer that is called by default when an
  *   assertion is triggered. This is an internal function provided by SDL,
@@ -227,7 +227,7 @@ extern DECLSPEC void SDLCALL SDL_SetAssertionHandler(
 extern DECLSPEC SDL_AssertionHandler SDLCALL SDL_GetDefaultAssertionHandler(void);
 
 /**
- *  \brief Get the current assertion handler.
+ *  \brief get the current assertion handler.
  *
  *  This returns the function pointer that is called when an assertion is
  *   triggered. This is either the value last passed to
@@ -244,9 +244,9 @@ extern DECLSPEC SDL_AssertionHandler SDLCALL SDL_GetDefaultAssertionHandler(void
 extern DECLSPEC SDL_AssertionHandler SDLCALL SDL_GetAssertionHandler(void **puserdata);
 
 /**
- *  \brief Get a list of all assertion failures.
+ *  \brief get a list of all assertion failures.
  *
- *  Get all assertions triggered since last call to SDL_ResetAssertionReport(),
+ *  get all assertions triggered since last call to SDL_ResetAssertionReport(),
  *  or the start of the program.
  *
  *  The proper way to examine this data looks something like this:

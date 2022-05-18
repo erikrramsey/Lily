@@ -116,7 +116,7 @@ typedef VkSurfaceKHR SDL_vulkanSurface; /* for compatibility with Tizen */
 extern DECLSPEC int SDLCALL SDL_Vulkan_LoadLibrary(const char *path);
 
 /**
- *  \brief Get the address of the \c vkGetInstanceProcAddr function.
+ *  \brief get the address of the \c vkGetInstanceProcAddr function.
  *
  *  \note This should be called after either calling SDL_Vulkan_LoadLibrary
  *        or creating an SDL_Window with the SDL_WINDOW_VULKAN flag.
@@ -132,7 +132,7 @@ extern DECLSPEC void *SDLCALL SDL_Vulkan_GetVkGetInstanceProcAddr(void);
 extern DECLSPEC void SDLCALL SDL_Vulkan_UnloadLibrary(void);
 
 /**
- *  \brief Get the names of the Vulkan instance extensions needed to create
+ *  \brief get the names of the Vulkan instance extensions needed to create
  *         a surface with \c SDL_Vulkan_CreateSurface().
  *
  *  \param [in]     \c NULL or window Window for which the required Vulkan instance
@@ -242,7 +242,7 @@ extern DECLSPEC SDL_bool SDLCALL SDL_Vulkan_CreateSurface(SDL_Window *window,
                                                           VkSurfaceKHR* surface);
 
 /**
- *  \brief Get the size of a window's underlying drawable in pixels (for use
+ *  \brief get the size of a window's underlying drawable in pixels (for use
  *         with setting viewport, scissor & etc).
  *
  *  \param window   SDL_Window from which the drawable size should be queried

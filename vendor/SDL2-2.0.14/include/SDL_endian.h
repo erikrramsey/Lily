@@ -227,7 +227,7 @@ SDL_SwapFloat(float x)
 
 
 /**
- *  \name Swap to native
+ *  \name swap to native
  *  Byteswap item from the specified endianness to the native endianness.
  */
 /* @{ */
@@ -250,7 +250,7 @@ SDL_SwapFloat(float x)
 #define SDL_SwapBE64(X) (X)
 #define SDL_SwapFloatBE(X)  (X)
 #endif
-/* @} *//* Swap to native */
+/* @} *//* swap to native */
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus

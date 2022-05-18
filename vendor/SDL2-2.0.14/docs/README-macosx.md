@@ -143,7 +143,7 @@ there are some more things you should do before shipping your product...
    contains some meta-information about your application (like some copyright
    information, the version of your app, the name of an optional icon file,
    and other things). Part of that information is displayed by the Finder
-   when you click on the .app, or if you look at the "Get Info" window.
+   when you click on the .app, or if you look at the "get Info" window.
    More information about Info.plist files can be found on Apple's homepage.
 
 

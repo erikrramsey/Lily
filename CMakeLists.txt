@@ -52,8 +52,8 @@ SET(IMGUI_SOURCES
 # Set sources
 FILE(GLOB_RECURSE ENGINE_SOURCES "LilyEngine/src/*.cpp")
 FILE(GLOB_RECURSE APPLICATION_SOURCES "LilyApplication/src/*.cpp")
-ADD_LIBRARY(LilyEngine STATIC ${ENGINE_SOURCES} ${IMGUI_SOURCES} "${PROJECT_SOURCE_DIR}/vendor/nlohmann/json.hpp" LilyEngine/src/Entity/SceneSerializer.cpp)
-ADD_EXECUTABLE(${PROJECT_NAME} ${APPLICATION_SOURCES} ${IMGUI_SOURCES} LilyApplication/src/ComponentEditorWindow.cpp LilyApplication/src/ComponentEditorWindow.cpp)
+ADD_LIBRARY(LilyEngine STATIC ${ENGINE_SOURCES} ${IMGUI_SOURCES} "${PROJECT_SOURCE_DIR}/vendor/nlohmann/json.hpp")
+ADD_EXECUTABLE(${PROJECT_NAME} ${APPLICATION_SOURCES} ${IMGUI_SOURCES})
 
 
 # Includes for Engine

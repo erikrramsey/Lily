@@ -55,12 +55,12 @@ typedef struct SDL_Keysym
 /* Function prototypes */
 
 /**
- *  \brief Get the window which currently has keyboard focus.
+ *  \brief get the window which currently has keyboard focus.
  */
 extern DECLSPEC SDL_Window * SDLCALL SDL_GetKeyboardFocus(void);
 
 /**
- *  \brief Get a snapshot of the current state of the keyboard.
+ *  \brief get a snapshot of the current state of the keyboard.
  *
  *  \param numkeys if non-NULL, receives the length of the returned array.
  *
@@ -77,7 +77,7 @@ extern DECLSPEC SDL_Window * SDLCALL SDL_GetKeyboardFocus(void);
 extern DECLSPEC const Uint8 *SDLCALL SDL_GetKeyboardState(int *numkeys);
 
 /**
- *  \brief Get the current key modifier state for the keyboard.
+ *  \brief get the current key modifier state for the keyboard.
  */
 extern DECLSPEC SDL_Keymod SDLCALL SDL_GetModState(void);
 
@@ -89,7 +89,7 @@ extern DECLSPEC SDL_Keymod SDLCALL SDL_GetModState(void);
 extern DECLSPEC void SDLCALL SDL_SetModState(SDL_Keymod modstate);
 
 /**
- *  \brief Get the key code corresponding to the given scancode according
+ *  \brief get the key code corresponding to the given scancode according
  *         to the current keyboard layout.
  *
  *  See ::SDL_Keycode for details.
@@ -99,7 +99,7 @@ extern DECLSPEC void SDLCALL SDL_SetModState(SDL_Keymod modstate);
 extern DECLSPEC SDL_Keycode SDLCALL SDL_GetKeyFromScancode(SDL_Scancode scancode);
 
 /**
- *  \brief Get the scancode corresponding to the given key code according to the
+ *  \brief get the scancode corresponding to the given key code according to the
  *         current keyboard layout.
  *
  *  See ::SDL_Scancode for details.
@@ -109,7 +109,7 @@ extern DECLSPEC SDL_Keycode SDLCALL SDL_GetKeyFromScancode(SDL_Scancode scancode
 extern DECLSPEC SDL_Scancode SDLCALL SDL_GetScancodeFromKey(SDL_Keycode key);
 
 /**
- *  \brief Get a human-readable name for a scancode.
+ *  \brief get a human-readable name for a scancode.
  *
  *  \return A pointer to the name for the scancode.
  *          If the scancode doesn't have a name, this function returns
@@ -120,7 +120,7 @@ extern DECLSPEC SDL_Scancode SDLCALL SDL_GetScancodeFromKey(SDL_Keycode key);
 extern DECLSPEC const char *SDLCALL SDL_GetScancodeName(SDL_Scancode scancode);
 
 /**
- *  \brief Get a scancode from a human-readable name
+ *  \brief get a scancode from a human-readable name
  *
  *  \return scancode, or SDL_SCANCODE_UNKNOWN if the name wasn't recognized
  *
@@ -129,7 +129,7 @@ extern DECLSPEC const char *SDLCALL SDL_GetScancodeName(SDL_Scancode scancode);
 extern DECLSPEC SDL_Scancode SDLCALL SDL_GetScancodeFromName(const char *name);
 
 /**
- *  \brief Get a human-readable name for a key.
+ *  \brief get a human-readable name for a key.
  *
  *  \return A pointer to a UTF-8 string that stays valid at least until the next
  *          call to this function. If you need it around any longer, you must
@@ -141,7 +141,7 @@ extern DECLSPEC SDL_Scancode SDLCALL SDL_GetScancodeFromName(const char *name);
 extern DECLSPEC const char *SDLCALL SDL_GetKeyName(SDL_Keycode key);
 
 /**
- *  \brief Get a key code from a human-readable name
+ *  \brief get a key code from a human-readable name
  *
  *  \return key code, or SDLK_UNKNOWN if the name wasn't recognized
  *

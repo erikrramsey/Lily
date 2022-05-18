@@ -5,32 +5,24 @@ const char* COMPONENTS[] = {
         "Camera"
 };
 
-ComponentEditorWindow::ComponentEditorWindow(LilyEditorLayer* parent) {
-    m_parent = parent;
+ComponentEditorWindow::ComponentEditorWindow(LilyEditor* parent) : EditorWindow(parent) {
     m_selected = nullptr;
     m_rendered = nullptr;
-    m_show_file_explorer = false;
-
-    m_file_explorer = new LilyFileExplorer();
-}
-
-void ComponentEditorWindow::render_Lobject(Lobject* obj) {
-    m_rendered = obj;
-    render_Lobject();
-}
-
-void ComponentEditorWindow::render_Lobject() {
-    if (m_rendered == nullptr) return;
-    render();
+    m_file_explorer = nullptr;
+    m_component_path.clear();
 }
 
 void ComponentEditorWindow::render() {
-    if (m_show_file_explorer) {
+    m_rendered = m_parent->get_selected();
+    if (m_rendered == nullptr) return;
+
+    if (m_file_explorer) {
         m_file_explorer->render();
-        auto p = m_file_explorer->get_selection();
-        if (!p.empty()) {
-            m_parent->m_active_scene->import_component(m_selected, p.string());
-            m_show_file_explorer = false;
+        if (!m_component_path.empty()) {
+            m_scene->import_component(m_selected, m_component_path.string());
+            delete m_file_explorer;
+            m_component_path.clear();
+            m_file_explorer = nullptr;
         }
     }
     if (m_rendered == nullptr || m_rendered->try_get<Camera>()) return;
@@ -44,7 +36,7 @@ void ComponentEditorWindow::render() {
     if (ImGui::BeginCombo("##Add Component", current, flags)) {
         if (ImGui::Selectable(COMPONENTS[0])) {
             m_selected = m_rendered;
-            m_show_file_explorer = true;
+            m_file_explorer = new LilyFileExplorer("Select component resource", &m_component_path, m_parent->project_path());
         }
         if (ImGui::Selectable(COMPONENTS[1])) {
 
@@ -72,16 +64,16 @@ void ComponentEditorWindow::render_family() {
     ImGui::Text("%d", static_cast<int>(comp.parent));
 
     if (ImGui::Button("Set Root as Parent")) {
-        m_parent->m_active_scene->get_root()->add_child(m_rendered);
+        m_scene->get_root()->add_child(m_rendered);
     }
 
     ImGuiComboFlags flags = ImGuiComboFlags_PopupAlignLeft | ImGuiComboFlags_NoArrowButton;
     const char* current = "Add Child";
     if (ImGui::BeginCombo("##Add Child", current, flags)) {
-        for (auto& [ent, obj] : m_parent->m_active_scene->m_objects) {
+        for (auto& [ent, obj] : m_scene->m_objects) {
             bool is_valid = true;
             auto climb = m_rendered;
-            while (climb != m_parent->m_active_scene->get_root()) {
+            while (climb != m_scene->get_root()) {
                 if (obj == climb) is_valid = false;
                 climb = climb->get_parent();
             }

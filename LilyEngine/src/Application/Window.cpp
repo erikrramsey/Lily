@@ -3,21 +3,21 @@ namespace Lily {
 
 
 Window::Window() {
-gWindow = nullptr;
+    gWindow = nullptr;
 }
 
-Window::~Window()
-{
-SDL_StopTextInput();
-SDL_DestroyWindow(gWindow);
-gWindow = NULL;
-SDL_Quit();
+Window::~Window() {
+    SDL_StopTextInput();
+    SDL_DestroyWindow(gWindow);
+    SDL_GL_DeleteContext(gContext);
+    gWindow = nullptr;
+    gContext = nullptr;
+    SDL_Quit();
 }
 
-bool Window::Initialize(const std::string name, int width, int height) {
+bool Window::initialize(const std::string& name, int width, int height) {
 	// Start SDL
-	if(SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
-	{
+	if(SDL_InitSubSystem(SDL_INIT_VIDEO) < 0) {
 	  printf("SDL failed to initialize: %s\n", SDL_GetError());
 	  return false;
 	}
@@ -41,20 +41,26 @@ bool Window::Initialize(const std::string name, int width, int height) {
 	SDL_DisplayMode current;
 	SDL_GetCurrentDisplayMode(0, &current);
 
+
+    int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI;
 	//use for fullscreen
-	if (height == 0 && width == 0)
-	{
+	if (height == 0 && width == 0) {
 	  height = current.h;
 	  width = current.w;
+      flags |= SDL_WINDOW_MAXIMIZED | SDL_WINDOW_RESIZABLE;
 	}
 
-	gWindow = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN  | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_MAXIMIZED);
-	if(gWindow == NULL)
-	{
+	gWindow = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+
+	if(gWindow == NULL) {
 	  printf("Widow failed to create: %s\n", SDL_GetError());
 	  return false;
 	}
 
+    fs::path iconpath = fs::current_path().string() + "\\LilyIcon.bmp";
+    auto surf = SDL_LoadBMP(iconpath.string().c_str());
+	SDL_SetWindowIcon(gWindow, surf);
+	std::cout << SDL_GetError() << std::endl;
 
 	// Create context
 	gContext = SDL_GL_CreateContext(gWindow);
@@ -69,12 +75,10 @@ bool Window::Initialize(const std::string name, int width, int height) {
 	  return false;
 	}
 
-	SDL_SetWindowResizable(gWindow, SDL_TRUE);
-
 	return true;
 }
 
-void Window::Swap() {
+void Window::swap() {
 	SDL_GL_SwapWindow(gWindow);
 }
 

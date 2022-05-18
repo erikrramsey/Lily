@@ -252,7 +252,7 @@ public:
     bool SetPropertyPointer(const char *szName, void *sValue);
 
     // -------------------------------------------------------------------
-    /** Get a configuration property.
+    /** get a configuration property.
      * @param szName Name of the property. All supported properties
      *   are defined in the aiConfig.g header (all constants share the
      *   prefix AI_CONFIG_XXX).
@@ -268,7 +268,7 @@ public:
             int iErrorReturn = 0xffffffff) const;
 
     // -------------------------------------------------------------------
-    /** Get a boolean configuration property. Boolean properties
+    /** get a boolean configuration property. Boolean properties
      *  are stored on the integer stack internally so it's possible
      *  to set them via #SetPropertyBool and query them with
      *  #GetPropertyBool and vice versa.
@@ -279,14 +279,14 @@ public:
     }
 
     // -------------------------------------------------------------------
-    /** Get a floating-point configuration property
+    /** get a floating-point configuration property
      * @see GetPropertyInteger()
      */
     ai_real GetPropertyFloat(const char *szName,
             ai_real fErrorReturn = 10e10) const;
 
     // -------------------------------------------------------------------
-    /** Get a string configuration property
+    /** get a string configuration property
      *
      *  The return value remains valid until the property is modified.
      * @see GetPropertyInteger()
@@ -295,7 +295,7 @@ public:
             const std::string &sErrorReturn = std::string()) const;
 
     // -------------------------------------------------------------------
-    /** Get a matrix configuration property
+    /** get a matrix configuration property
      *
      *  The return value remains valid until the property is modified.
      * @see GetPropertyInteger()
@@ -304,7 +304,7 @@ public:
             const aiMatrix4x4 &sErrorReturn = aiMatrix4x4()) const;
 
     // -------------------------------------------------------------------
-    /** Get a pointer configuration property
+    /** get a pointer configuration property
      *
      *  The return value remains valid until the property is modified.
      * @see GetPropertyInteger()
@@ -566,7 +566,7 @@ public:
     inline bool IsExtensionSupported(const std::string &szExtension) const;
 
     // -------------------------------------------------------------------
-    /** Get a full list of all file extensions supported by ASSIMP.
+    /** get a full list of all file extensions supported by ASSIMP.
      *
      * If a file extension is contained in the list this does of course not
      * mean that ASSIMP is able to load all files with this extension ---
@@ -578,7 +578,7 @@ public:
     void GetExtensionList(aiString &szOut) const;
 
     // -------------------------------------------------------------------
-    /** @brief Get a full list of all file extensions supported by ASSIMP.
+    /** @brief get a full list of all file extensions supported by ASSIMP.
      *
      * This function is provided for backward compatibility.
      * See the aiString version for detailed and up-to-date docs.
@@ -586,11 +586,11 @@ public:
     inline void GetExtensionList(std::string &szOut) const;
 
     // -------------------------------------------------------------------
-    /** Get the number of importers currently registered with Assimp. */
+    /** get the number of importers currently registered with Assimp. */
     size_t GetImporterCount() const;
 
     // -------------------------------------------------------------------
-    /** Get meta data for the importer corresponding to a specific index..
+    /** get meta data for the importer corresponding to a specific index..
     *
     *  For the declaration of #aiImporterDesc, include <assimp/importerdesc.h>.
     *  @param index Index to query, must be within [0,GetImporterCount())

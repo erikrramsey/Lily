@@ -431,7 +431,7 @@ enum aiPrimitiveType {
 #endif
 }; //! enum aiPrimitiveType
 
-// Get the #aiPrimitiveType flag for a specific number of face indices
+// get the #aiPrimitiveType flag for a specific number of face indices
 #define AI_PRIMITIVE_TYPE_FOR_N_INDICES(n) \
     ((n) > 3 ? aiPrimitiveType_POLYGON : (aiPrimitiveType)(1u << ((n)-1)))
 
@@ -864,7 +864,7 @@ struct aiMesh {
         }
     }
 
-    //! Get the number of UV channels the mesh contains
+    //! get the number of UV channels the mesh contains
     unsigned int GetNumUVChannels() const {
         unsigned int n(0);
         while (n < AI_MAX_NUMBER_OF_TEXTURECOORDS && mTextureCoords[n]) {
@@ -874,7 +874,7 @@ struct aiMesh {
         return n;
     }
 
-    //! Get the number of vertex color channels the mesh contains
+    //! get the number of vertex color channels the mesh contains
     unsigned int GetNumColorChannels() const {
         unsigned int n(0);
         while (n < AI_MAX_NUMBER_OF_COLOR_SETS && mColors[n]) {
@@ -924,7 +924,7 @@ struct aiMesh {
         *mTextureCoordsNames[pIndex] = texCoordsName;
     }
 
-    //! Get a texture coordinate set name
+    //! get a texture coordinate set name
     //! \param pIndex Index of the texture coordinates set
     const aiString *GetTextureCoordsName(unsigned int pIndex) const {
         if (mTextureCoordsNames == nullptr || pIndex >= AI_MAX_NUMBER_OF_TEXTURECOORDS) {

@@ -42,7 +42,7 @@ namespace Lily {
 		glDepthFunc(GL_LESS);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
-		// Get any errors from OpenGL
+		// get any errors from OpenGL
 		auto error = glGetError();
 		if ( error != GL_NO_ERROR ) {
 		  std::string val = ErrorString( error );
@@ -101,7 +101,7 @@ namespace Lily {
 		glUniformMatrix4fv(viewMLocation,		1, GL_FALSE, glm::value_ptr(cam.GetView()));
 
 
-		// Get any errors from OpenGL
+		// get any errors from OpenGL
 		auto error = glGetError();
 		if ( error != GL_NO_ERROR ) {
 		  std::string val = ErrorString( error );

@@ -13,10 +13,10 @@ namespace Lily {
 	};
 
 
-	class EventSender {
+	class LilyEventSender {
 	  public:
-		EventSender();
-		~EventSender();
+		LilyEventSender();
+		~LilyEventSender();
 
 		void Send(SDL_Event& ev);
 

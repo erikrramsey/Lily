@@ -490,7 +490,7 @@ namespace Assimp {
 template <typename T>
 struct Interpolator {
     // ------------------------------------------------------------------
-    /** @brief Get the result of the interpolation between a,b.
+    /** @brief get the result of the interpolation between a,b.
      *
      *  The interpolation algorithm depends on the type of the operands.
      *  aiQuaternion's and aiQuatKey's SLERP, the rest does a simple

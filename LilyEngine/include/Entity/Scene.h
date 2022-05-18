@@ -38,7 +38,6 @@ public:
     void clear_Lobject(Lobject* obj);
 	
 	ECRegistry m_registry;
-    Importer* m_importer;
 	std::unordered_map<Entity, Lobject*> m_objects;
 private:
 	Lobject* m_camera;

@@ -9,13 +9,10 @@ unsigned int TextureFromFile(const char* path);
 const std::string export_sub_mesh(aiMesh* mesh, aiMaterial* mat);
 void        import_sub_mesh(Mesh& mesh);
 
-Importer::Importer(Scene* scene) {
-	m_scene = scene;
-}
+Importer::Importer() = default;
 
 void Importer::import_model(Lobject* obj, std::string& path) {
 	Assimp::Importer import;
-	parent = obj;
     auto flags = aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices;
     flags |= aiProcess_FixInfacingNormals | aiProcess_GenSmoothNormals | aiProcess_PreTransformVertices;
 	const aiScene* scene = import.ReadFile(path, flags);
@@ -25,7 +22,7 @@ void Importer::import_model(Lobject* obj, std::string& path) {
 		return;
 	}
 
-	directory = path.substr(0, path.find_last_of('\\'));
+	auto directory = path.substr(0, path.find_last_of('\\'));
     auto node = scene->mRootNode;
 
     if (node->mNumChildren == 0) {
@@ -46,8 +43,8 @@ void Importer::import_model(Lobject* obj, std::string& path) {
         auto mesh = scene->mMeshes[node->mChildren[i]->mMeshes[0]];
         auto mat = scene->mMaterials[mesh->mMaterialIndex];
 
-        auto mobj = m_scene->create_Lobject();
-        parent->add_child(mobj);
+        auto mobj = obj->m_scene->create_Lobject();
+        obj->add_child(mobj);
         auto m = Mesh(mobj->m_entity, export_sub_mesh(mesh, mat));
 
         aiString mat_path;
@@ -110,9 +107,11 @@ const std::string export_sub_mesh(aiMesh* mesh, aiMaterial* mat) {
     mesh_copy->mTextureCoords[0] = new aiVector3D[mesh->mNumVertices];
     mesh_copy->mNumUVComponents[0] = mesh->mNumVertices;
     for (int j = 0; j < mesh->mNumVertices; j++) {
-        mesh_copy->mVertices[j] = mesh->mVertices[j];
-        mesh_copy->mNormals[j] = mesh->mNormals[j];
-        mesh_copy->mTextureCoords[0][j] = mesh->mTextureCoords[0][j];
+        if (mesh->mTextureCoords[0]) {
+            mesh_copy->mVertices[j] = mesh->mVertices[j];
+            mesh_copy->mNormals[j] = mesh->mNormals[j];
+            mesh_copy->mTextureCoords[0][j] = mesh->mTextureCoords[0][j];
+        }
     }
 
     mesh_copy->mFaces = new aiFace[mesh->mNumFaces];

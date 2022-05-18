@@ -3,11 +3,9 @@
 
 namespace Lily {
 Scene::Scene() {
-	m_importer = new Importer(this);
 }
 
 Scene::~Scene() {
-	delete m_importer;
 }
 
 void Scene::Init() {
@@ -63,7 +61,7 @@ void Scene::update(long long dt) {
 }
 
 void Scene::import_component(Lobject* obj, std::string& path) {
-    m_importer->import_model(obj, path);
+    Importer::import_model(obj, path);
 }
 
 Lobject* Scene::create_Lobject() {

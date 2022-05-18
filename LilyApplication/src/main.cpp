@@ -1,27 +1,56 @@
-#include "LilyEditorLayer.h"
+#include "LilyEditor.h"
+#include "LilyLauncher.h"
+
+#include <filesystem>
 
 Application* Application::s_instance;
+namespace fs = std::filesystem;
 
-class LilyEditor : public Application {
+
+class LilyLauncherApp : public Application {
 public:
-	LilyEditor() : Application() {
-		m_layer = new LilyEditorLayer();
+    LilyLauncherApp(LauncherData* data) : Application() {
+        m_window_size[0] = 720;
+        m_window_size[1] = 480;
+        m_layer = new LilyLauncher(data);
+        AddLayer(m_layer);
+        Init("Lily Launcher");
+    }
+
+    ~LilyLauncherApp() {
+        delete m_layer;
+    }
+
+    LilyLauncher* m_layer;
+};
+
+class LilyApp : public Application {
+public:
+	LilyApp(LauncherData* data) : Application() {
+		m_layer = new LilyEditor(data);
 		AddLayer(m_layer);
 		Init();
 	};
-	~LilyEditor();
+	~LilyApp();
     
 private:
-	LilyEditorLayer* m_layer;
+	LilyEditor* m_layer;
 };
 
-LilyEditor::~LilyEditor() {
+LilyApp::~LilyApp() {
 	delete m_layer;
 }
 
 int main(int argc, char* argv[]) {
-	auto app = new LilyEditor();
-	app->Run();
-	delete app;
+    LauncherData data;
+    auto launcher = new LilyLauncherApp(&data);
+    launcher->Run();
+    delete launcher;
+
+    if (data.open_editor) {
+        auto app = new LilyApp(&data);
+        app->Run();
+        delete app;
+    }
 	return 0;
 }

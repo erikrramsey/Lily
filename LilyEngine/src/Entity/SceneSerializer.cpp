@@ -8,7 +8,7 @@ static void deserialize_Lobject_rec(Scene* scene, Lobject* obj, json& parent);
 
 SceneSerializer::SceneSerializer() = default;
 
-void SceneSerializer::serialize(Scene* scene, const std::string& path) {
+void SceneSerializer::serialize(Scene* scene, const fs::path& path) {
     json jsonLobjectArray;
     std::ofstream outfile(path);
     if (!outfile.good()) {
@@ -21,6 +21,20 @@ void SceneSerializer::serialize(Scene* scene, const std::string& path) {
 
     outfile << jsonLobjectArray.dump(4);
     outfile.close();
+}
+
+void SceneSerializer::deserialize(Scene* scene, const fs::path& path) {
+    scene->clear();
+    scene->Init();
+    std::ifstream infile(path);
+    json fullJson;
+    infile >> fullJson;
+    for (auto& jsn : fullJson) {
+        auto obj = scene->create_Lobject();
+        scene->get_root()->add_child(obj);
+        deserialize_Lobject_rec(scene, obj, jsn);
+    }
+    infile.close();
 }
 
 void serialize_Lobject_rec(Scene* scene, Lobject* obj, json& parent) {
@@ -51,19 +65,6 @@ void serialize_Lobject_rec(Scene* scene, Lobject* obj, json& parent) {
     parent[obj->get_name()] = cur;
 }
 
-void SceneSerializer::deserialize(Scene* scene, const std::string& path) {
-    scene->clear();
-    scene->Init();
-    std::ifstream infile(path);
-    json fullJson;
-    infile >> fullJson;
-    for (auto& jsn : fullJson) {
-        auto obj = scene->create_Lobject();
-        scene->get_root()->add_child(obj);
-        deserialize_Lobject_rec(scene, obj, jsn);
-    }
-    infile.close();
-}
 
 void deserialize_Lobject_rec(Scene* scene, Lobject* obj, json& parent) {
     for (json& child : parent["Children"]) {
@@ -86,7 +87,7 @@ void deserialize_Lobject_rec(Scene* scene, Lobject* obj, json& parent) {
         auto m = Mesh(obj->m_entity, mj["Path"]);
         if (mj.contains("Material"))
             m.material_path = mj["Material"];
-        scene->m_importer->import_sub_mesh(m);
+        Importer::import_sub_mesh(m);
         obj->add_component(m);
     }
 }

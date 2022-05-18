@@ -295,7 +295,7 @@ extern DECLSPEC int SDLCALL SDL_SetSurfaceColorMod(SDL_Surface * surface,
 
 
 /**
- *  \brief Get the additional color value used in blit operations.
+ *  \brief get the additional color value used in blit operations.
  *
  *  \param surface The surface to query.
  *  \param r A pointer filled in with the current red color value.
@@ -324,7 +324,7 @@ extern DECLSPEC int SDLCALL SDL_SetSurfaceAlphaMod(SDL_Surface * surface,
                                                    Uint8 alpha);
 
 /**
- *  \brief Get the additional alpha value used in blit operations.
+ *  \brief get the additional alpha value used in blit operations.
  *
  *  \param surface The surface to query.
  *  \param alpha A pointer filled in with the current alpha value.
@@ -350,7 +350,7 @@ extern DECLSPEC int SDLCALL SDL_SetSurfaceBlendMode(SDL_Surface * surface,
                                                     SDL_BlendMode blendMode);
 
 /**
- *  \brief Get the blend mode used for blit operations.
+ *  \brief get the blend mode used for blit operations.
  *
  *  \param surface   The surface to query.
  *  \param blendMode A pointer filled in with the current blend mode.
@@ -543,12 +543,12 @@ extern DECLSPEC int SDLCALL SDL_LowerBlitScaled
 extern DECLSPEC void SDLCALL SDL_SetYUVConversionMode(SDL_YUV_CONVERSION_MODE mode);
 
 /**
- *  \brief Get the YUV conversion mode
+ *  \brief get the YUV conversion mode
  */
 extern DECLSPEC SDL_YUV_CONVERSION_MODE SDLCALL SDL_GetYUVConversionMode(void);
 
 /**
- *  \brief Get the YUV conversion mode, returning the correct mode for the resolution when the current conversion mode is SDL_YUV_CONVERSION_AUTOMATIC
+ *  \brief get the YUV conversion mode, returning the correct mode for the resolution when the current conversion mode is SDL_YUV_CONVERSION_AUTOMATIC
  */
 extern DECLSPEC SDL_YUV_CONVERSION_MODE SDLCALL SDL_GetYUVConversionModeForResolution(int width, int height);
 

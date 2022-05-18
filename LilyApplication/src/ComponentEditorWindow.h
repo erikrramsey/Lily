@@ -2,28 +2,29 @@
 
 #include "Lily.h"
 #include "LilyFileExplorer.h"
-#include "LilyEditorLayer.h"
+#include "LilyEditor.h"
+#include "EditorWindow.h"
+
+#include <filesystem>
+namespace fs = std::filesystem;
 
 using namespace Lily;
 
-class LilyEditorLayer;
-class ComponentEditorWindow {
+class LilyEditor;
+class ComponentEditorWindow : public EditorWindow {
 public:
-    explicit ComponentEditorWindow(LilyEditorLayer* parent);
-
-    void render_Lobject(Lobject* obj);
-    void render_Lobject();
-
+    explicit ComponentEditorWindow(LilyEditor* parent);
+    void render() override;
 private:
-    void render();
     void render_transform();
     void render_family();
     void render_mesh();
 
-    LilyEditorLayer* m_parent;
     LilyFileExplorer* m_file_explorer;
+    fs::path m_component_path;
+
+    Scene* m_scene;
 
     Lobject* m_rendered;
     Lobject* m_selected;
-    bool m_show_file_explorer;
 };

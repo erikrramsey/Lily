@@ -46,7 +46,7 @@ extern "C" {
 extern DECLSPEC int SDLCALL SDL_SetClipboardText(const char *text);
 
 /**
- * \brief Get UTF-8 text from the clipboard, which must be freed with SDL_free()
+ * \brief get UTF-8 text from the clipboard, which must be freed with SDL_free()
  *
  * \sa SDL_SetClipboardText()
  */

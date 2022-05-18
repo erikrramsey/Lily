@@ -107,7 +107,7 @@ typedef struct SDL_version
     (SDL_COMPILEDVERSION >= SDL_VERSIONNUM(X, Y, Z))
 
 /**
- *  \brief Get the version of SDL that is linked against your program.
+ *  \brief get the version of SDL that is linked against your program.
  *
  *  If you are linking to SDL dynamically, then it is possible that the
  *  current version will be different than the version you compiled against.
@@ -133,7 +133,7 @@ typedef struct SDL_version
 extern DECLSPEC void SDLCALL SDL_GetVersion(SDL_version * ver);
 
 /**
- *  \brief Get the code revision of SDL that is linked against your program.
+ *  \brief get the code revision of SDL that is linked against your program.
  *
  *  Returns an arbitrary string (a hash value) uniquely identifying the
  *  exact revision of the SDL library in use, and is only useful in comparing
@@ -142,7 +142,7 @@ extern DECLSPEC void SDLCALL SDL_GetVersion(SDL_version * ver);
 extern DECLSPEC const char *SDLCALL SDL_GetRevision(void);
 
 /**
- *  \brief Get the revision number of SDL that is linked against your program.
+ *  \brief get the revision number of SDL that is linked against your program.
  *
  *  Returns a number uniquely identifying the exact revision of the SDL
  *  library in use. It is an incrementing number based on commits to

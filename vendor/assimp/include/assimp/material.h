@@ -334,7 +334,7 @@ enum aiTextureType {
 #define AI_TEXTURE_TYPE_MAX aiTextureType_TRANSMISSION
 
 // -------------------------------------------------------------------------------
-// Get a string for a given aiTextureType
+// get a string for a given aiTextureType
 ASSIMP_API const char *TextureTypeToString(enum aiTextureType in);
 
 // ---------------------------------------------------------------------------
@@ -559,7 +559,7 @@ enum aiPropertyTypeInfo {
     /** Array of single-precision (32 Bit) floats
      *
      *  It is possible to use aiGetMaterialInteger[Array]() (or the C++-API
-     *  aiMaterial::Get()) to query properties stored in floating-point format.
+     *  aiMaterial::get()) to query properties stored in floating-point format.
      *  The material system performs the type conversion automatically.
     */
     aiPTI_Float = 0x1,
@@ -567,7 +567,7 @@ enum aiPropertyTypeInfo {
     /** Array of double-precision (64 Bit) floats
      *
      *  It is possible to use aiGetMaterialInteger[Array]() (or the C++-API
-     *  aiMaterial::Get()) to query properties stored in floating-point format.
+     *  aiMaterial::get()) to query properties stored in floating-point format.
      *  The material system performs the type conversion automatically.
     */
     aiPTI_Double = 0x2,
@@ -575,14 +575,14 @@ enum aiPropertyTypeInfo {
     /** The material property is an aiString.
      *
      *  Arrays of strings aren't possible, aiGetMaterialString() (or the
-     *  C++-API aiMaterial::Get()) *must* be used to query a string property.
+     *  C++-API aiMaterial::get()) *must* be used to query a string property.
     */
     aiPTI_String = 0x3,
 
     /** Array of (32 Bit) integers
      *
      *  It is possible to use aiGetMaterialFloat[Array]() (or the C++-API
-     *  aiMaterial::Get()) to query properties stored in integer format.
+     *  aiMaterial::get()) to query properties stored in integer format.
      *  The material system performs the type conversion automatically.
     */
     aiPTI_Integer = 0x4,
@@ -603,7 +603,7 @@ enum aiPropertyTypeInfo {
 /** @brief Data structure for a single material property
  *
  *  As an user, you'll probably never need to deal with this data structure.
- *  Just use the provided aiGetMaterialXXX() or aiMaterial::Get() family
+ *  Just use the provided aiGetMaterialXXX() or aiMaterial::get() family
  *  of functions to query material properties easily. Processing them
  *  manually is faster, but it is not the recommended way. It isn't worth
  *  the effort. <br>
@@ -764,7 +764,7 @@ public:
             unsigned int idx, aiUVTransform &pOut) const;
 
     // -------------------------------------------------------------------
-    /** Get the number of textures for a particular texture type.
+    /** get the number of textures for a particular texture type.
      *  @param type Texture type to check for
      *  @return Number of textures for this type.
      *  @note A texture can be easily queried using #GetTexture() */
@@ -1601,7 +1601,7 @@ ASSIMP_API C_ENUM aiReturn aiGetMaterialString(const C_STRUCT aiMaterial *pMat,
         C_STRUCT aiString *pOut);
 
 // ---------------------------------------------------------------------------
-/** Get the number of textures for a particular texture type.
+/** get the number of textures for a particular texture type.
  *  @param[in] pMat Pointer to the input material. May not be NULL
  *  @param type Texture type to check for
  *  @return Number of textures for this type.

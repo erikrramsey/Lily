@@ -72,7 +72,7 @@ typedef enum
 /* Function prototypes */
 
 /**
- *  \brief Get the window which currently has mouse focus.
+ *  \brief get the window which currently has mouse focus.
  */
 extern DECLSPEC SDL_Window * SDLCALL SDL_GetMouseFocus(void);
 
@@ -87,7 +87,7 @@ extern DECLSPEC SDL_Window * SDLCALL SDL_GetMouseFocus(void);
 extern DECLSPEC Uint32 SDLCALL SDL_GetMouseState(int *x, int *y);
 
 /**
- *  \brief Get the current state of the mouse, in relation to the desktop
+ *  \brief get the current state of the mouse, in relation to the desktop
  *
  *  This works just like SDL_GetMouseState(), but the coordinates will be
  *  reported relative to the top-left of the desktop. This can be useful if

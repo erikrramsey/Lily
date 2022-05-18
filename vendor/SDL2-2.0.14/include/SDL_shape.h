@@ -121,7 +121,7 @@ typedef struct SDL_WindowShapeMode {
 extern DECLSPEC int SDLCALL SDL_SetWindowShape(SDL_Window *window,SDL_Surface *shape,SDL_WindowShapeMode *shape_mode);
 
 /**
- * \brief Get the shape parameters of a shaped window.
+ * \brief get the shape parameters of a shaped window.
  *
  * \param window The shaped window whose parameters should be retrieved.
  * \param shape_mode An empty shape-mode structure to fill, or NULL to check whether the window has a shape.

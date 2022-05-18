@@ -70,7 +70,7 @@ extern "C" {
  * be encoded in the node transformation. The following (pseudo)code sample
  * shows how to do it: <br><br>
  * @code
- * // Get the camera matrix for a camera at a specific time
+ * // get the camera matrix for a camera at a specific time
  * // if the node hierarchy for the camera does not contain
  * // at least one animated node this is a static computation
  * get-camera-matrix (node sceneRoot, camera cam) : matrix
@@ -190,7 +190,7 @@ struct aiCamera {
               mAspect(0.f),
               mOrthographicWidth(0.f) {}
 
-    /** @brief Get a *right-handed* camera matrix from me
+    /** @brief get a *right-handed* camera matrix from me
      *  @param out Camera matrix to be filled
      */
     void GetCameraMatrix(aiMatrix4x4 &out) const {
