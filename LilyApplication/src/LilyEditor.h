@@ -22,11 +22,15 @@ public:
 	~LilyEditor();
 	void update(long long dt) override;
 	void init() override;
+    void cleanup();
+
+
+    void on_deserialize();
     Lobject* get_selected() { return m_selected; }
 
 	void OnEvent(SDL_Event& event) override;
 
-    fs::path project_path() { return m_project_path; }
+    const fs::path& project_path() { return m_project_path; }
     Scene* active_scene() { return m_active_scene; }
 private:
 	void gui_render();

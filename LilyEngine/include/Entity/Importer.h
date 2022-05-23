@@ -19,19 +19,14 @@
 
 #include "Entity/Lobject.h"
 
+namespace fs = std::filesystem;
 namespace Lily {
 class Scene;
 class Lobject;
 class Importer {
 public:
 	Importer();
-	static void import_model(Lobject* obj, std::string& path);
-    static void import_sub_mesh(Mesh& lmesh);
-
-private:
-	Scene* m_scene;
-	std::string directory;
-	std::vector<Texture> textures_loaded;
-	Lobject* parent;
+	static void import_model(Lobject* obj, fs::path& path, const fs::path& projectPath);
+    static void load_imported_mesh(Mesh& lmesh);
 };
 }

@@ -10,8 +10,8 @@ public:
 	Camera(Entity self);
 	~Camera();
 	bool Initialize(int w, int h);
-	glm::mat4 Camera::GetProjection() { return Projection; }
-    glm::mat4 Camera::GetView(){ return view; }
+	glm::mat4 GetProjection() { return Projection; }
+    glm::mat4 GetView(){ return view; }
 
 	void update();
 

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Entity/ECRegistry.h"
-#include "Entity/Lobject.h"
 #include "Entity/Component.h"
 #include "Entity/Transform.h"
 #include "Entity/Family.h"
@@ -9,6 +8,7 @@
 #include "Entity/SceneSerializer.h"
 
 #include "Renderer/Renderer.h"
+#include "Renderer/Light.h"
 
 #include <vector>
 #include <unordered_map>
@@ -27,7 +27,6 @@ public:
 
 	void Init();
 	void update(long long dt);
-	void import_component(Lobject* obj, std::string& path);
     void clear();
 
 	Lobject* get(Entity ent);
@@ -45,5 +44,4 @@ private:
 
 	friend class Lobject;
 };
-
 }

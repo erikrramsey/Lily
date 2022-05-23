@@ -6,9 +6,18 @@ LilyEditor::LilyEditor(LauncherData* data) : Gui() {
     m_data = data;
 }
 
-LilyEditor::~LilyEditor() {
-	delete m_active_scene;
-	delete m_framebuffer;
+LilyEditor::~LilyEditor() { cleanup(); }
+
+void LilyEditor::cleanup() {
+    delete m_active_scene;
+    delete m_framebuffer;
+    delete m_scene_explorer;
+    for (auto child : m_children) { delete child; }
+    m_children.clear();
+
+    m_active_scene = nullptr;
+    m_framebuffer = nullptr;
+    m_scene_explorer = nullptr;
 }
 
 void LilyEditor::init() {
@@ -25,7 +34,6 @@ void LilyEditor::init() {
 
     m_selected = nullptr;
 }
-
 
 void LilyEditor::update(long long dt) {
 	Renderer::SetClearColor(glm::vec4(0.5, 0.5, 0.5, 1));
@@ -79,6 +87,10 @@ void LilyEditor::OnEvent(SDL_Event& ev) {
 	}
 
 	Gui::OnEvent(ev);
+}
+
+void LilyEditor::on_deserialize() {
+    m_selected = nullptr;
 }
 
 void LilyEditor::gui_render() {
@@ -201,9 +213,6 @@ void LilyEditor::display_Lobject(Lobject* obj) {
 }
 
 void LilyEditor::entity_list_window() {
-    if (m_current_scene_path.empty()) {
-        return;
-    }
     ImGui::Begin("Lobject List");
 	if (ImGui::Button("Create New Entity")) {
 		m_active_scene->create_Lobject();

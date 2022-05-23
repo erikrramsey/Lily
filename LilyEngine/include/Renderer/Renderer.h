@@ -26,18 +26,19 @@ public:
 
 	static void Begin(Camera& cam);
 
+    static void update_light(glm::vec3 pos);
+    static void update_viewPos(glm::vec3 pos);
+
 	static void SetClearColor(glm::vec4 clearColor);
 	static void Clear();
 	static void DrawMesh(const Mesh& mesh, const glm::mat4& tran);
 
 	static void End();
-			
-	void toggle_mouselock();
-
 private:
 	static GLint modelMLocation;
 	static GLint projectionMLocation;
 	static GLint viewMLocation;
+    static GLint viewPosLocation;
 
 	static Shader* m_shader;
 

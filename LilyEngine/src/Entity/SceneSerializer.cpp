@@ -11,6 +11,13 @@ SceneSerializer::SceneSerializer() = default;
 void SceneSerializer::serialize(Scene* scene, const fs::path& path) {
     json jsonLobjectArray;
     std::ofstream outfile(path);
+
+    if (scene == nullptr) {
+        outfile << jsonLobjectArray.dump(4);
+        outfile.close();
+        return;
+    }
+
     if (!outfile.good()) {
         std::cout << "Problem opening out file" << std::endl;
     }
@@ -87,7 +94,7 @@ void deserialize_Lobject_rec(Scene* scene, Lobject* obj, json& parent) {
         auto m = Mesh(obj->m_entity, mj["Path"]);
         if (mj.contains("Material"))
             m.material_path = mj["Material"];
-        Importer::import_sub_mesh(m);
+        Importer::load_imported_mesh(m);
         obj->add_component(m);
     }
 }

@@ -21,9 +21,10 @@ public:
 	void set_name(const char* name) { m_name = name; }
     void add_child(Lobject* child);
 
+    Scene* get_scene() { return m_scene; }
+
 	std::vector<Lobject*> get_children();
     Lobject* get_parent();
-
 
 	template<class T>
 	T& add_component(T& comp);
@@ -42,9 +43,10 @@ public:
 
 	std::string m_name;
 	Entity m_entity;
-	Scene* m_scene;
+private:
+    ECRegistry& get_reg() const;
+    Scene* m_scene;
 };
-
 
 template<class T>
 T& Lobject::add_component(T& comp) {
@@ -52,7 +54,7 @@ T& Lobject::add_component(T& comp) {
 		std::cout << "Object already has component" << std::endl;
 		return get<T>();
 	}
-	m_scene->m_registry.emplace(m_entity, comp);
+	get_reg().emplace(m_entity, comp);
 	return get<T>();
 }
 
@@ -63,23 +65,23 @@ T& Lobject::add_component() {
 		return get<T>();
 	}
 	T comp(m_entity);
-	m_scene->m_registry.emplace(m_entity, comp);
+	get_reg().emplace(m_entity, comp);
 	return get<T>();
 }
 
 template<class T>
 T& Lobject::get() {
-	return m_scene->m_registry.get<T>(m_entity);
+	return get_reg().get<T>(m_entity);
 }
 
 template<class T>
 T* Lobject::try_get() {
-	return m_scene->m_registry.try_get<T>(m_entity);
+	return get_reg().try_get<T>(m_entity);
 }
 
 template<class T>
 void Lobject::remove_component() {
-	m_scene->m_registry.remove_component<T>(m_entity);
+	get_reg().remove_component<T>(m_entity);
 }
 
 }

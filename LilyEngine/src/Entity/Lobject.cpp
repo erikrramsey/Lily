@@ -28,5 +28,6 @@ void Lobject::add_child(Lobject* child) {
     get<Family>().add_child(child->get<Family>());
 }
 
+ECRegistry& Lobject::get_reg() const { return m_scene->m_registry; }
 
 }

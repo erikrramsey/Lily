@@ -1,5 +1,5 @@
 #include "Entity/Scene.h"
-
+#include "Entity/Lobject.h"
 
 namespace Lily {
 Scene::Scene() {
@@ -32,6 +32,7 @@ void Scene::clear() {
 void Scene::update(long long dt) {
 	Renderer::Clear();
 	Renderer::Begin(m_camera->get<Camera>());
+    Renderer::update_viewPos(m_camera->get<Camera>().position);
 
 	auto& children = m_registry.get_pool<Transform>();
 	for (auto& i : children) {
@@ -54,18 +55,18 @@ void Scene::update(long long dt) {
 
 	auto& meshes = m_registry.get_pool<Mesh>();
 
-	for (int i = 0; i < meshes.size(); i++) {
-        if (meshes[i].imported)
-		    Renderer::DrawMesh(meshes[i], m_registry.get<Transform>(meshes[i].get_ent()).get_worldspace());
+	for (auto& mesh : meshes) {
+        if (mesh.imported)
+		    Renderer::DrawMesh(mesh, m_registry.get<Transform>(mesh.get_ent()).get_worldspace());
 	}
-}
 
-void Scene::import_component(Lobject* obj, std::string& path) {
-    Importer::import_model(obj, path);
+    auto& lights = m_registry.get_pool<Light>();
+    for (auto light : lights) Renderer::update_light(light.get_pos());
+
 }
 
 Lobject* Scene::create_Lobject() {
-	Lobject* obj = new Lobject(m_registry.create(), this);
+	auto* obj = new Lobject(m_registry.create(), this);
 	obj->add_component<Transform>();
 	obj->add_component<Family>();
 	m_objects.emplace(obj->m_entity, obj);
@@ -74,6 +75,7 @@ Lobject* Scene::create_Lobject() {
 }
 
 void Scene::delete_Lobject(Lobject* obj) {
+    if (!obj) return;
 	auto& fam = obj->get<Family>();
     auto par = m_registry.try_get<Family>(fam.parent);
     if (par) fam.remove_parent(*par);

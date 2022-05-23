@@ -6,52 +6,59 @@
 namespace Lily {
 
 unsigned int TextureFromFile(const char* path);
-const std::string export_sub_mesh(aiMesh* mesh, aiMaterial* mat);
-void        import_sub_mesh(Mesh& mesh);
+std::string import_sub_mesh(aiMesh* mesh, aiMaterial* mat, fs::path& import_path);
 
 Importer::Importer() = default;
 
-void Importer::import_model(Lobject* obj, std::string& path) {
+void Importer::import_model(Lobject* obj, fs::path& path, const fs::path& projectPath) {
 	Assimp::Importer import;
     auto flags = aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices;
-    flags |= aiProcess_FixInfacingNormals | aiProcess_GenSmoothNormals | aiProcess_PreTransformVertices;
-	const aiScene* scene = import.ReadFile(path, flags);
+    flags |= aiProcess_GenSmoothNormals | aiProcess_PreTransformVertices;
+	const aiScene* scene = import.ReadFile(path.string(), flags);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
 		std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
 		return;
 	}
 
-	auto directory = path.substr(0, path.find_last_of('\\'));
-    auto node = scene->mRootNode;
+	auto directory = path.parent_path();
+    fs::path import_directory = projectPath.string() + "\\imported\\";
+    if (!fs::exists(import_directory)) fs::create_directory(import_directory);
+    import_directory = import_directory.string() + path.filename().string() + '\\';
+    fs::create_directory(import_directory);
 
-    if (node->mNumChildren == 0) {
-        auto mesh = scene->mMeshes[node->mMeshes[0]];
+    if (scene->mNumMeshes == 1) {
+        auto mesh = scene->mMeshes[0];
         auto mat = scene->mMaterials[mesh->mMaterialIndex];
 
-        auto m = Mesh(obj->m_entity, export_sub_mesh(mesh, mat));
-
-        aiString mat_path;
-        mat->GetTexture(aiTextureType_DIFFUSE, 0, &mat_path);
-        m.material_path = directory + "\\" + std::string(mat_path.C_Str());
-        import_sub_mesh(m);
-
-        obj->add_component(m);
-    }
-
-    for (unsigned int i = 0; i < node->mNumChildren; i++) {
-        auto mesh = scene->mMeshes[node->mChildren[i]->mMeshes[0]];
-        auto mat = scene->mMaterials[mesh->mMaterialIndex];
-
-        auto mobj = obj->m_scene->create_Lobject();
-        obj->add_child(mobj);
-        auto m = Mesh(mobj->m_entity, export_sub_mesh(mesh, mat));
+        fs::path import_path = import_directory.string() + path.filename().string();
+        import_path.replace_extension(".assbin");
+        auto m = Mesh(obj->m_entity, import_sub_mesh(mesh, mat, import_path));
 
         aiString mat_path;
         mat->GetTexture(aiTextureType_DIFFUSE, 0, &mat_path);
         if (mat_path.length == 0) m.material_path = "";
-        else m.material_path = directory + "\\" + std::string(mat_path.C_Str());
-        import_sub_mesh(m);
+        else m.material_path = directory.string() + "\\" + std::string(mat_path.C_Str());
+        load_imported_mesh(m);
+
+        obj->add_component(m);
+    }
+
+    for (unsigned int i = 0; i < scene->mNumMeshes; i++) {
+        auto mesh = scene->mMeshes[i];
+        auto mat = scene->mMaterials[mesh->mMaterialIndex];
+
+        auto mobj = obj->get_scene()->create_Lobject();
+        obj->add_child(mobj);
+        fs::path import_path = import_directory.string() + std::to_string(i) + path.filename().string();
+        import_path.replace_extension(".assbin");
+        auto m = Mesh(mobj->m_entity, import_sub_mesh(mesh, mat, import_path));
+
+        aiString mat_path;
+        mat->GetTexture(aiTextureType_DIFFUSE, 0, &mat_path);
+        if (mat_path.length == 0) m.material_path = "";
+        else m.material_path = directory.string() + "\\" + std::string(mat_path.C_Str());
+        load_imported_mesh(m);
 
         mobj->add_component(m);
     }
@@ -97,21 +104,20 @@ unsigned int TextureFromFile(const char* path) {
 	return textureID;
 }
 
-const std::string export_sub_mesh(aiMesh* mesh, aiMaterial* mat) {
-    static int i = 0;
-    aiMesh *mesh_copy = new aiMesh();
-    
+std::string import_sub_mesh(aiMesh* mesh, aiMaterial* mat, fs::path& import_path) {
+    auto *mesh_copy = new aiMesh();
+
     mesh_copy->mNumVertices = mesh->mNumVertices;
     mesh_copy->mVertices = new aiVector3t<float>[mesh->mNumVertices];
     mesh_copy->mNormals = new aiVector3t<float>[mesh->mNumVertices];
     mesh_copy->mTextureCoords[0] = new aiVector3D[mesh->mNumVertices];
     mesh_copy->mNumUVComponents[0] = mesh->mNumVertices;
     for (int j = 0; j < mesh->mNumVertices; j++) {
-        if (mesh->mTextureCoords[0]) {
             mesh_copy->mVertices[j] = mesh->mVertices[j];
+        if (mesh->mNormals)
             mesh_copy->mNormals[j] = mesh->mNormals[j];
+        if (mesh->mTextureCoords[0])
             mesh_copy->mTextureCoords[0][j] = mesh->mTextureCoords[0][j];
-        }
     }
 
     mesh_copy->mFaces = new aiFace[mesh->mNumFaces];
@@ -125,14 +131,13 @@ const std::string export_sub_mesh(aiMesh* mesh, aiMaterial* mat) {
         }
     }
 
-    aiMaterial *mat_c = new aiMaterial();
+    auto *mat_c = new aiMaterial();
 
-
-    aiNode *root = new aiNode();
+    auto *root = new aiNode();
     root->mNumMeshes = 1;
     root->mMeshes = new unsigned [] { 0 };
 
-    aiScene *out = new aiScene();
+    auto *out = new aiScene();
     out->mNumMeshes = 1;
     out->mMeshes = new aiMesh * [] { mesh_copy };
     out->mNumMaterials = 1;
@@ -141,17 +146,15 @@ const std::string export_sub_mesh(aiMesh* mesh, aiMaterial* mat) {
     out->mMetaData = new aiMetadata();
 
     Assimp::Exporter exporter;
-    const std::string p = fs::current_path().string() + "\\ExportTest\\test" + std::to_string(i) + ".assbin";
-    if (exporter.Export(out, "assbin", p) != AI_SUCCESS) {
-        std::cout << "ASSIMP ERROR EXPORTING FILE: " << p << std::endl;
+    if (exporter.Export(out, "assbin", import_path.string()) != AI_SUCCESS) {
+        std::cout << "ASSIMP ERROR EXPORTING FILE: " << import_path.string() << std::endl;
     }
 
     delete out;
-    i++;
-    return p;
+    return import_path.string();
 }
 
-void Importer::import_sub_mesh(Mesh& lmesh) {
+void Importer::load_imported_mesh(Mesh& lmesh) {
     Assimp::Importer imp;
     auto scene = imp.ReadFile(lmesh.import_path, 0);
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) {
@@ -211,8 +214,10 @@ void Importer::import_sub_mesh(Mesh& lmesh) {
     Texture tex;
     if (!lmesh.material_path.empty()) {
         tex.id = TextureFromFile(lmesh.material_path.c_str());
-        tex.type = "texture_diffuse";
-        lmesh.textures.push_back(tex);
+        if (tex.id) {
+            tex.type = "texture_diffuse";
+            lmesh.textures.push_back(tex);
+        }
     }
     lmesh.indices = indices;
     lmesh.vertices = vertices;
