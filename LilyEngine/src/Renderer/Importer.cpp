@@ -112,7 +112,7 @@ std::string import_sub_mesh(aiMesh* mesh, aiMaterial* mat, fs::path& import_path
     mesh_copy->mNormals = new aiVector3t<float>[mesh->mNumVertices];
     mesh_copy->mTextureCoords[0] = new aiVector3D[mesh->mNumVertices];
     mesh_copy->mNumUVComponents[0] = mesh->mNumVertices;
-    for (int j = 0; j < mesh->mNumVertices; j++) {
+    for (unsigned int j = 0; j < mesh->mNumVertices; j++) {
             mesh_copy->mVertices[j] = mesh->mVertices[j];
         if (mesh->mNormals)
             mesh_copy->mNormals[j] = mesh->mNormals[j];
@@ -122,7 +122,7 @@ std::string import_sub_mesh(aiMesh* mesh, aiMaterial* mat, fs::path& import_path
 
     mesh_copy->mFaces = new aiFace[mesh->mNumFaces];
     mesh_copy->mNumFaces = mesh->mNumFaces;
-    for (int j = 0; j < mesh->mNumFaces; j++) {
+    for (unsigned int j = 0; j < mesh->mNumFaces; j++) {
         int inds = mesh->mFaces[j].mNumIndices;
         mesh_copy->mFaces[j].mNumIndices = inds;
         mesh_copy->mFaces[j].mIndices = new unsigned int[inds];
@@ -135,7 +135,7 @@ std::string import_sub_mesh(aiMesh* mesh, aiMaterial* mat, fs::path& import_path
 
     auto *root = new aiNode();
     root->mNumMeshes = 1;
-    root->mMeshes = new unsigned [] { 0 };
+    root->mMeshes = new unsigned int[] { 0 };
 
     auto *out = new aiScene();
     out->mNumMeshes = 1;
@@ -168,12 +168,13 @@ void Importer::load_imported_mesh(Mesh& lmesh) {
 
     for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
         Vertex vertex;
-        glm::vec3 vector;
-        vector.x = mesh->mVertices[i].x;
-        vector.y = mesh->mVertices[i].y;
-        vector.z = mesh->mVertices[i].z;
-        vertex.Position = vector;
+        glm::vec3 vector{
+            mesh->mVertices[i].x,
+            mesh->mVertices[i].y,
+            mesh->mVertices[i].z
+        };
 
+        vertex.Position = vector;
         if (mesh->HasNormals()) {
             vector.x = mesh->mNormals[i].x;
             vector.y = mesh->mNormals[i].y;
@@ -182,9 +183,10 @@ void Importer::load_imported_mesh(Mesh& lmesh) {
         }
 
         if (mesh->HasTextureCoords(0)) {
-            glm::vec2 vec;
-            vec.x = mesh->mTextureCoords[0][i].x;
-            vec.y = mesh->mTextureCoords[0][i].y;
+            glm::vec2 vec{
+                mesh->mTextureCoords[0][i].x,
+                mesh->mTextureCoords[0][i].y
+            };
             vertex.TexCoords = vec;
         }
         else vertex.TexCoords = glm::vec2(0.0f, 0.0f);

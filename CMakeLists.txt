@@ -68,6 +68,7 @@ TARGET_INCLUDE_DIRECTORIES(
   PUBLIC "${PROJECT_SOURCE_DIR}/vendor/nlohmann"
   PUBLIC "${IMGUI_DIR}"
   PUBLIC "${IMGUI_DIR}/backends"
+  SYSTEM
 )
 
 # Includes for Application

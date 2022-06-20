@@ -122,9 +122,9 @@ void ComponentEditorWindow::render_transform() {
     float rotation[] = { rot.x, rot.y, rot.z };
     float scale[]    = { sca.x, sca.y, sca.z };
 
-    ImGui::DragFloat3("position", position, 0.05);
-    ImGui::DragFloat3("Rotation", rotation, 0.05);
-    ImGui::DragFloat3("Scale", scale, 0.05);
+    ImGui::DragFloat3("position", position, 0.05f);
+    ImGui::DragFloat3("Rotation", rotation, 0.05f);
+    ImGui::DragFloat3("Scale", scale, 0.05f);
 
     ImGui::Dummy(ImVec2(0, 10));
 
@@ -154,6 +154,6 @@ void ComponentEditorWindow::render_light() {
 
     auto position = comp->get_pos();
     float pos[3] = { position.x, position.y, position.z} ;
-    ImGui::DragFloat3("light position", pos, 0.05);
+    ImGui::DragFloat3("light position", pos, 0.05f);
     comp->set_pos(glm::vec3(pos[0], pos[1], pos[2]));
 }

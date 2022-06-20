@@ -6,13 +6,18 @@ namespace Lily {
 
 
 	struct framebufferInfo {
-		glm::vec2 resolution;
+		glm::ivec2 resolution;
 	};
 
 
 	class Framebuffer {
 	public:
-		Framebuffer(framebufferInfo info) : m_info(info) {}
+		Framebuffer(framebufferInfo info) : m_info(info) {
+			m_FBO = 0;
+			m_fb_texture = 0;
+			m_stencil_depth_RBO = 0;
+		}
+
 		Framebuffer(int height, int width);
 
 		~Framebuffer() = default;

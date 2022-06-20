@@ -2,6 +2,10 @@
 
 using json = nlohmann::json;
 LilyLauncher::LilyLauncher(LauncherData *data) : Gui() {
+    m_explorer = nullptr;
+    m_renaming = false;
+    m_is_selecting_directory = false;
+    m_selection_it = -1;
     m_data = data;
 }
 
@@ -9,8 +13,6 @@ LilyLauncher::~LilyLauncher() {};
 
 void LilyLauncher::init() {
     Gui::init();
-    m_explorer = nullptr;
-    m_renaming = false;
     load_launcher_config();
 }
 
@@ -35,11 +37,11 @@ void LilyLauncher::gui_render() {
     ImGui::Begin("Lily Launcher", nullptr, window_flags1);
     ImVec2 size = ImGui::GetContentRegionAvail();
 
-    ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1, 1, 1, 0.1));
+    ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
     ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
-    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 5);
-    ImGui::PushStyleVar(ImGuiStyleVar_GrabRounding, 5);
-    ImGui::BeginChild("Buttons", ImVec2(size.x * 0.3, size.y));
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 5.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_GrabRounding, 5.0f);
+    ImGui::BeginChild("Buttons", ImVec2(size.x * 0.3f, size.y));
 
     ImGui::Indent(5);
     ImGui::Dummy(ImVec2(0, 4));
@@ -55,8 +57,7 @@ void LilyLauncher::gui_render() {
     if (ImGui::Button("Select Project", button_size)) {
         if (!m_data->selected_project.empty()) {
             m_data->open_editor = true;
-            SDL_Event event;
-            event.type = SDL_QUIT;
+            SDL_Event event{ SDL_QUIT };
             SDL_PushEvent(&event);
         }
     }

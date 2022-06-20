@@ -26,8 +26,6 @@ private:
     LilyFileExplorer* m_file_explorer;
     fs::path m_component_path;
 
-    Scene* m_scene;
-
     Lobject* m_rendered;
     Lobject* m_selected;
 };

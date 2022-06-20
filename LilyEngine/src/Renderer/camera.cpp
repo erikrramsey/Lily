@@ -5,7 +5,23 @@
 
 namespace Lily {
 
-    Camera::Camera(Entity self) : Component(self) {}
+    Camera::Camera(Entity self) : Component(self) {
+        MouseSensitivity = 0;
+        move_speed = 0;
+
+        Yaw = 0;
+        Pitch = 0;
+
+        Up = glm::vec3(0.0f);
+        forward = glm::vec3(0.0f);
+        Strafe = glm::vec3(0.0f);
+        position = glm::vec3(0.0f);
+
+        WorldUp = glm::vec3(0.0f);
+
+        Projection = glm::mat4(0.0f);
+        view = glm::mat4(0.0f);
+    }
 
     Camera::~Camera()
     {
@@ -23,7 +39,7 @@ namespace Lily {
         Strafe = glm::cross(Up, forward);
 
         move_speed = 30;
-        MouseSensitivity = 0.075;
+        MouseSensitivity = 0.1f;
 
         position = glm::vec3(0, 0, 5);
 
@@ -34,10 +50,12 @@ namespace Lily {
     }
 
     void Camera::update() {
-        glm::vec3 front;
-        front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-        front.y = sin(glm::radians(Pitch));
-        front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
+        glm::vec3 front{
+            cos(glm::radians(Yaw)) * cos(glm::radians(Pitch)),
+            sin(glm::radians(Pitch)),
+            sin(glm::radians(Yaw)) * cos(glm::radians(Pitch))
+        };
+
         forward = glm::normalize(front);
 
         Strafe = glm::normalize(glm::cross(forward, WorldUp));
@@ -46,14 +64,14 @@ namespace Lily {
         view = glm::lookAt(position, position + forward, Up);
     };
 
-    void Camera::pitch_in(float input) {
+    void Camera::pitch_in(int input) {
         Pitch -= input * MouseSensitivity;
         if (Pitch > (89.0f)) Pitch = (89.0f);
         if (Pitch < (-89.0f)) Pitch = (-89.0f);
         update();
     }
 
-    void Camera::yaw_in(float input) {
+    void Camera::yaw_in(int input) {
         Yaw += input * MouseSensitivity;
         update();
     }

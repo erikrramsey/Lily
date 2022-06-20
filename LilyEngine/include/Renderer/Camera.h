@@ -15,8 +15,8 @@ public:
 
 	void update();
 
-	void pitch_in(float input);
-	void yaw_in(float input);
+	void pitch_in(int input);
+	void yaw_in(int input);
 	void RollIn(bool input);
 
 	float Pitch;

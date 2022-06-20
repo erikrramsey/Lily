@@ -132,7 +132,7 @@ void Renderer::DrawMesh(const Mesh& mesh, const glm::mat4& tran) {
 	glUniformMatrix4fv(Renderer::modelMLocation, 1, GL_FALSE, glm::value_ptr(tran));
 
 	glBindVertexArray(mesh.VAO);
-	glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, (GLsizei)mesh.indices.size(), GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, m_default);

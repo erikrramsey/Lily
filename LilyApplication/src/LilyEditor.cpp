@@ -4,6 +4,10 @@
 
 LilyEditor::LilyEditor(LauncherData* data) : Gui() {
     m_data = data;
+	m_active_scene = nullptr;
+	m_framebuffer = nullptr;
+	m_scene_explorer = nullptr;
+	m_selected = nullptr;
 }
 
 LilyEditor::~LilyEditor() { cleanup(); }
@@ -165,10 +169,10 @@ void LilyEditor::gui_render() {
 	glm::vec2 a = m_framebuffer->GetResolution();
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 	ImGui::Begin("Scene View", 0, window_flags);
-		auto window_x = ImGui::GetContentRegionAvail().x;
+		auto window_x = static_cast<int>(ImGui::GetContentRegionAvail().x);
 		auto fb_x = m_framebuffer->GetResolution().x;
 		if (window_x != fb_x) {
-			auto y = window_x * 9 / 16.0;
+			auto y = window_x * 9 / 16;
 			m_active_scene->get_camera().get<Camera>().Initialize(window_x, y);
 			m_framebuffer->Resize(window_x, y);
 		}
