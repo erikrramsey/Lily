@@ -47,7 +47,7 @@ void Scene::update(long long dt) {
         i.set_localspace(tr);
 
 		Entity j = m_registry.get<Family>(i.get_ent()).parent;
-        auto par = m_registry.get<Transform>(j).get_worldspace();
+        auto& par = m_registry.get<Transform>(j).get_worldspace();
         tr = par * tr;
 
 		i.set_worldspace(tr);
@@ -61,7 +61,7 @@ void Scene::update(long long dt) {
 	}
 
     auto& lights = m_registry.get_pool<Light>();
-    for (auto light : lights) Renderer::update_light(light.get_pos());
+    for (auto light : lights) Renderer::update_light(m_registry.get<Transform>(light.get_ent()).get_pos());
 
 }
 

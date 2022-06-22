@@ -151,9 +151,4 @@ void ComponentEditorWindow::render_light() {
     if (!comp) return;
     ImGui::Text("Light Component");
     ImGui::Dummy(ImVec2(0, 10));
-
-    auto position = comp->get_pos();
-    float pos[3] = { position.x, position.y, position.z} ;
-    ImGui::DragFloat3("light position", pos, 0.05f);
-    comp->set_pos(glm::vec3(pos[0], pos[1], pos[2]));
 }
