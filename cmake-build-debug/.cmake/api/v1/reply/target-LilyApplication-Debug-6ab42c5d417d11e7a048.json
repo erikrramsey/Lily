@@ -154,7 +154,8 @@
 				10,
 				11,
 				12,
-				13
+				13,
+				14
 			]
 		}
 	],
@@ -245,7 +246,15 @@
 				10,
 				11,
 				12,
-				13
+				13,
+				14
+			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				15
 			]
 		}
 	],
@@ -279,6 +288,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "LilyApplication/src/LilyLauncher.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LilyApplication/src/RendererSettingsWindow.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
@@ -334,6 +349,11 @@
 			"compileGroupIndex" : 0,
 			"path" : "vendor/imgui/backends/imgui_impl_opengl3.cpp",
 			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LilyApplication/src/RendererSettingsWindow.h",
+			"sourceGroupIndex" : 1
 		}
 	],
 	"type" : "EXECUTABLE"

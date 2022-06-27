@@ -35,6 +35,7 @@ void LilyEditor::init() {
     m_scene_explorer = nullptr;
     m_children.push_back(new ComponentEditorWindow(this));
     m_children.push_back(new SceneListWindow(this));
+    m_children.push_back(new RendererSettingsWindow(this));
 
     m_selected = nullptr;
 }

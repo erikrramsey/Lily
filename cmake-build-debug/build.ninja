@@ -319,6 +319,15 @@ build CMakeFiles\LilyApplication.dir\LilyApplication\src\LilyLauncher.cpp.obj: C
   TARGET_COMPILE_PDB = CMakeFiles\LilyApplication.dir\
   TARGET_PDB = ..\bin\Debug\LilyApplication.pdb
 
+build CMakeFiles\LilyApplication.dir\LilyApplication\src\RendererSettingsWindow.cpp.obj: CXX_COMPILER__LilyApplication_Debug C$:\Dev\Lily\LilyApplication\src\RendererSettingsWindow.cpp || cmake_object_order_depends_target_LilyApplication
+  DEFINES = -DLILY_DLL -DLILY_WINDOWS
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  INCLUDES = -IC:\Dev\Lily\LilyEngine -IC:\Dev\Lily\LilyApplication\include -IC:\Dev\Lily\vendor\imgui -IC:\Dev\Lily\vendor\imgui\backends -IC:\Dev\Lily\LilyEngine\include -IC:\Dev\Lily\vendor\glew-2.1.0\include -IC:\Dev\Lily\vendor\SDL2-2.0.14\include -IC:\Dev\Lily\vendor\glm -IC:\Dev\Lily\vendor\assimp\include -IC:\Dev\Lily\vendor\nlohmann -IC:\Dev\Lily\SYSTEM
+  OBJECT_DIR = CMakeFiles\LilyApplication.dir
+  OBJECT_FILE_DIR = CMakeFiles\LilyApplication.dir\LilyApplication\src
+  TARGET_COMPILE_PDB = CMakeFiles\LilyApplication.dir\
+  TARGET_PDB = ..\bin\Debug\LilyApplication.pdb
+
 build CMakeFiles\LilyApplication.dir\LilyApplication\src\SceneListWindow.cpp.obj: CXX_COMPILER__LilyApplication_Debug C$:\Dev\Lily\LilyApplication\src\SceneListWindow.cpp || cmake_object_order_depends_target_LilyApplication
   DEFINES = -DLILY_DLL -DLILY_WINDOWS
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
@@ -408,7 +417,7 @@ build CMakeFiles\LilyApplication.dir\vendor\imgui\backends\imgui_impl_opengl3.cp
 #############################################
 # Link the executable ..\bin\Debug\LilyApplication.exe
 
-build ..\bin\Debug\LilyApplication.exe: CXX_EXECUTABLE_LINKER__LilyApplication_Debug CMakeFiles\LilyApplication.dir\LilyApplication\src\ComponentEditorWindow.cpp.obj CMakeFiles\LilyApplication.dir\LilyApplication\src\EditorWindow.cpp.obj CMakeFiles\LilyApplication.dir\LilyApplication\src\LilyEditor.cpp.obj CMakeFiles\LilyApplication.dir\LilyApplication\src\LilyFileExplorer.cpp.obj CMakeFiles\LilyApplication.dir\LilyApplication\src\LilyLauncher.cpp.obj CMakeFiles\LilyApplication.dir\LilyApplication\src\SceneListWindow.cpp.obj CMakeFiles\LilyApplication.dir\LilyApplication\src\main.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui\imgui.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui\imgui_draw.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui\imgui_widgets.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui\imgui_demo.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui\imgui_tables.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui\backends\imgui_impl_sdl.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui\backends\imgui_impl_opengl3.cpp.obj | LilyEngine.lib ..\vendor\glew-2.1.0\lib\Release\x64\glew32.lib ..\vendor\SDL2-2.0.14\lib\x64\SDL2.lib ..\vendor\SDL2-2.0.14\lib\x64\SDL2main.lib ..\vendor\assimp\lib\Debug\assimp-vc142-mtd.lib || LilyEngine.lib
+build ..\bin\Debug\LilyApplication.exe: CXX_EXECUTABLE_LINKER__LilyApplication_Debug CMakeFiles\LilyApplication.dir\LilyApplication\src\ComponentEditorWindow.cpp.obj CMakeFiles\LilyApplication.dir\LilyApplication\src\EditorWindow.cpp.obj CMakeFiles\LilyApplication.dir\LilyApplication\src\LilyEditor.cpp.obj CMakeFiles\LilyApplication.dir\LilyApplication\src\LilyFileExplorer.cpp.obj CMakeFiles\LilyApplication.dir\LilyApplication\src\LilyLauncher.cpp.obj CMakeFiles\LilyApplication.dir\LilyApplication\src\RendererSettingsWindow.cpp.obj CMakeFiles\LilyApplication.dir\LilyApplication\src\SceneListWindow.cpp.obj CMakeFiles\LilyApplication.dir\LilyApplication\src\main.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui\imgui.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui\imgui_draw.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui\imgui_widgets.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui\imgui_demo.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui\imgui_tables.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui\backends\imgui_impl_sdl.cpp.obj CMakeFiles\LilyApplication.dir\vendor\imgui\backends\imgui_impl_opengl3.cpp.obj | LilyEngine.lib ..\vendor\glew-2.1.0\lib\Release\x64\glew32.lib ..\vendor\SDL2-2.0.14\lib\x64\SDL2.lib ..\vendor\SDL2-2.0.14\lib\x64\SDL2main.lib ..\vendor\assimp\lib\Debug\assimp-vc142-mtd.lib || LilyEngine.lib
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console  /INCREMENTAL:NO
   LINK_LIBRARIES = LilyEngine.lib  opengl32.lib  glu32.lib  ..\vendor\glew-2.1.0\lib\Release\x64\glew32.lib  ..\vendor\SDL2-2.0.14\lib\x64\SDL2.lib  ..\vendor\SDL2-2.0.14\lib\x64\SDL2main.lib  ..\vendor\assimp\lib\Debug\assimp-vc142-mtd.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib

@@ -4,6 +4,7 @@
 
 #include "EditorWindow.h"
 #include "ComponentEditorWindow.h"
+#include "RendererSettingsWindow.h"
 #include "SceneListWindow.h"
 #include "LilyFileExplorer.h"
 #include "LauncherData.h"

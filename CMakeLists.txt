@@ -53,7 +53,7 @@ SET(IMGUI_SOURCES
 FILE(GLOB_RECURSE ENGINE_SOURCES "LilyEngine/src/*.cpp")
 FILE(GLOB_RECURSE APPLICATION_SOURCES "LilyApplication/src/*.cpp")
 ADD_LIBRARY(LilyEngine STATIC ${ENGINE_SOURCES} ${IMGUI_SOURCES} "${PROJECT_SOURCE_DIR}/vendor/nlohmann/json.hpp")
-ADD_EXECUTABLE(${PROJECT_NAME} ${APPLICATION_SOURCES} ${IMGUI_SOURCES})
+ADD_EXECUTABLE(${PROJECT_NAME} ${APPLICATION_SOURCES} ${IMGUI_SOURCES} LilyApplication/src/RendererSettingsWindow.h LilyApplication/src/RendererSettingsWindow.cpp)
 
 
 # Includes for Engine
