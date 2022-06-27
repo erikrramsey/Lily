@@ -171,7 +171,7 @@ void LilyEditor::gui_render() {
 	ImGui::Begin("Scene View", 0, window_flags);
 		auto window_x = static_cast<int>(ImGui::GetContentRegionAvail().x);
 		auto fb_x = m_framebuffer->GetResolution().x;
-		if (window_x != fb_x) {
+		if (window_x != fb_x && window_x > 0) {
 			auto y = window_x * 9 / 16;
 			m_active_scene->get_camera().get<Camera>().Initialize(window_x, y);
 			m_framebuffer->Resize(window_x, y);
@@ -206,7 +206,9 @@ void LilyEditor::display_Lobject(Lobject* obj) {
 	}
 
 	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
-	bool open = ImGui::TreeNodeEx(name.c_str(), flags);
+    if (obj == m_selected) flags |= ImGuiTreeNodeFlags_Selected;
+    if (obj->get_children().empty()) flags |= ImGuiTreeNodeFlags_Leaf;
+    bool open = ImGui::TreeNodeEx(name.c_str(), flags);
 	if (ImGui::IsItemClicked()) {
 		m_selected = obj;
 		if (ImGui::IsMouseDoubleClicked(0)) {
@@ -231,8 +233,9 @@ void LilyEditor::entity_list_window() {
         m_selected = nullptr;
     }
 
-    for (auto& obj : m_active_scene->get_root()->get_children())
+    for (auto& obj : m_active_scene->get_root()->get_children()) {
         display_Lobject(obj);
+    }
 
 	ImGui::End(); // Entity List
 }

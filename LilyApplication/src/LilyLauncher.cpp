@@ -55,11 +55,7 @@ void LilyLauncher::gui_render() {
     }
 
     if (ImGui::Button("Select Project", button_size)) {
-        if (!m_data->selected_project.empty()) {
-            m_data->open_editor = true;
-            SDL_Event event{ SDL_QUIT };
-            SDL_PushEvent(&event);
-        }
+        on_project_select();
     }
 
     if (ImGui::Button("Rename", button_size)) {
@@ -94,6 +90,9 @@ void LilyLauncher::gui_render() {
                 if (ImGui::Selectable(name.c_str(), m_selection_it == it, 0, ImVec2(ImGui::GetContentRegionAvail().x, 45))) {
                     m_data->selected_project = entry.path();
                     m_selection_it = it;
+                }
+                if (ImGui::IsMouseDoubleClicked(0)) {
+                    on_project_select();
                 }
             }
             it++;
@@ -165,4 +164,12 @@ void LilyLauncher::create_new_project() {
     } while (fs::exists(new_proj));
     fs::create_directory(new_proj);
     fs::create_directory(new_proj.string() + "\\Scenes");
+}
+
+void LilyLauncher::on_project_select() {
+    if (!m_data->selected_project.empty()) {
+        m_data->open_editor = true;
+        SDL_Event event{ SDL_QUIT };
+        SDL_PushEvent(&event);
+    }
 }

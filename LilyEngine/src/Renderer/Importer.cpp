@@ -42,6 +42,7 @@ void Importer::import_model(Lobject* obj, fs::path& path, const fs::path& projec
         load_imported_mesh(m);
 
         obj->add_component(m);
+        return;
     }
 
     for (unsigned int i = 0; i < scene->mNumMeshes; i++) {

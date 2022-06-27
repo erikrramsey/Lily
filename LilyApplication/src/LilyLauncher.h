@@ -31,4 +31,5 @@ private:
 
     void save_launcher_config();
     void load_launcher_config();
+    void on_project_select();
 };
