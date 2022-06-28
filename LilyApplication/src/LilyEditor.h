@@ -33,6 +33,7 @@ public:
 
     const fs::path& project_path() { return m_project_path; }
     Scene* active_scene() { return m_active_scene; }
+    LauncherData get_data() { return *m_data; }
 private:
 	void gui_render();
 	void entity_list_window();

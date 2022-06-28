@@ -32,6 +32,7 @@ public:
 	static void SetClearColor(glm::vec4 clearColor);
 	static void Clear();
 	static void DrawMesh(const Mesh& mesh, const glm::mat4& tran);
+    static void build_shader(fs::path path) { std::cout << "clickced" << std::endl; }
 
 	static void End();
 private:

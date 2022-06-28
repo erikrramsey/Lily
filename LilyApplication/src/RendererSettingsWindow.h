@@ -3,12 +3,19 @@
 //
 #pragma once
 
-#include "Lily.h"
-#include "EditorWindow.h"
+#include <filesystem>
 
+#include "Lily.h"
+#include "LilyEditor.h"
+#include "EditorWindow.h"
+#include "Renderer/Renderer.h"
+
+namespace fs = std::filesystem;
 class RendererSettingsWindow : public EditorWindow {
 public:
-    explicit RendererSettingsWindow(LilyEditor* parent) : EditorWindow(parent) {}
+    explicit RendererSettingsWindow(LilyEditor* parent);
     void render() override;
 private:
+    void shader_list();
+    fs::path m_shader_directory;
 };
