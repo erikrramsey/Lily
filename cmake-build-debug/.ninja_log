@@ -113,3 +113,7 @@
 13853	19303	6783320042460676	CMakeFiles/LilyApplication.dir/LilyApplication/src/SceneListWindow.cpp.obj	d64c80cfb326aab
 18311	22522	6783320074683605	CMakeFiles/LilyApplication.dir/LilyApplication/src/main.cpp.obj	8de3936ffdf2bd88
 22522	23729	6783320085540534	../bin/Debug/LilyApplication.exe	cdc85abe4995f20c
+7	3151	6783322891440023	CMakeFiles/LilyApplication.dir/LilyApplication/src/RendererSettingsWindow.cpp.obj	3a05cf1dd1e584db
+3152	4167	6783322900344977	../bin/Debug/LilyApplication.exe	cdc85abe4995f20c
+6	3191	6783323353110825	CMakeFiles/LilyApplication.dir/LilyApplication/src/RendererSettingsWindow.cpp.obj	3a05cf1dd1e584db
+3192	4153	6783323361479951	../bin/Debug/LilyApplication.exe	cdc85abe4995f20c
