@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graphics_headers.h"
+#include "GraphicsHeaders.h"
 
 namespace Lily {
 

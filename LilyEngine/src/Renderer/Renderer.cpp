@@ -17,24 +17,40 @@ Renderer::~Renderer() {
 
 }
 
-void Renderer::Initialize() {
-    glewInit();
+void Renderer::build_and_use_shader(fs::path vs_path, fs::path fs_path) {
+    auto temp = new Shader();
+    temp->Initialize();
 
-    // Set up the shaders
-    m_shader = new Shader();
-    m_shader->Initialize();
+    if (!temp->AddShaderObject(GL_VERTEX_SHADER, vs_path.string().c_str())) {
+        delete temp;
+        return;
+    }
+    if (!temp->AddShaderObject(GL_FRAGMENT_SHADER, fs_path.string().c_str())) {
+        delete temp;
+        return;
+    }
+    if (!temp->Finalize()) {
+        delete temp;
+        return;
+    }
 
-    // add 2 shader objects, cant add more after compilation
-    m_shader->AddShaderObject(GL_VERTEX_SHADER, "../../assets/default.vs");
-    m_shader->AddShaderObject(GL_FRAGMENT_SHADER, "../../assets/red.fs");
+    delete m_shader;
+    m_shader = temp;
+    m_shader->Bind();
 
-    m_shader->Finalize();
-
-    // Locate recquired uniforms in shader
     projectionMLocation = m_shader->GetUniformLocation("projectionMatrix");
     viewMLocation = m_shader->GetUniformLocation("viewMatrix");
     modelMLocation = m_shader->GetUniformLocation("modelMatrix");
     viewPosLocation = m_shader->GetUniformLocation("viewPos");
+}
+
+void Renderer::Initialize() {
+    glewInit();
+
+    // Set up the shaders
+    fs::path vs_path = fs::current_path().string() + "/assets/default.vs";
+    fs::path fs_path = fs::current_path().string() + "/assets/default.fs";
+    build_and_use_shader(vs_path, fs_path);
 
 
     //enable depth testing
@@ -88,6 +104,11 @@ void Renderer::Initialize() {
     m_default = textureID;
 }
 
+void Renderer::cleanup() {
+    delete m_shader;
+    m_shader = nullptr;
+}
+
 void Renderer::update_light(glm::vec3 pos) {
         m_shader->Bind();
         auto lightPos = m_shader->GetUniformLocation("lightPos");
@@ -125,9 +146,9 @@ void Renderer::Begin(Camera& cam) {
 
 
 void Renderer::DrawMesh(const Mesh& mesh, const glm::mat4& tran) {
-	for (int i = 0; i < mesh.textures.size(); i++) {
-        glBindTexture(GL_TEXTURE_2D, mesh.textures[i].id);
-	}
+    if (mesh.material.albedo.id != 0) {
+        glBindTexture(GL_TEXTURE_2D, mesh.material.albedo.id);
+    }
 	m_shader->Bind();
 	glUniformMatrix4fv(Renderer::modelMLocation, 1, GL_FALSE, glm::value_ptr(tran));
 

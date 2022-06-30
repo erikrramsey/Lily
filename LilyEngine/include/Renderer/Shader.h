@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "Graphics_headers.h"
+#include "GraphicsHeaders.h"
 #include <iostream>
 #include <fstream>
 

@@ -4,10 +4,10 @@
 
 namespace Lily {
 
-    Mesh::Mesh(Entity self, std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures) : Component(self) {
+    Mesh::Mesh(Entity self, std::vector<Vertex> vertices, std::vector<unsigned int> indices, Material material) : Component(self) {
         this->vertices = vertices;
         this->indices = indices;
-        this->textures = textures;
+        this->material = material;
 
         initMesh();
     }
@@ -15,7 +15,7 @@ namespace Lily {
     Mesh::Mesh(Entity self, const Mesh& other) : Component(self) {
         vertices = other.vertices;
         indices = other.indices;
-        textures = other.textures;
+        material = other.material;
 
         VAO = other.VAO;
         VBO = other.VBO;

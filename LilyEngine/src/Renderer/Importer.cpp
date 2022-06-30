@@ -214,12 +214,12 @@ void Importer::load_imported_mesh(Mesh& lmesh) {
         }
     }
 
-    Texture tex;
+    Material mat;
     if (!lmesh.material_path.empty()) {
-        tex.id = TextureFromFile(lmesh.material_path.c_str());
-        if (tex.id) {
-            tex.type = "texture_diffuse";
-            lmesh.textures.push_back(tex);
+        mat.albedo.id = TextureFromFile(lmesh.material_path.c_str());
+        if (mat.albedo.id) {
+            mat.albedo.type = "texture_diffuse";
+            lmesh.material = mat;
         }
     }
     lmesh.indices = indices;

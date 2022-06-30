@@ -13,9 +13,10 @@
 
 #include "Renderer/Mesh.h"
 #include "Renderer/Shader.h"
-#include "Renderer/Graphics_headers.h"
+#include "Renderer/GraphicsHeaders.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/stb_image.h"
+#include "Renderer/Material.h"
 
 #include "Entity/Lobject.h"
 

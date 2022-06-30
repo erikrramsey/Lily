@@ -27,6 +27,7 @@ namespace Lily {
     }
 
     Application::~Application() {
+        Renderer::cleanup();
         delete m_window;
         delete m_clock;
         delete m_event_sender;

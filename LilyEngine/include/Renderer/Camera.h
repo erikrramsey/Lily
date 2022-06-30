@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Renderer/Graphics_headers.h"
+#include "Renderer/GraphicsHeaders.h"
 #include "Entity/Component.h"
 #include "Entity/Entity.h"
 

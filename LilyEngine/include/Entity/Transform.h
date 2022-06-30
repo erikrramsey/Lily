@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Component.h"
-#include "Renderer/Graphics_headers.h"
+#include "Renderer/GraphicsHeaders.h"
 
 namespace Lily {
 

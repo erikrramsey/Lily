@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 
-#include "Renderer/Graphics_headers.h"
+#include "Renderer/GraphicsHeaders.h"
 #include "Renderer/Camera.h"
 #include "Renderer/Shader.h"
 #include "Renderer/Mesh.h"
@@ -23,6 +23,8 @@ public:
 	~Renderer();
 
 	static void Initialize();
+    static void cleanup();
+    static void build_and_use_shader(fs::path vs_path, fs::path fs_path);
 
 	static void Begin(Camera& cam);
 

@@ -1,6 +1,6 @@
 #include "Entity/Entity.h"
 #include "Entity/Component.h"
-#include "Graphics_headers.h"
+#include "GraphicsHeaders.h"
 
 namespace Lily {
 
